@@ -7,15 +7,13 @@ const express = require('express')
 const webpack = require('webpack')
 const app = express()
 
-const PROD = process.env.NODE_ENV === 'production'
-
 /*
  * Configure web app and webpack pieces
  *
  */
 app.use(express.static(path.join(__dirname, 'dist')))
 
-if (!PROD) {
+if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(require('./webpack.config'))
   app.use(require('connect-history-api-fallback')({ verbose: false }))
   app.use(require('webpack-dev-middleware')(compiler, {}))

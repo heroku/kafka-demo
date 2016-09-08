@@ -6,15 +6,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const precss = require('precss')
 const autoprefixer = require('autoprefixer')
 
-const root = (...parts) => path.join(__dirname, ...parts)
-const src = (...parts) => root('src', ...parts)
 const production = process.env.NODE_ENV === 'production'
-const dist = 'dist'
 
 module.exports = {
-  entry: src('index.js'),
+  entry: path.join(__dirname, 'src', 'index.js'),
   output: {
-    path: root(dist),
+    path: path.join(__dirname, 'dist'),
     filename: `app${production ? '.[hash]' : ''}.js`
   },
   module: {
@@ -43,7 +40,7 @@ module.exports = {
     new HtmlPlugin({
       production,
       inject: false,
-      template: src('index.pug'),
+      template: path.join(__dirname, 'views', 'index.pug'),
       minify: {
         collapseWhitespace: true,
         collapseBooleanAttributes: true,

@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    meta(http-equiv='Content-type' content='text/html; charset=utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='shortcut icon' href='https://d3k90kvix375hb.cloudfront.net/assets/favicon.ico' type='image/vnd.microsoft.icon')
+    for css in htmlWebpackPlugin.files.css
+      link(rel='stylesheet' type='text/css' href=css)
+    title #{htmlWebpackPlugin.options.title}
+  body
+    header
+      nav
+        .pull-left.logo
+        .pull-right Kafka Demo
+    main
+      .chart-container.chart-topics
+        span.title Topics Count
+        .chart.loading
+      .chart-container
+        span.title Averages
+        .chart.loading
+      .chart-container
+        span.title Related Words
+        .chart.loading
+      .chart-container
+        span.title Topics
+        .chart.loading
+    for js in htmlWebpackPlugin.files.js
+      script(src=js)

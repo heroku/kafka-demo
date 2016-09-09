@@ -139,6 +139,7 @@ export default class BarChart {
     const enterSelection = updateSelection
       .enter()
       .append('rect')
+      .attr('class', (__, index) => `chart-color-${index + 1}`)
 
     updateSelection
       .exit()

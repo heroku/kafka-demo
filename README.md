@@ -16,7 +16,7 @@ Additionally these environment variables need to be defined:
 
 #### Development Running
 ```shell
-npm start
+npm run dev
 ```
 Open http://localhost:3000 in a browser and watch tweets stream in...
 

@@ -1,27 +1,36 @@
 @import '../node_modules/normalize.css/normalize.css';
+@import './utils.css';
+@import './colors.css';
 
 * {
   box-sizing: border-box;
 }
 
-$purple: #5F4C8D;
 $gutter: 20px;
-$gray: #61676a;
-$header: 50px;
+$headerHeight: 50px;
 $break: 800px;
 
-.pull-left { float: left; }
-.pull-right { float: right; }
+$hHeader: red;
+$hHeaderText: #fff;
+$hText: $purple;
+
+$sfHeader: #ccc;
+$sfHeaderText: blue;
+$sfText: #ccc;
 
 header {
-  height: $header;
-  background: $purple;
-  background: linear-gradient(to right, #2E2F61, #524191);
-  color: #FFFFFF;
+  height: $headerHeight;
+  background: $hHeader;
+  color: $hHeaderText;
   font-weight: 100;
 
   nav {
     padding: 15px $gutter;
+  }
+
+  body.salesforce & {
+    background: $sfHeader;
+    color: $sfHeaderText;
   }
 }
 
@@ -43,19 +52,22 @@ main {
   @media screen and (width >= $break) {
     min-height: auto;
     width: calc(50% - $gutter / 2);
-    height: calc(45vh - $header - ($gutter / 4));
+    height: calc(45vh - $headerHeight - ($gutter / 4));
 
     &:nth-child(-n+2) {
-      height: calc(55vh - $header - ($gutter / 4));
+      height: calc(55vh - $headerHeight - ($gutter / 4));
     }
   }
 
   .title {
-    color: $purple;
+    color: $hText;
     text-transform: uppercase;
     text-align: center;
     margin: 0 0 5px 0;
     font-size: 1em;
+    body.salesforce & {
+      color: $sfText;
+    }
   }
 
   .chart {
@@ -71,7 +83,7 @@ main {
     position: absolute;
     top: calc(50% - 9px);
     left: calc(50% - 30px);
-    color: $gray;
+    color: #ccc;
     height: 18px;
     width: 60px;
     text-align: center;

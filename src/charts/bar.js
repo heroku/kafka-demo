@@ -1,4 +1,7 @@
+'use strict'
+
 import * as d3 from 'd3'
+import _ from 'lodash'
 
 const minMargin = 15
 const margin = {
@@ -18,7 +21,6 @@ export default class BarChart {
 
     const svg = d3
       .select(this.container)
-      .classed('loading', false)
       .append('svg')
       .attr('width', '100%')
       .attr('height', '100%')
@@ -30,10 +32,6 @@ export default class BarChart {
     this.barGroup = chartArea.append('g')
     this.xAxisG = chartArea.append('g')
     this.yAxisG = chartArea.append('g')
-
-    this._lastData = options.data
-
-    this.init()
   }
 
   getHeight () {
@@ -44,12 +42,17 @@ export default class BarChart {
     return this.container.clientWidth
   }
 
-  init () {
+  init (data) {
+    this._lastData = data
+
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })
     this.updateAxes({ first: true })
     this.updateBars({ first: true })
+    d3.select(this.container).classed('loading', false)
+
     d3.select(window).on('resize', () => this.resize())
+    this._initialized = true
   }
 
   resize () {
@@ -60,7 +63,13 @@ export default class BarChart {
   }
 
   update (data) {
-    this._lastData = data || this._lastData
+    if (!this._initialized) return
+
+    if (Array.isArray(data)) {
+      this._lastData = data
+    } else {
+      this._lastData[_.findIndex(this._lastData, ({ id }) => id === data.id)] = data
+    }
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })

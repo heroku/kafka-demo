@@ -1,30 +1,23 @@
 import '../styles/style.css'
 
+import _ from 'lodash'
 import Bar from './charts/bar'
 
-const DATA_INTERVAL = 250
+const ws = new window.WebSocket(`ws://${window.location.host}`)
 
 const bar = new Bar({
   selector: '.chart-topics .chart',
-  transition: DATA_INTERVAL,
-  x: 'topic',
-  y: 'tweets',
-  data: [
-    {topic: 'topic1', tweets: 100},
-    {topic: 'topic2', tweets: 150},
-    {topic: 'topic3', tweets: 300},
-    {topic: 'topic4', tweets: 200}
-  ]
+  transition: 250,
+  x: 'id',
+  y: 'count'
 })
 
-let iterations = 0
+ws.onmessage = (e) => {
+  const { type, data } = JSON.parse(e.data)
 
-setInterval(() => {
-  iterations++
-  bar.update([
-    {topic: 'topic1', tweets: 100 + Math.ceil(iterations * 0.7)},
-    {topic: 'topic2', tweets: 150 + Math.ceil(iterations * 0.6)},
-    {topic: 'topic3', tweets: 300 + Math.ceil(iterations * 0.4)},
-    {topic: 'topic4', tweets: 200 + Math.ceil(iterations * 0.4)}
-  ])
-}, DATA_INTERVAL)
+  if (type === 'snapshot') {
+    bar.init(Object.keys(data.metrics).map((topic) => _.last(data.metrics[topic])))
+  } else if (type === 'metrics') {
+    bar.update(data)
+  }
+}

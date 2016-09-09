@@ -5,6 +5,7 @@ const server = require('http').createServer()
 const WebSocketServer = require('ws').Server
 const express = require('express')
 const webpack = require('webpack')
+const Consumer = require('./consumer')
 const app = express()
 
 /*
@@ -29,24 +30,14 @@ server.listen(port, () => console.log(`http/ws server listening on ${port}`))
  * Configure WebSocketServer
  *
  */
-var wss = new WebSocketServer({ server: server })
-
-wss.on('connection', (ws) => {
-  ws.on('open', () => console.log('New WebSocket connection'))
-  ws.on('close', () => console.log('WebSocket connection closed'))
-})
-
-/*
- * Send messages received from Kafka consumer out over WebSocket
- *
- */
-const broadcastClient = (data) => (client) => client.send(data)
-const broadcast = (data) => wss.clients.forEach(broadcastClient(data))
+const wss = new WebSocketServer({ server: server })
 
 /*
  * Dummy interval to send data to client
+ * To be replaced by actual kafka consumer
  *
  */
-setInterval(() => {
-  broadcast('test')
-}, 250)
+const consumer = new Consumer()
+wss.on('connection', (ws) => ws.send(JSON.stringify(consumer.snapshot())))
+consumer.on('data', (data) => wss.clients.forEach((client) => client.send(JSON.stringify(data))))
+consumer.start()

@@ -3,6 +3,7 @@
 const path = require('path')
 const HtmlPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CleanPlugin = require('clean-webpack-plugin')
 const precss = require('precss')
 const autoprefixer = require('autoprefixer')
 
@@ -55,6 +56,7 @@ module.exports = {
         quoteCharacter: "'"
       }
     }),
+    new CleanPlugin(['dist'], { root: __dirname }),
     production && new ExtractTextPlugin('app.[contenthash].css')
   ].filter(Boolean)
 }

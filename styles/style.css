@@ -1,6 +1,6 @@
 @import '../node_modules/normalize.css/normalize.css';
 @import './utils.css';
-@import './colors.css';
+@import './chart-colors.css';
 
 * {
   box-sizing: border-box;
@@ -10,13 +10,15 @@ $gutter: 20px;
 $headerHeight: 50px;
 $break: 800px;
 
-$hHeader: red;
+$hHeader: purple;
 $hHeaderText: #fff;
-$hText: $purple;
+$hText: purple;
+$hBorder: purple;
 
 $sfHeader: #ccc;
 $sfHeaderText: blue;
 $sfText: #ccc;
+$sfBorder: #ccc;
 
 header {
   height: $headerHeight;
@@ -71,12 +73,15 @@ main {
   }
 
   .chart {
-    border: 1px solid #CFD6E3;
+    border: 1px solid $hBorder;
     border-radius: 3px;
     height: 100%;
     background: #FFFFFF;
     position: relative;
     overflow: hidden;
+    body.salesforce & {
+      border-color: $sfBorder;
+    }
   }
 
   .chart.loading:after {

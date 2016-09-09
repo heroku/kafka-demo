@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 const precss = require('precss')
 const autoprefixer = require('autoprefixer')
+const postcssImport = require('postcss-import')
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -36,7 +37,7 @@ module.exports = {
       }
     ]
   },
-  postcss: () => [precss, autoprefixer],
+  postcss: (webpack) => [postcssImport({ addDependencyTo: webpack }), precss, autoprefixer],
   plugins: [
     new HtmlPlugin({
       production,

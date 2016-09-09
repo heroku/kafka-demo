@@ -2,20 +2,28 @@ $hColor1: purple;
 $hColor2: blue;
 $hColor3: green;
 $hColor4: yellow;
+$hText: #ccc;
 
 $sfColor1: teal;
 $sfColor2: purple;
 $sfColor3: orange;
 $sfColor4: aqua;
+$sfText: #ccc;
 
 .chart-color-1 { background: $hColor1; fill: $hColor1; }
 .chart-color-2 { background: $hColor2; fill: $hColor2; }
 .chart-color-3 { background: $hColor3; fill: $hColor3; }
 .chart-color-4 { background: $hColor4; fill: $hColor4; }
+path.domain { stroke: $hText; }
+g.tick text { fill: $hText; }
+g.tick line { stroke: $hText; }
 
 body.salesforce {
   .chart-color-1 { background: $sfColor1; fill: $sfColor1; }
   .chart-color-2 { background: $sfColor2; fill: $sfColor2; }
   .chart-color-3 { background: $sfColor3; fill: $sfColor3; }
   .chart-color-4 { background: $sfColor4; fill: $sfColor4; }
+  .domain { stroke: $sfText; }
+  .tick text { fill: $sfText; }
+  .tick line { stroke: $sfText; }
 }

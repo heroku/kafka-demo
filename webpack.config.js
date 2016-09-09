@@ -37,7 +37,11 @@ module.exports = {
       }
     ]
   },
-  postcss: (webpack) => [postcssImport({ addDependencyTo: webpack }), precss, autoprefixer],
+  postcss: (webpack) => [
+    postcssImport({ addDependencyTo: webpack }),
+    precss,
+    autoprefixer
+  ],
   plugins: [
     new HtmlPlugin({
       production,

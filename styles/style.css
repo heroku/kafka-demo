@@ -10,15 +10,15 @@ $gutter: 20px;
 $headerHeight: 50px;
 $break: 800px;
 
-$hHeader: purple;
+$hHeader: linear-gradient(to right, #3d3f74, #6757a0);
 $hHeaderText: #fff;
-$hText: purple;
-$hBorder: purple;
+$hText: #73629e;
+$hBorder: #d8dde6;
 
-$sfHeader: #ccc;
-$sfHeaderText: blue;
-$sfText: #ccc;
-$sfBorder: #ccc;
+$sfHeader: #dae0e4;
+$sfHeaderText: #29347c;
+$sfText: #054d61;
+$sfBorder: #d8dde6;
 
 header {
   height: $headerHeight;
@@ -28,6 +28,68 @@ header {
 
   nav {
     padding: 15px $gutter;
+    display: flex;
+    justify-content: space-between;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+
+  .nav-items > li {
+    margin-left: 15px;
+    display: inline-block;
+  }
+
+  .nav-legend {
+    position: relative;
+
+    &:hover {
+      cursor: pointer;
+
+      .legend {
+        display: block;
+      }
+    }
+  }
+
+  .legend {
+    width: 200px;
+    padding: 10px 20px;
+    display: none;
+    position: absolute;
+    z-index: 10;
+    right: -3px;
+    top: 25px;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid $hBorder;
+    box-shadow: 2px 2px 4px rgba(0,0,0,.05);
+    color: $hText;
+
+    li {
+      position: relative;
+      padding: 10px;
+      padding-left: 30px;
+      font-size: .9em;
+
+      &:before {
+        width: 20px;
+        height: 20px;
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 8px;
+      }
+
+      &.color1:before {background: $hColor1;}
+      &.color2:before {background: $hColor2;}
+      &.color3:before {background: $hColor3;}
+      &.color4:before {background: $hColor4;}
+    }
   }
 
   body.salesforce & {
@@ -41,7 +103,7 @@ main {
   justify-content: space-between;
   flex-wrap: wrap;
   padding: $gutter $gutter 0 $gutter;
-  background: #FAFAFB;
+  background: linear-gradient(to bottom, #f2f2f4, #fff);
 }
 
 .chart-container {
@@ -65,8 +127,9 @@ main {
     color: $hText;
     text-transform: uppercase;
     text-align: center;
-    margin: 0 0 5px 0;
-    font-size: 1em;
+    margin: 0 0 10px 0;
+    font-size: .85em;
+    letter-spacing: 1px;
     body.salesforce & {
       color: $sfText;
     }

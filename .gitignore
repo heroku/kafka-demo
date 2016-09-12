@@ -38,3 +38,5 @@ jspm_packages
 
 # Project
 dist
+
+.DS_Store

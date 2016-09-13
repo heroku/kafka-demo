@@ -144,15 +144,14 @@ export default class StreamChart {
       .x((d) => this.xScale(new Date(d.data[this.xVariable])))
       .y0((d) => this.yScale(d[0]))
       .y1((d) => this.yScale(d[1]))
+      .curve(d3.curveNatural)
 
-    const layer = this.chartArea
+    this.chartArea
       .selectAll('.layer')
       .data(series)
       .enter()
       .append('g')
       .attr('class', 'layer')
-
-    layer
       .append('path')
       .attr('class', (__, index) => `chart-color-${index + 1}`)
       .attr('d', area)

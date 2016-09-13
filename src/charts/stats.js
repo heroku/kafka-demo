@@ -45,7 +45,7 @@ export default class Stats {
       table.appendChild(tr)
       row.forEach((cell) => {
         const td = document.createElement('td')
-        td.textContent = typeof cell === 'number' ? `${cell}/s` : cell
+        td.textContent = typeof cell === 'number' ? `${cell}` : cell
         tr.appendChild(td)
       })
     })

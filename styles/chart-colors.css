@@ -25,7 +25,7 @@ body.salesforce {
   .chart-color-2 { background: $sfColor2; fill: $sfColor2; }
   .chart-color-3 { background: $sfColor3; fill: $sfColor3; }
   .chart-color-4 { background: $sfColor4; fill: $sfColor4; }
-  .domain { stroke: $sfText; }
-  .tick text { fill: $sfText; }
-  .tick line { stroke: $sfText; }
+  path.domain { stroke: $sfText; }
+  g.tick text { fill: $sfText; }
+  g.tick line { stroke: $sfText; }
 }

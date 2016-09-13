@@ -44,7 +44,10 @@ export default class BarChart {
 
   formatData (data) {
     const keys = Object.keys(data)
-    return keys.map((topic) => _.last(data[topic]))
+    return keys.map((topic) => {
+      const values = data[topic]
+      return Array.isArray(values) ? _.last(values) : values
+    })
   }
 
   init (data) {
@@ -70,11 +73,7 @@ export default class BarChart {
   update (data) {
     if (!this._initialized) return
 
-    if (Array.isArray(data)) {
-      this._lastData = data
-    } else {
-      this._lastData[_.findIndex(this._lastData, ({ id }) => id === data.id)] = data
-    }
+    this._lastData = this.formatData(data)
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })

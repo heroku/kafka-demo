@@ -41,13 +41,20 @@ export default class StreamChart {
     return this.container.clientWidth
   }
 
-  formatData (raw) {
+  formatData (raw, log = () => {}) {
     const keys = Object.keys(raw)
-    const x = raw[keys[0]].map((d) => d[this.xVariable])
-    return x.map((value, index) => {
-      const values = keys.map((key) => raw[key][index][this.yVariable])
+    const values = raw[keys[0]]
+    const isArray = Array.isArray(values)
+    const x = (isArray ? values : [values]).map((d) => d[this.xVariable])
+    const data = x.map((value, index) => {
+      log()
+      const values = keys.map((key) => {
+        const value = raw[key]
+        return (isArray ? value[index] : value)[this.yVariable]
+      })
       return Object.assign({ [this.xVariable]: value }, _.zipObject(keys, values))
     })
+    return isArray ? data : data[0]
   }
 
   init (data) {
@@ -73,16 +80,7 @@ export default class StreamChart {
   update (data) {
     if (!this._initialized) return
 
-    this._nextData || (this._nextData = {})
-    this._nextData[data.id] = data[this.yVariable]
-    this._nextData[this.xVariable] = data[this.xVariable]
-
-    if (_.size(this._nextData) === _.size(_.last(this._lastData))) {
-      this._lastData = [...this._lastData.slice(1), this._nextData]
-      this._nextData = null
-    } else {
-      return
-    }
+    this._lastData = [...this._lastData.slice(1), this.formatData(data)]
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })

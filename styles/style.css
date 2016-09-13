@@ -121,27 +121,32 @@ header {
 }
 
 main {
+  height: calc(100vh - $headerHeight);
+  padding: 5px;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
-  padding: $gutter $gutter 0 $gutter;
   background: linear-gradient(to bottom, #f2f2f4, #fff);
+
+  @media screen and (width >= $break) {
+    padding: 15px;
+    padding-bottom: 0;
+  }
 }
 
 .chart-container {
-  display: flex;
   width: 100%;
-  margin-bottom: $gutter;
   height: 400px;
+  padding: 15px;
+  display: flex;
   flex-direction: column;
 
   @media screen and (width >= $break) {
+    width: 50%;
     min-height: auto;
-    width: calc(50% - $gutter / 2);
-    height: calc(45vh - $headerHeight - ($gutter / 4));
+    height: calc(45vh - $headerHeight);
 
     &:nth-child(-n+2) {
-      height: calc(55vh - $headerHeight - ($gutter / 4));
+      height: calc(55vh - $headerHeight);
     }
   }
 

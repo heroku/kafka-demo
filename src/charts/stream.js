@@ -31,14 +31,31 @@ export default class StreamChart {
 
     this.xAxisG = this.chartArea.append('g')
     this.yAxisG = this.chartArea.append('g')
+
+    this.xScale = d3.scaleTime()
+    this.yScale = d3.scaleLinear()
+    this.xAxis = d3.axisBottom()
+    this.yAxis = d3.axisLeft()
+
+    this.stack = d3
+      .stack()
+      .order(d3.stackOrderInsideOut)
+      .offset(d3.stackOffsetWiggle)
+
+    this.area = d3
+      .area()
+      .x((d) => this.xScale(new Date(d.data[this.xVariable])))
+      .y0((d) => this.yScale(d[0]))
+      .y1((d) => this.yScale(d[1]))
+      .curve(d3.curveNatural)
   }
 
   getHeight () {
-    return this.container.clientHeight
+    return this.container.clientHeight - margin.top - margin.bottom
   }
 
   getWidth () {
-    return this.container.clientWidth
+    return this.container.clientWidth - margin.left - margin.right
   }
 
   formatData (raw) {
@@ -88,46 +105,27 @@ export default class StreamChart {
   }
 
   updateScaleAndAxesData () {
-    // Initialise scales
-    this.xScale = d3
-      .scaleTime()
-      .domain(d3.extent(this._lastData, (d) => new Date(d[this.xVariable])))
-
-    this.yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add))])
-
-    // Build the x-axis
-    this.xAxis = d3
-      .axisBottom()
-      .scale(this.xScale)
-
-    // Build the y-axis
-    this.yAxis = d3
-      .axisLeft()
-      .scale(this.yScale)
+    this.xScale.domain(d3.extent(this._lastData, (d) => new Date(d[this.xVariable])))
+    this.yScale.domain([0, d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add))])
+    this.xAxis.scale(this.xScale)
+    this.yAxis.scale(this.yScale)
   }
 
   updateScales () {
-    const newWidth = this.getWidth() - margin.left - margin.right
-    const newHeight = this.getHeight() - margin.top - margin.bottom
-
-    this.xScale.range([0, newWidth])
-    this.yScale.range([newHeight, 0])
+    this.xScale.range([0, this.getWidth()])
+    this.yScale.range([this.getHeight(), 0])
   }
 
   updateAxes (options = {}) {
-    const newHeight = this.getHeight()
-
     // position the xAxisG before the transition the first time
     if (options.first) {
-      this.xAxisG.attr('transform', `translate(0, ${newHeight - margin.top - margin.bottom})`)
+      this.xAxisG.attr('transform', `translate(0, ${this.getHeight()})`)
     }
 
     this.xAxisG
       .transition()
       .duration(options.transition || 0)
-      .attr('transform', `translate(0, ${newHeight - margin.top - margin.bottom})`)
+      .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
     this.yAxisG
@@ -137,22 +135,11 @@ export default class StreamChart {
   }
 
   updateStacks (options = {}) {
-    const data = d3
-      .stack()
-      .keys(Object.keys(_.omit(this._lastData[0], this.xVariable)))
-      .order(d3.stackOrderInsideOut)
-      .offset(d3.stackOffsetWiggle)(this._lastData)
-
-    const area = d3
-      .area()
-      .x((d) => this.xScale(new Date(d.data[this.xVariable])))
-      .y0((d) => this.yScale(d[0]))
-      .y1((d) => this.yScale(d[1]))
-      .curve(d3.curveNatural)
+    this.stack.keys(Object.keys(_.omit(this._lastData[0], this.xVariable)))
 
     const updateSelection = this.chartArea
       .selectAll('.chart-path')
-      .data(data)
+      .data(this.stack(this._lastData))
 
     const enterSelection = updateSelection
       .enter()
@@ -167,6 +154,6 @@ export default class StreamChart {
       .merge(updateSelection)
       .transition()
       .duration(options.transition || 0)
-      .attr('d', area)
+      .attr('d', this.area)
   }
 }

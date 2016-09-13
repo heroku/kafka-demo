@@ -66,7 +66,7 @@ module.exports = {
   plugins: [
     html('index.html', 'heroku'),
     html('salesforce.html', 'salesforce'),
-    new CleanPlugin(['dist'], { root: __dirname }),
+    new CleanPlugin(['dist'], { root: __dirname, verbose: false, exclude: ['images'] }),
     production && new ExtractTextPlugin('app.[contenthash].css')
   ].filter(Boolean)
 }

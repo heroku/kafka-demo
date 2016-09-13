@@ -48,6 +48,7 @@
     "url": "git@github.com:crcastle/twitter-display.git"
   },
   "scripts": {
+    "build": "NODE_ENV=production webpack -p",
     "dev": "NODE_ENV=development bin/start",
     "lint": "standard",
     "start": "NODE_ENV=production bin/start",

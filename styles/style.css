@@ -27,7 +27,7 @@ header {
   font-weight: 100;
 
   nav {
-    padding: 15px $gutter;
+    padding: 0 $gutter;
     display: flex;
     justify-content: space-between;
 
@@ -40,55 +40,64 @@ header {
 
   .nav-items > li {
     margin-left: 15px;
-    display: inline-block;
-  }
-
-  .nav-legend {
+    padding: 17px 0 15px;
     position: relative;
+    display: inline-block;
 
     &:hover {
       cursor: pointer;
 
-      .legend {
+      .dropdown {
         display: block;
       }
     }
   }
 
-  .legend {
+  .dropdown {
     width: 200px;
     padding: 10px 20px;
     display: none;
     position: absolute;
     z-index: 10;
     right: -3px;
-    top: 25px;
+    top: 40px;
     background: #fff;
     border-radius: 4px;
     border: 1px solid $hBorder;
     box-shadow: 2px 2px 4px rgba(0,0,0,.05);
+    font-size: .9em;
     color: $hText;
+    cursor: default;
 
-    li {
-      position: relative;
-      padding: 10px;
-      padding-left: 30px;
-      font-size: .9em;
+    li a {
+      margin: 10px 0;
+      display: block;
+      text-decoration: none;
+      color: $hText;
+    }
 
-      &:before {
-        width: 20px;
-        height: 20px;
-        content: '';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 8px;
+    &.nav-legend {
+
+      li {
+        position: relative;
+        padding: 10px 0;
+        padding-left: 30px;
+
+        &:before {
+          width: 20px;
+          height: 20px;
+          content: '';
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 8px;
+        }
+
+        &.color1:before {background: $hColor1;}
+        &.color2:before {background: $hColor2;}
+        &.color3:before {background: $hColor3;}
+        &.color4:before {background: $hColor4;}
       }
-
-      &.color1:before {background: $hColor1;}
-      &.color2:before {background: $hColor2;}
-      &.color3:before {background: $hColor3;}
-      &.color4:before {background: $hColor4;}
     }
   }
 

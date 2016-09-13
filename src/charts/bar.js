@@ -32,22 +32,24 @@ export default class BarChart {
     this.barGroup = chartArea.append('g')
     this.xAxisG = chartArea.append('g')
     this.yAxisG = chartArea.append('g')
+
+    this.xScale = d3.scaleBand()
+    this.yScale = d3.scaleLinear()
+    this.xAxis = d3.axisBottom()
+    this.yAxis = d3.axisLeft().tickFormat(d3.format('.0s'))
   }
 
   getHeight () {
-    return this.container.clientHeight
+    return this.container.clientHeight - margin.top - margin.bottom
   }
 
   getWidth () {
-    return this.container.clientWidth
+    return this.container.clientWidth - margin.left - margin.right
   }
 
   formatData (data) {
     const keys = Object.keys(data)
-    return keys.map((topic) => {
-      const values = data[topic]
-      return Array.isArray(values) ? _.last(values) : values
-    })
+    return keys.map((topic) => Array.isArray(data[topic]) ? _.last(data[topic]) : data[topic])
   }
 
   init (data) {
@@ -82,51 +84,26 @@ export default class BarChart {
   }
 
   updateScaleAndAxesData () {
-    // Initialise scales
-    this.xScale = d3
-      .scaleBand()
-      .domain(this._lastData.map(d => d[this.xVariable]))
-
-    this.yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))])
-
-    // Build the x-axis
-    this.xAxis = d3
-      .axisBottom()
-      .scale(this.xScale)
-
-    // Build the y-axis
-    this.yAxis = d3
-      .axisLeft()
-      .tickFormat(d3.format('.0s'))
-      .scale(this.yScale)
+    this.xScale.domain(this._lastData.map(d => d[this.xVariable]))
+    this.yScale.domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))])
+    this.xAxis.scale(this.xScale)
+    this.yAxis.scale(this.yScale)
   }
 
   updateScales () {
-    const newWidth = this.getWidth() - margin.left - margin.right
-    const newHeight = this.getHeight() - margin.top - margin.bottom
-
-    this.xScale
-      .range([0, newWidth])
-      .paddingInner(0.1)
-      .bandwidth(10)
-
-    this.yScale.range([newHeight, 0])
+    this.xScale.range([0, this.getWidth()])
+    this.yScale.range([this.getHeight(), 0])
   }
 
   updateAxes (options = {}) {
-    const newHeight = this.getHeight()
-
-    // position the xAxisG before the transition the first time
     if (options.first) {
-      this.xAxisG.attr('transform', `translate(0, ${newHeight - margin.top - margin.bottom})`)
+      this.xAxisG.attr('transform', `translate(0, ${this.getHeight()})`)
     }
 
     this.xAxisG
       .transition()
       .duration(options.transition || 0)
-      .attr('transform', `translate(0, ${newHeight - margin.top - margin.bottom})`)
+      .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
     this.yAxisG

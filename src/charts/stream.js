@@ -64,10 +64,7 @@ export default class StreamChart {
     const isArray = Array.isArray(values)
     const x = (isArray ? values : [values]).map((d) => d[this.xVariable])
     const data = x.map((value, index) => {
-      const values = keys.map((key) => {
-        const value = raw[key]
-        return (isArray ? value[index] : value)[this.yVariable]
-      })
+      const values = keys.map((key) => (isArray ? raw[key][index] : raw[key])[this.yVariable])
       return Object.assign({ [this.xVariable]: value }, _.zipObject(keys, values))
     })
     return isArray ? data : data[0]
@@ -117,7 +114,6 @@ export default class StreamChart {
   }
 
   updateAxes (options = {}) {
-    // position the xAxisG before the transition the first time
     if (options.first) {
       this.xAxisG.attr('transform', `translate(0, ${this.getHeight()})`)
     }

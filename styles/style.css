@@ -22,8 +22,6 @@ $sfBorder: #d8dde6;
 
 header {
   height: $headerHeight;
-  background: $hHeader;
-  color: $hHeaderText;
   font-weight: 100;
 
   nav {
@@ -92,6 +90,11 @@ header {
     }
   }
 
+  body.heroku & {
+    background: $hHeader;
+    color: $hHeaderText;
+  }
+
   body.salesforce & {
     background: $sfHeader;
     color: $sfHeaderText;
@@ -124,24 +127,34 @@ main {
   }
 
   .title {
-    color: $hText;
     text-transform: uppercase;
     text-align: center;
     margin: 0 0 10px 0;
     font-size: .85em;
     letter-spacing: 1px;
+
+    body.heroku & {
+      color: $hText;
+    }
+
     body.salesforce & {
       color: $sfText;
     }
   }
 
   .chart {
-    border: 1px solid $hBorder;
+    border-style: solid;
+    border-width: 1px;
     border-radius: 3px;
     height: 100%;
     background: #FFFFFF;
     position: relative;
     overflow: hidden;
+
+    body.heroku & {
+      border-color: $hBorder;
+    }
+
     body.salesforce & {
       border-color: $sfBorder;
     }

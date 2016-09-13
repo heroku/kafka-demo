@@ -7,7 +7,7 @@ html
     for css in htmlWebpackPlugin.files.css
       link(rel='stylesheet' type='text/css' href=css)
     title #{htmlWebpackPlugin.options.title}
-  body
+  body(class=htmlWebpackPlugin.options.bodyClass)
     header
       nav
         .logo
@@ -29,7 +29,7 @@ html
       .chart-container
         span.title Related Words
         .chart.loading
-      .chart-container
+      .chart-container.chart-stream
         span.title Topics
         .chart.loading
     for js in htmlWebpackPlugin.files.js

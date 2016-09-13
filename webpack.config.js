@@ -10,6 +10,27 @@ const postcssImport = require('postcss-import')
 
 const production = process.env.NODE_ENV === 'production'
 
+const html = (filename, bodyClass) => new HtmlPlugin({
+  production,
+  filename,
+  bodyClass,
+  inject: false,
+  template: path.join(__dirname, 'views', 'index.pug'),
+  minify: {
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    collapseInlineTagWhitespace: true,
+    conservativeCollapse: true,
+    removeAttributeQuotes: true,
+    removeComments: true,
+    removeEmptyAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true,
+    quoteCharacter: "'"
+  }
+})
+
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
@@ -43,24 +64,8 @@ module.exports = {
     autoprefixer
   ],
   plugins: [
-    new HtmlPlugin({
-      production,
-      inject: false,
-      template: path.join(__dirname, 'views', 'index.pug'),
-      minify: {
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        collapseInlineTagWhitespace: true,
-        conservativeCollapse: true,
-        removeAttributeQuotes: true,
-        removeComments: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true,
-        quoteCharacter: "'"
-      }
-    }),
+    html('index.html', 'heroku'),
+    html('salesforce.html', 'salesforce'),
     new CleanPlugin(['dist'], { root: __dirname }),
     production && new ExtractTextPlugin('app.[contenthash].css')
   ].filter(Boolean)

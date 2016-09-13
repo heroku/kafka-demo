@@ -20,6 +20,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-dev-middleware')(compiler, {}))
 } else {
   app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
+  app.get('/heroku', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
+  app.get('/salesforce', (req, res) => res.sendFile(path.join(__dirname, 'dist/salesforce.html')))
 }
 
 const port = process.env.PORT || 3000
@@ -39,5 +41,5 @@ const wss = new WebSocketServer({ server: server })
  */
 const consumer = new Consumer()
 wss.on('connection', (ws) => ws.send(JSON.stringify(consumer.snapshot())))
-consumer.on('data', (data) => wss.clients.forEach((client) => client.send(JSON.stringify(data))))
+// consumer.on('data', (data) => wss.clients.forEach((client) => client.send(JSON.stringify(data))))
 consumer.start()

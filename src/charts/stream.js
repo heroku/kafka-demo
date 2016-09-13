@@ -11,7 +11,7 @@ const margin = {
   left: minMargin + 17
 }
 
-export default class BarChart {
+export default class StreamChart {
   constructor (options) {
     this.container = document.querySelector(options.selector)
 
@@ -25,13 +25,12 @@ export default class BarChart {
       .attr('width', '100%')
       .attr('height', '100%')
 
-    const chartArea = svg
+    this.chartArea = svg
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-    this.barGroup = chartArea.append('g')
-    this.xAxisG = chartArea.append('g')
-    this.yAxisG = chartArea.append('g')
+    this.xAxisG = this.chartArea.append('g')
+    this.yAxisG = this.chartArea.append('g')
   }
 
   getHeight () {
@@ -42,9 +41,13 @@ export default class BarChart {
     return this.container.clientWidth
   }
 
-  formatData (data) {
-    const keys = Object.keys(data)
-    return keys.map((topic) => _.last(data[topic]))
+  formatData (raw) {
+    const keys = Object.keys(raw)
+    const times = raw[keys[0]].map((d) => d.time)
+    return times.map((time, index) => {
+      const values = keys.map((key) => raw[key][index].avg)
+      return Object.assign({ time }, _.zipObject(keys, values))
+    })
   }
 
   init (data) {
@@ -53,7 +56,7 @@ export default class BarChart {
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })
     this.updateAxes({ first: true })
-    this.updateBars({ first: true })
+    this.updateStacks({ first: true })
     d3.select(this.container).classed('loading', false)
 
     window.addEventListener('resize', () => this.resize())
@@ -64,33 +67,29 @@ export default class BarChart {
     this.updateScaleAndAxesData()
     this.updateScales()
     this.updateAxes()
-    this.updateBars()
+    this.updateStacks()
   }
 
   update (data) {
     if (!this._initialized) return
 
-    if (Array.isArray(data)) {
-      this._lastData = data
-    } else {
-      this._lastData[_.findIndex(this._lastData, ({ id }) => id === data.id)] = data
-    }
+    this._lastData = [...this._lastData.slice(1), data]
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })
     this.updateAxes({ transition: this.transition })
-    this.updateBars({ transition: this.transition })
+    this.updateStacks({ transition: this.transition })
   }
 
   updateScaleAndAxesData () {
     // Initialise scales
     this.xScale = d3
-      .scaleBand()
-      .domain(this._lastData.map(d => d[this.xVariable]))
+      .scaleTime()
+      .domain(d3.extent(this._lastData, (d) => new Date(d[this.xVariable])))
 
     this.yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))])
+      .domain([0, d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add))])
 
     // Build the x-axis
     this.xAxis = d3
@@ -100,7 +99,6 @@ export default class BarChart {
     // Build the y-axis
     this.yAxis = d3
       .axisLeft()
-      .tickFormat(d3.format('.0s'))
       .scale(this.yScale)
   }
 
@@ -108,11 +106,7 @@ export default class BarChart {
     const newWidth = this.getWidth() - margin.left - margin.right
     const newHeight = this.getHeight() - margin.top - margin.bottom
 
-    this.xScale
-      .range([0, newWidth])
-      .paddingInner(0.1)
-      .bandwidth(10)
-
+    this.xScale.range([0, newWidth])
     this.yScale.range([newHeight, 0])
   }
 
@@ -136,27 +130,31 @@ export default class BarChart {
       .call(this.yAxis)
   }
 
-  updateBars (options = {}) {
-    const updateSelection = this.barGroup
-      .selectAll('rect')
-      .data(this._lastData)
+  updateStacks (options = {}) {
+    const stack = d3
+      .stack()
+      .keys(Object.keys(_.omit(this._lastData[0], this.xVariable)))
+      .order(d3.stackOrderInsideOut)
+      .offset(d3.stackOffsetWiggle)
 
-    const enterSelection = updateSelection
+    const series = stack(this._lastData)
+
+    const area = d3
+      .area()
+      .x((d) => this.xScale(new Date(d.data[this.xVariable])))
+      .y0((d) => this.yScale(d[0]))
+      .y1((d) => this.yScale(d[1]))
+
+    const layer = this.chartArea
+      .selectAll('.layer')
+      .data(series)
       .enter()
-      .append('rect')
+      .append('g')
+      .attr('class', 'layer')
+
+    layer
+      .append('path')
       .attr('class', (__, index) => `chart-color-${index + 1}`)
-
-    updateSelection
-      .exit()
-      .remove()
-
-    enterSelection
-      .merge(updateSelection)
-      .transition()
-      .duration(options.transition || 0)
-      .attr('x', (d) => this.xScale(d[this.xVariable]))
-      .attr('width', this.xScale.bandwidth)
-      .attr('y', d => this.yScale(d[this.yVariable]))
-      .attr('height', d => this.yScale(0) - this.yScale(d[this.yVariable]))
+      .attr('d', area)
   }
 }

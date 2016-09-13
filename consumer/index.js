@@ -4,9 +4,9 @@ const EventEmitter = require('events')
 const _ = require('lodash')
 const data = require('./data')
 
-// 30 minutes
 const WINDOW = 1000 * 60 * 5
-const INTERVAL = 250
+const INTERVAL = 1000
+const MAX_LENGTH = WINDOW / INTERVAL
 
 module.exports = class Mock extends EventEmitter {
   constructor () {
@@ -22,7 +22,7 @@ module.exports = class Mock extends EventEmitter {
 
       res[topic] = []
       range.forEach((time) => {
-        res[topic].push(data.metrics({ id: topic, time, count }))
+        res[topic].push(data.metrics({ id: topic, time: new Date(time), count }))
         count = _.last(res[topic]).count
       })
 
@@ -49,11 +49,14 @@ module.exports = class Mock extends EventEmitter {
 
   start () {
     setInterval(() => {
-      this.topics.forEach((topic) => {
-        const nextMetrics = data.metrics(_.last(this.metrics[topic]))
-        const nextRelated = data.related(this.related[topic])
+      const time = new Date()
+      const now = (obj) => Object.assign({}, obj, { time })
 
-        this.metrics[topic] = [...this.metrics[topic].slice(1), nextMetrics]
+      this.topics.forEach((topic) => {
+        const nextMetrics = data.metrics(now(_.last(this.metrics[topic])))
+        const nextRelated = data.related(now(this.related[topic]))
+
+        this.metrics[topic] = [...this.metrics[topic].slice(this.metrics[topic].length === MAX_LENGTH ? 1 : 0), nextMetrics]
         this.related[topic] = nextRelated
 
         this.emit('data', { type: 'metrics', data: nextMetrics })

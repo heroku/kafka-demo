@@ -12,13 +12,20 @@ html
       nav
         .logo
         ul.nav-items
-          li Kafka Demo
-          li.nav-legend Legend
-            ul.legend
+          li Legend
+            ul.dropdown.nav-legend
               li.color1 Topic 1
               li.color2 Topic 2
               li.color3 Topic 3
               li.color4 Topic 4
+          li Architecture
+          li Learn More
+            ul.dropdown.nav-learn
+              li: a(href='#') Fork on GitHub
+              li: a(href='#') Another link
+              li: a(href='#') Another link
+    .architecture
+      img.diagram(src='/images/flow-diagram.svg')
     main
       .chart-container.chart-topics
         span.title Topics Count

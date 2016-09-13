@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-$gutter: 20px;
+$gutter: 15px;
 $headerHeight: 50px;
 $break: 800px;
 
@@ -19,6 +19,10 @@ $sfHeader: #dae0e4;
 $sfHeaderText: #29347c;
 $sfText: #054d61;
 $sfBorder: #d8dde6;
+
+body {
+  position: relative;
+}
 
 header {
   height: $headerHeight;
@@ -50,6 +54,7 @@ header {
     padding: 17px 0 15px;
     position: relative;
     display: inline-block;
+    font-size: .9em;
 
     &:hover {
       cursor: pointer;
@@ -72,7 +77,6 @@ header {
     border-radius: 4px;
     border: 1px solid $hBorder;
     box-shadow: 2px 2px 4px rgba(0,0,0,.05);
-    font-size: .9em;
     color: $hText;
     cursor: default;
 
@@ -120,23 +124,43 @@ header {
   }
 }
 
+.architecture {
+  width: 100%;
+  height: 450px;
+  position: absolute;
+  top: $headerHeight;
+  z-index: 0;
+  background: white;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+  }
+}
+
 main {
   height: calc(100vh - $headerHeight);
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
   background: linear-gradient(to bottom, #f2f2f4, #fff);
 
   @media screen and (width >= $break) {
-    padding: 15px;
+    padding: $gutter;
     padding-bottom: 0;
+  }
+
+  &.open {
+    transform: translate(0px, 450px);
   }
 }
 
 .chart-container {
   width: 100%;
   height: 400px;
-  padding: 15px;
+  padding: $gutter;
   display: flex;
   flex-direction: column;
 

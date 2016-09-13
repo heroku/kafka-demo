@@ -26,6 +26,13 @@ header {
   color: $hHeaderText;
   font-weight: 100;
 
+  .logo {
+    width: 108px;
+    height: 30px;
+    margin-top: 10px;
+    background: url('/images/logo-heroku-white.svg') no-repeat center center;
+  }
+
   nav {
     padding: 0 $gutter;
     display: flex;
@@ -104,6 +111,12 @@ header {
   body.salesforce & {
     background: $sfHeader;
     color: $sfHeaderText;
+
+    .logo {
+      width: 110px;
+      height: 77px;
+      background: url('/images/logo-salesforce.svg') no-repeat center center;
+    }
   }
 }
 

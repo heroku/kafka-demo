@@ -2,22 +2,22 @@ $hColor1: #482d8c;
 $hColor2: #3ca1da;
 $hColor3: #79c36d;
 $hColor4: #f9a151;
-$hText: #74787c;
+$hChartText: #74787c;
 
 $sfColor1: #18afe5;
 $sfColor2: #955aa4;
 $sfColor3: #f29e1f;
 $sfColor4: #1fbcb8;
-$sfText: #74787c;
+$sfChartText: #74787c;
 
 body.heroku {
   .chart-color-1 { background: $hColor1; fill: $hColor1; }
   .chart-color-2 { background: $hColor2; fill: $hColor2; }
   .chart-color-3 { background: $hColor3; fill: $hColor3; }
   .chart-color-4 { background: $hColor4; fill: $hColor4; }
-  path.domain { stroke: $hText; }
-  g.tick text { fill: $hText; }
-  g.tick line { stroke: $hText; }
+  path.domain { stroke: $hChartText; }
+  g.tick text { fill: $hChartText; }
+  g.tick line { stroke: $hChartText; }
 }
 
 body.salesforce {
@@ -25,7 +25,7 @@ body.salesforce {
   .chart-color-2 { background: $sfColor2; fill: $sfColor2; }
   .chart-color-3 { background: $sfColor3; fill: $sfColor3; }
   .chart-color-4 { background: $sfColor4; fill: $sfColor4; }
-  path.domain { stroke: $sfText; }
-  g.tick text { fill: $sfText; }
-  g.tick line { stroke: $sfText; }
+  path.domain { stroke: $sfChartText; }
+  g.tick text { fill: $sfChartText; }
+  g.tick line { stroke: $sfChartText; }
 }

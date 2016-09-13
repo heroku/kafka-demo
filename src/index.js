@@ -35,17 +35,21 @@ let updateData = {}
 ws.onmessage = (e) => {
   const { type, data } = JSON.parse(e.data)
 
-  if (type === 'snapshot') {
-    topics = Object.keys(data.metrics)
-    charts.forEach(c => c.init(data.metrics))
-  } else if (type === 'metrics') {
-    // Dont update charts until all topics have arrived
-    updateData[data.id] = data
-    if (_.size(updateData) === _.size(topics)) {
-      charts.forEach(c => c.update(updateData))
-      updateData = {}
-    }
-  } else if (type === 'config') {
-    topics = data
+  switch (type) {
+    case 'snapshot':
+      topics = Object.keys(data.metrics)
+      _.invokeMap(charts, 'init', data.metrics)
+      break
+
+    case 'metrics':
+      updateData[data.id] = data
+      if (Object.keys(updateData).length === topics.length) {
+        _.invokeMap(charts, 'update', updateData)
+        updateData = {}
+      }
+      break
+
+    case 'config':
+      topics = data
   }
 }

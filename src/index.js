@@ -1,51 +1,69 @@
 'use strict'
 
 import '../styles/style.css'
-import _ from 'lodash'
 import Bar from './charts/bar'
 import Stream from './charts/stream'
 import Stats from './charts/stats'
+import Bubbles from './charts/bubbles'
 
-const bar = window.bar = new Bar({
+const bar = new Bar({
   selector: '.chart-topics .chart',
   transition: 1000,
   x: 'id',
   y: 'count'
 })
 
-const stream = window.stream = new Stream({
+const stream = new Stream({
   selector: '.chart-stream .chart',
   transition: 1000,
   x: 'time',
   y: 'avg'
 })
 
-const stats = window.stream = new Stats({
+const stats = new Stats({
   selector: '.chart-stats .chart',
   transition: 1000,
   x: ['avg', 'avg60', 'avg600']
 })
 
-const charts = [bar, stream, stats]
+const bubbles = new Bubbles({
+  selector: '.chart-related .chart',
+  transition: 1000
+})
+
 const ws = new window.WebSocket(`ws://${window.location.host}`)
 
 let topics = []
-let updateData = {}
+let updateMetrics = {}
+let updateRelated = {}
 
 ws.onmessage = (e) => {
   const { type, data } = JSON.parse(e.data)
 
   switch (type) {
     case 'snapshot':
-      topics = Object.keys(data.metrics)
-      _.invokeMap(charts, 'init', data.metrics)
+      topics = data.topics
+      bar.init(data.metrics)
+      stream.init(data.metrics)
+      stats.init(data.metrics)
+      bubbles.init(data.related)
       break
 
     case 'metrics':
-      updateData[data.id] = data
-      if (Object.keys(updateData).length === topics.length) {
-        _.invokeMap(charts, 'update', updateData)
-        updateData = {}
+      updateMetrics[data.id] = data
+      if (Object.keys(updateMetrics).length === topics.length) {
+        bar.update(updateMetrics)
+        stream.update(updateMetrics)
+        stats.update(updateMetrics)
+        updateMetrics = {}
+      }
+      break
+
+    case 'related':
+      updateRelated[data.id] = data
+      if (Object.keys(updateRelated).length === topics.length) {
+        bubbles.update(updateRelated)
+        updateRelated = {}
       }
       break
 

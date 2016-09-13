@@ -41,13 +41,12 @@ export default class StreamChart {
     return this.container.clientWidth
   }
 
-  formatData (raw, log = () => {}) {
+  formatData (raw) {
     const keys = Object.keys(raw)
     const values = raw[keys[0]]
     const isArray = Array.isArray(values)
     const x = (isArray ? values : [values]).map((d) => d[this.xVariable])
     const data = x.map((value, index) => {
-      log()
       const values = keys.map((key) => {
         const value = raw[key]
         return (isArray ? value[index] : value)[this.yVariable]

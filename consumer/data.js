@@ -28,7 +28,7 @@ const related = ({ id, time, relations = {} } = {}) => ({
   id,
   time,
   relations: _.transform(TOPICS[id].relations, (res, range, word) => {
-    res[word] = (relations[id] || 0) + _.range(...range)
+    res[word] = (relations[id] || 0) + _.random(...range)
     return res
   })
 })

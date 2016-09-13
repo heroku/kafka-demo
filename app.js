@@ -41,5 +41,5 @@ const wss = new WebSocketServer({ server: server })
  */
 const consumer = new Consumer()
 wss.on('connection', (ws) => ws.send(JSON.stringify(consumer.snapshot())))
-// consumer.on('data', (data) => wss.clients.forEach((client) => client.send(JSON.stringify(data))))
+consumer.on('data', (data) => wss.clients.forEach((client) => client.send(JSON.stringify(data))))
 consumer.start()

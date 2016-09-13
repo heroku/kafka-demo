@@ -6,16 +6,16 @@ import Stream from './charts/stream'
 
 const bar = window.bar = new Bar({
   selector: '.chart-topics .chart',
-  transition: 250,
+  transition: 1000,
   x: 'id',
   y: 'count'
 })
 
 const stream = window.stream = new Stream({
   selector: '.chart-stream .chart',
-  transition: 250,
+  transition: 1000,
   x: 'time',
-  y: 'count'
+  y: 'avg'
 })
 
 const ws = new window.WebSocket(`ws://${window.location.host}`)
@@ -27,7 +27,7 @@ ws.onmessage = (e) => {
     bar.init(data.metrics)
     stream.init(data.metrics)
   } else if (type === 'metrics') {
-    // bar.update(data)
-    // stream.update(data)
+    bar.update(data)
+    stream.update(data)
   }
 }

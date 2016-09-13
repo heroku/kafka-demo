@@ -43,10 +43,10 @@ export default class StreamChart {
 
   formatData (raw) {
     const keys = Object.keys(raw)
-    const times = raw[keys[0]].map((d) => d.time)
-    return times.map((time, index) => {
-      const values = keys.map((key) => raw[key][index].avg)
-      return Object.assign({ time }, _.zipObject(keys, values))
+    const x = raw[keys[0]].map((d) => d[this.xVariable])
+    return x.map((value, index) => {
+      const values = keys.map((key) => raw[key][index][this.yVariable])
+      return Object.assign({ [this.xVariable]: value }, _.zipObject(keys, values))
     })
   }
 
@@ -73,7 +73,16 @@ export default class StreamChart {
   update (data) {
     if (!this._initialized) return
 
-    this._lastData = [...this._lastData.slice(1), data]
+    this._nextData || (this._nextData = {})
+    this._nextData[data.id] = data[this.yVariable]
+    this._nextData[this.xVariable] = data[this.xVariable]
+
+    if (_.size(this._nextData) === _.size(_.last(this._lastData))) {
+      this._lastData = [...this._lastData.slice(1), this._nextData]
+      this._nextData = null
+    } else {
+      return
+    }
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })
@@ -131,13 +140,11 @@ export default class StreamChart {
   }
 
   updateStacks (options = {}) {
-    const stack = d3
+    const data = d3
       .stack()
       .keys(Object.keys(_.omit(this._lastData[0], this.xVariable)))
       .order(d3.stackOrderInsideOut)
-      .offset(d3.stackOffsetWiggle)
-
-    const series = stack(this._lastData)
+      .offset(d3.stackOffsetWiggle)(this._lastData)
 
     const area = d3
       .area()
@@ -146,14 +153,23 @@ export default class StreamChart {
       .y1((d) => this.yScale(d[1]))
       .curve(d3.curveNatural)
 
-    this.chartArea
-      .selectAll('.layer')
-      .data(series)
+    const updateSelection = this.chartArea
+      .selectAll('.chart-path')
+      .data(data)
+
+    const enterSelection = updateSelection
       .enter()
-      .append('g')
-      .attr('class', 'layer')
       .append('path')
-      .attr('class', (__, index) => `chart-color-${index + 1}`)
+      .attr('class', (__, index) => `chart-path chart-color-${index + 1}`)
+
+    updateSelection
+      .exit()
+      .remove()
+
+    enterSelection
+      .merge(updateSelection)
+      .transition()
+      .duration(options.transition || 0)
       .attr('d', area)
   }
 }

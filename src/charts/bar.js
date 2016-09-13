@@ -138,13 +138,13 @@ export default class BarChart {
 
   updateBars (options = {}) {
     const updateSelection = this.barGroup
-      .selectAll('rect')
+      .selectAll('.chart-rect')
       .data(this._lastData)
 
     const enterSelection = updateSelection
       .enter()
       .append('rect')
-      .attr('class', (__, index) => `chart-color-${index + 1}`)
+      .attr('class', (__, index) => `chart-rect chart-color-${index + 1}`)
 
     updateSelection
       .exit()

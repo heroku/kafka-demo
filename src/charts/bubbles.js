@@ -1,6 +1,7 @@
 'use strict'
 
 import * as d3 from 'd3'
+import _ from 'lodash'
 
 export default class BubblesChart {
   constructor (options) {
@@ -15,6 +16,12 @@ export default class BubblesChart {
       .attr('height', '100%')
 
     this.chartArea = svg.append('g')
+
+    this.pack = d3.pack()
+
+    this.stratify = d3.stratify()
+      .id((d) => d.id)
+      .parentId((d) => d.topic)
   }
 
   getHeight () {
@@ -26,7 +33,10 @@ export default class BubblesChart {
   }
 
   formatData (raw) {
-    return raw
+    return _.reduce(raw, (res, { relations, id: topic }) => {
+      res.push(..._.map(relations, (count, id) => ({ id, count, topic })))
+      return res
+    }, [])
   }
 
   init (data) {
@@ -52,5 +62,9 @@ export default class BubblesChart {
   }
 
   updateBubbles (options = {}) {
+    this.pack
+      .size([this.getWidth(), this.getHeight()])
+    console.log(this._lastData)
+    console.log(this.stratify(this._lastData))
   }
 }

@@ -34,8 +34,20 @@ const bubbles = new Bubbles({
 const ws = new window.WebSocket(`ws://${window.location.host}`)
 
 let topics = []
-let updateMetrics = {}
-let updateRelated = {}
+
+const topicQueue = (update) => {
+  let obj = {}
+  return (data) => {
+    obj[data.id] = data
+    if (Object.keys(obj).length === topics.length) {
+      update.forEach((u) => u.update(obj))
+      obj = {}
+    }
+  }
+}
+
+const updateMetrics = topicQueue([bar, stream, stats])
+const updateRelated = topicQueue([bubbles])
 
 ws.onmessage = (e) => {
   const { type, data } = JSON.parse(e.data)
@@ -50,21 +62,11 @@ ws.onmessage = (e) => {
       break
 
     case 'metrics':
-      updateMetrics[data.id] = data
-      if (Object.keys(updateMetrics).length === topics.length) {
-        bar.update(updateMetrics)
-        stream.update(updateMetrics)
-        stats.update(updateMetrics)
-        updateMetrics = {}
-      }
+      updateMetrics(data)
       break
 
     case 'related':
-      updateRelated[data.id] = data
-      if (Object.keys(updateRelated).length === topics.length) {
-        bubbles.update(updateRelated)
-        updateRelated = {}
-      }
+      updateRelated(data)
       break
 
     case 'config':

@@ -5,7 +5,7 @@ const server = require('http').createServer()
 const WebSocketServer = require('ws').Server
 const express = require('express')
 const webpack = require('webpack')
-const Consumer = require('./consumer')
+const Kafka = require('no-kafka')
 const app = express()
 
 /*
@@ -32,13 +32,35 @@ server.listen(port, () => console.log(`http/ws server listening on ${port}`))
  *
  */
 const wss = new WebSocketServer({ server: server })
+const send = (data) => (client) => client.send(JSON.stringify(data))
+const broadcast = (data) => wss.clients.forEach(send(data))
 
 /*
- * Dummy interval to send data to client
- * To be replaced by actual kafka consumer
+ * Configure Kafka consumer
  *
  */
-const consumer = new Consumer()
-wss.on('connection', (ws) => ws.send(JSON.stringify(consumer.snapshot())))
-consumer.on('data', (data) => wss.clients.forEach((client) => client.send(JSON.stringify(data))))
-consumer.start()
+const topics = ['news-aggregate', 'music-aggregate', 'news-relatedwords', 'music-relatedwords']
+
+const consumer = new Kafka.SimpleConsumer({
+  idleTimeout: 100,
+  clientId: 'simple-consumer',
+  connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
+  ssl: {
+    certFile: './client.crt',
+    keyFile: './client.key'
+  }
+})
+
+/*
+ * Init Kafka consumer and data handler
+ *
+ */
+const dataHandler = (subscription) => (messageSet) => messageSet.forEach((m) => {
+  const data = JSON.parse(m.message.value.toString('utf8'))
+  const [topic, type] = subscription.split('-')
+  broadcast({ topic, type, data })
+})
+
+const subscribe = (topic) => consumer.subscribe(topic, [0], dataHandler(topic))
+
+consumer.init().then(() => Promise.all(topics.map(subscribe)))

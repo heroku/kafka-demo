@@ -18,6 +18,7 @@
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
     "lodash": "^4.15.0",
+    "no-kafka": "git://github.com/crcastle/kafka.git#3.0",
     "normalize.css": "^4.2.0",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^0.11.1",

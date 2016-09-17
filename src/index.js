@@ -31,7 +31,7 @@ const bubbles = new Bubbles({
   transition: 1000
 })
 
-const ws = new window.WebSocket(`ws://${window.location.host}`)
+const ws = new window.WebSocket(`ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}`)
 
 ws.onmessage = (e) => {
   const { type, data } = JSON.parse(e.data)

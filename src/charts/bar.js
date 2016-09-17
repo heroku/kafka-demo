@@ -49,7 +49,7 @@ export default class BarChart {
 
   formatData (data) {
     const keys = Object.keys(data)
-    return keys.map((topic) => Array.isArray(data[topic]) ? _.last(data[topic]) : data[topic])
+    return keys.map((topic) => _.last(data[topic]))
   }
 
   init (data) {

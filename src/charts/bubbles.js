@@ -33,7 +33,8 @@ export default class BubblesChart {
   }
 
   formatData (raw) {
-    return _.reduce(raw, (res, { relations, id: topic }) => {
+    return _.reduce(raw, (res, values) => {
+      const { relations, id: topic } = _.last(values)
       res.push(..._.map(relations, (count, id) => ({ id, count, topic })))
       return res
     }, [])
@@ -64,7 +65,5 @@ export default class BubblesChart {
   updateBubbles (options = {}) {
     this.pack
       .size([this.getWidth(), this.getHeight()])
-    console.log(this._lastData)
-    console.log(this.stratify(this._lastData))
   }
 }

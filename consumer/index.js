@@ -1,67 +1,81 @@
 'use strict'
 
-const EventEmitter = require('events')
 const _ = require('lodash')
-const data = require('./data')
+const Kafka = require('no-kafka')
+const SizedArray = require('./sizedArray')
 
-const WINDOW = 1000 * 60 * 5
-const INTERVAL = 1000
-const MAX_LENGTH = WINDOW / INTERVAL
+const combine = (arr1, arr2, combinator) => _.flatten(arr1.map((a) => arr2.map((b) => combinator(a, b))))
 
-module.exports = class Mock extends EventEmitter {
-  constructor () {
-    super()
+module.exports = class Consumer {
+  constructor (options, broadcast) {
+    this._topics = options.topics
+    this._types = options.types
+    this._broadcast = options.broadcast
+    this._kafkaTopics = combine(this._topics, this._types, (topic, type) => `${topic.name}-${type.name}`)
 
-    const now = new Date()
-    this.topics = data.topics
+    // Create a separate consumer for each topic since each topic needs a specific offset
+    this._consumers = this._kafkaTopics.map((clientId) => {
+      const defaultOptions = { idleTimeout: 100 }
+      const id = { clientId }
+      return new Kafka.SimpleConsumer(Object.assign(defaultOptions, options.consumer, id))
+    })
 
-    // Backfill dummy metrics with data from each interval
-    this.metrics = _.transform(this.topics, (res, topic) => {
-      const range = _.range(now.valueOf() - WINDOW, now.valueOf(), INTERVAL)
-      let count
+    this._toBroadcast = {}
+    this._snapshot = {}
 
-      res[topic] = []
-      range.forEach((time) => {
-        res[topic].push(data.metrics({ id: topic, time: new Date(time), count }))
-        count = _.last(res[topic]).count
+    this._types.forEach((type) => {
+      this._snapshot[type.name] = {}
+      this._toBroadcast[type.name] = {}
+
+      this._topics.forEach((topic) => {
+        this._snapshot[type.name][topic.name] = new SizedArray(type.maxSize)
       })
+    })
+  }
 
-      return res
-    }, {})
-
-    // Dont need a backfill of related words so just start with the latest
-    this.related = _.transform(this.topics, (res, topic) => {
-      res[topic] = data.metrics({ id: topic, time: now })
-      return res
-    }, {})
+  init () {
+    return Promise.all(this._consumers.map((consumer) => consumer.init().then(() => {
+      const topic = consumer.options.clientId
+      const { maxSize } = _.find(this._types, (type) => type.name === topic.split('-')[1])
+      if (maxSize && maxSize > 1) {
+        // If there is maxSize for this topic then start from the latest offset
+        // and rewind by that many messages for the subscription offset
+        return consumer.offset(topic).then((latest) => this._subscribe(consumer, { offset: latest - maxSize }))
+      } else {
+        return this._subscribe(consumer, { time: Kafka.LATEST_OFFSET })
+      }
+    })))
   }
 
   snapshot () {
     return {
       type: 'snapshot',
-      data: {
-        topics: this.topics,
-        metrics: this.metrics,
-        related: this.related
-      }
+      data: _.mapValues(this._snapshot, (type) => _.mapValues(type, (data) => data.items()))
     }
   }
 
-  start () {
-    setInterval(() => {
-      const time = new Date()
-      const now = (obj) => Object.assign({}, obj, { time })
+  _subscribe (consumer, options = {}) {
+    const topic = consumer.options.clientId
+    return consumer.subscribe(topic, 0, options, (messageSet) => {
+      const [name, type] = topic.split('-')
+      const messages = messageSet.map((m) => Object.assign({ id: name }, JSON.parse(m.message.value.toString('utf8'))))
+      const initial = this._snapshot[type][name].empty()
 
-      this.topics.forEach((topic) => {
-        const nextMetrics = data.metrics(now(_.last(this.metrics[topic])))
-        const nextRelated = data.related(now(this.related[topic]))
+      // This will be an array that wont exceed the `maxSize` passed in for each topic
+      this._snapshot[type][name].push(messages)
 
-        this.metrics[topic] = [...this.metrics[topic].slice(this.metrics[topic].length === MAX_LENGTH ? 1 : 0), nextMetrics]
-        this.related[topic] = nextRelated
+      if (!initial) {
+        // After the initial fetch, broadcast all topics together once each has
+        // been received from kafka
+        const existingBroadcast = this._toBroadcast[type][name] || []
+        this._toBroadcast[type][name] = existingBroadcast.concat(messages)
 
-        this.emit('data', { type: 'metrics', data: nextMetrics })
-        this.emit('data', { type: 'related', data: nextRelated })
-      })
-    }, INTERVAL)
+        // If all topics have been received then broadcast and reset the object
+        if (_.size(this._toBroadcast[type]) === this._topics.length) {
+          this._broadcast({ type, data: this._toBroadcast[type] })
+          this._toBroadcast[type] = {}
+        }
+      }
+    })
   }
 }

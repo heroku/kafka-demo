@@ -60,14 +60,20 @@ export default class StreamChart {
 
   formatData (raw) {
     const keys = Object.keys(raw)
-    const values = raw[keys[0]]
-    const isArray = Array.isArray(values)
-    const x = (isArray ? values : [values]).map((d) => d[this.xVariable])
-    const data = x.map((value, index) => {
-      const values = keys.map((key) => (isArray ? raw[key][index] : raw[key])[this.yVariable])
-      return Object.assign({ [this.xVariable]: value }, _.zipObject(keys, values))
+
+    // x values must be the same for all data points in a stack
+    // This sets the time to the lowest second for that index
+    const times = raw[keys[0]].map((__, index) => {
+      const value = Math.min(...keys.map((key) => raw[key][index][this.xVariable]))
+      const date = new Date(value)
+      date.setMilliseconds(0)
+      return date
     })
-    return isArray ? data : data[0]
+
+    return times.map((time, index) => {
+      const values = keys.map((key) => raw[key][index][this.yVariable])
+      return Object.assign({ [this.xVariable]: time }, _.zipObject(keys, values))
+    })
   }
 
   init (data) {
@@ -93,7 +99,8 @@ export default class StreamChart {
   update (data) {
     if (!this._initialized) return
 
-    this._lastData = [...this._lastData.slice(1), this.formatData(data)]
+    const newData = this.formatData(data)
+    this._lastData = [...this._lastData.slice(1), ...newData]
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })

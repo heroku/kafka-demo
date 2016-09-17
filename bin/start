@@ -17,18 +17,18 @@ if [ "${NODE_ENV}" = "development" ]; then
 fi
 
 if [[ -z "${KAFKA_CLIENT_CERT}" ]]; then
-    echo "KAFKA_CLIENT_CERT is not set. Aborting"
-    exit 1
+  echo "KAFKA_CLIENT_CERT is not set. Aborting"
+  exit 1
 fi
 
 if [[ -z "${KAFKA_CLIENT_CERT_KEY}" ]]; then
-    echo "KAFKA_CLIENT_CERT_KEY is not set. Aborting"
-    exit 1
+  echo "KAFKA_CLIENT_CERT_KEY is not set. Aborting"
+  exit 1
 fi
 
 if [[ -z "${KAFKA_URL}" ]]; then
-    echo "KAFKA_URL is not set. Aborting"
-    exit 1
+  echo "KAFKA_URL is not set. Aborting"
+  exit 1
 fi
 
 # Setup cert and cert key

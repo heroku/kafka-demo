@@ -38,7 +38,7 @@ jspm_packages
 
 # Project
 dist
-!dist/images
+!dist/images/**
 client.crt
 client.key
 

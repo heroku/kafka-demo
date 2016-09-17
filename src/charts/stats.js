@@ -45,7 +45,15 @@ export default class Stats {
       table.appendChild(tr)
       row.forEach((cell) => {
         const td = document.createElement('td')
-        td.textContent = cell == null ? 'N/A' : cell
+        let text
+        if (cell == null) {
+          text = 'N/A'
+        } else if (typeof cell === 'string') {
+          text = cell
+        } else {
+          text = cell.toPrecision(2)
+        }
+        td.textContent = text
         tr.appendChild(td)
       })
     })

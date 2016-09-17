@@ -16,7 +16,6 @@ if [ "${NODE_ENV}" = "development" ]; then
   export KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY -a twitter-ingest)"
 fi
 
-
 if [[ -z "${KAFKA_CLIENT_CERT}" ]]; then
     echo "KAFKA_CLIENT_CERT is not set. Aborting"
     exit 1

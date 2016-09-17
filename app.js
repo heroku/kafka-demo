@@ -13,6 +13,7 @@ const app = express()
  *
  */
 app.use(express.static(path.join(__dirname, 'dist')))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(require('./webpack.config'))

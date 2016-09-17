@@ -15,20 +15,7 @@ const html = (filename, bodyClass) => new HtmlPlugin({
   filename,
   bodyClass,
   inject: false,
-  template: path.join(__dirname, 'views', 'index.pug'),
-  minify: {
-    collapseWhitespace: true,
-    collapseBooleanAttributes: true,
-    collapseInlineTagWhitespace: true,
-    conservativeCollapse: true,
-    removeAttributeQuotes: true,
-    removeComments: true,
-    removeEmptyAttributes: true,
-    removeScriptTypeAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    useShortDoctype: true,
-    quoteCharacter: "'"
-  }
+  template: path.join(__dirname, 'views', 'index.pug')
 })
 
 module.exports = {

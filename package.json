@@ -57,7 +57,8 @@
   },
   "standard": {
     "ignore": [
-      "dist/"
+      "dist/",
+      "images/kafka-diagram"
     ]
   }
 }

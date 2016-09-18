@@ -54,5 +54,10 @@
     "lint": "standard",
     "start": "NODE_ENV=production bin/start",
     "validate": "npm ls >/dev/null"
+  },
+  "standard": {
+    "ignore": [
+      "dist/"
+    ]
   }
 }

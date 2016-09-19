@@ -43,15 +43,16 @@ export default class Stats {
     this._lastData.forEach((row) => {
       const tr = document.createElement('tr')
       table.appendChild(tr)
-      row.forEach((cell) => {
+
+      row.forEach((cell, index) => {
         const td = document.createElement('td')
         let text
         if (cell == null) {
           text = 'N/A'
         } else if (typeof cell === 'string') {
           text = cell
-        } else {
-          text = cell.toFixed(3).replace('.000', '')
+        } else if (typeof cell === 'number') {
+          text = index === 1 ? cell : cell.toFixed(3).replace('.000', '')
         }
         td.textContent = text
         tr.appendChild(td)

@@ -1,10 +1,11 @@
 'use strict'
 
 import '../styles/style.css'
-import Bar from './charts/bar'
-import Stream from './charts/stream'
-import Stats from './charts/stats'
-import Bubbles from './charts/bubbles'
+import Bar from './lib/bar'
+import Stream from './lib/stream'
+import Stats from './lib/stats'
+import Bubbles from './lib/bubbles'
+import Nav from './lib/nav'
 import { MAX_SIZE } from '../consumer/constants'
 
 const bar = new Bar({
@@ -33,13 +34,19 @@ const bubbles = new Bubbles({
   transition: 1000
 })
 
-const ws = new window.WebSocket(`ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}`)
+const nav = new Nav({
+  selector: 'header nav'
+})
+
+const url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}`
+const ws = new window.WebSocket(url)
 
 ws.onmessage = (e) => {
   const { type, data } = JSON.parse(e.data)
 
   switch (type) {
     case 'snapshot':
+      nav.topics(Object.keys(data.aggregate))
       bar.init(data.aggregate)
       stream.init(data.aggregate)
       stats.init(data.aggregate)

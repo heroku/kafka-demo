@@ -7,7 +7,7 @@ const express = require('express')
 const webpack = require('webpack')
 const Consumer = require('./consumer')
 const app = express()
-const maxSize = require('./consumer/constants').MAX_SIZE
+const constants = require('./consumer/constants')
 
 /*
  * Configure web app and webpack pieces
@@ -42,8 +42,8 @@ const send = (data) => (client) => client.send(JSON.stringify(data))
  */
 const consumer = new Consumer({
   broadcast: (data) => wss.clients.forEach(send(data)),
-  topics: [{ name: 'news' }, { name: 'music' }],
-  types: [{ name: 'aggregate', maxSize }, { name: 'relatedwords', maxSize: 1 }],
+  topics: constants.TOPICS.map((name) => ({ name })),
+  types: [{ name: 'aggregate', maxSize: constants.MAX_SIZE }, { name: 'relatedwords', maxSize: 1 }],
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {

@@ -36,6 +36,7 @@ export default class StreamChart {
 
     this.xScale = d3.scaleTime()
     this.yScale = d3.scaleLinear()
+
     this.xAxis = d3.axisBottom()
       .tickFormat((value) => `:${Math.round((new Date() - value) / 1000)}`)
 
@@ -68,22 +69,21 @@ export default class StreamChart {
     // x values must be the same for all data points in a stack
     // This sets the time to the lowest second for that index
     const times = raw[keys[0]].map((__, index) => {
-      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`)) || 0)
+      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`)))
       const date = new Date(value)
       date.setMilliseconds(0)
       return date
     })
 
     return times.map((time, index) => {
-      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`) || 0)
+      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`))
       return Object.assign({ [this.xVariable]: time }, _.zipObject(keys, values))
     })
   }
 
   init (data) {
-    this._lastData = this.formatData(data)
-    this._sizedArray = new SizedArray(this.maxSize)
-    this._sizedArray.push(this._lastData)
+    this._lastData = new SizedArray(this.maxSize)
+    this._lastData.push(this.formatData(data))
 
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })
@@ -105,9 +105,7 @@ export default class StreamChart {
   update (data) {
     if (!this._initialized) return
 
-    const newData = this.formatData(data)
-    this._sizedArray.push(newData)
-    this._lastData = this._sizedArray.items()
+    this._lastData.push(this.formatData(data))
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })
@@ -116,11 +114,11 @@ export default class StreamChart {
   }
 
   updateScaleAndAxesData () {
-    this.xScale.domain(d3.extent(this._lastData, (d) => new Date(d[this.xVariable])))
+    this.xScale.domain(d3.extent(this._lastData.items(), (d) => new Date(d[this.xVariable])))
 
     // Using silhouette offset keeps the center at 0 so this sets the y scale
     // so 0 is always in the middle
-    const max = d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add)) / 2
+    const max = d3.max(this._lastData.items(), (d) => _.reduce(_.omit(d, this.xVariable), _.add)) / 2
     this.yScale
       .domain([-1 * max, max])
       .nice()
@@ -154,11 +152,12 @@ export default class StreamChart {
   }
 
   updateStacks (options = {}) {
-    this.stack.keys(Object.keys(_.omit(this._lastData[0], this.xVariable)))
+    const topics = Object.keys(_.omit(this._lastData.items()[0], this.xVariable))
+    this.stack.keys(topics)
 
     const updateSelection = this.chartArea
       .selectAll('.chart-path')
-      .data(this.stack(this._lastData))
+      .data(this.stack(this._lastData.items()))
 
     const enterSelection = updateSelection
       .enter()

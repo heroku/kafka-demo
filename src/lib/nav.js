@@ -12,7 +12,8 @@ module.exports = class Nav {
   }
 
   architecture () {
-    document.addEventListener('click', () => this.main.classList.toggle('open'))
+    this.architectureLink
+      .addEventListener('click', () => this.main.classList.toggle('open'))
   }
 
   topics (topics) {

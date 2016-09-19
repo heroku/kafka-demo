@@ -8,7 +8,7 @@ const margin = {
   top: minMargin,
   right: minMargin,
   bottom: minMargin + 8,
-  left: minMargin + 17
+  left: minMargin + 37
 }
 
 export default class BarChart {
@@ -35,8 +35,10 @@ export default class BarChart {
 
     this.xScale = d3.scaleBand()
     this.yScale = d3.scaleLinear()
+
     this.xAxis = d3.axisBottom()
-    this.yAxis = d3.axisLeft().tickFormat(d3.format('.0s'))
+    this.yAxis = d3.axisLeft()
+      .tickFormat(d3.format('.2s'))
   }
 
   getHeight () {
@@ -48,8 +50,7 @@ export default class BarChart {
   }
 
   formatData (data) {
-    const keys = Object.keys(data)
-    return keys.map((topic) => _.last(data[topic]))
+    return Object.keys(data).map((topic) => _.last(data[topic]))
   }
 
   init (data) {
@@ -84,8 +85,13 @@ export default class BarChart {
   }
 
   updateScaleAndAxesData () {
-    this.xScale.domain(this._lastData.map(d => d[this.xVariable]))
-    this.yScale.domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))]).nice()
+    this.xScale
+      .domain(this._lastData.map(d => d[this.xVariable]))
+
+    this.yScale
+      .domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))])
+      .nice()
+
     this.xAxis.scale(this.xScale)
     this.yAxis.scale(this.yScale)
   }

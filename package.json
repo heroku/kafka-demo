@@ -52,6 +52,7 @@
     "build": "NODE_ENV=production webpack -p",
     "dev": "NODE_ENV=development bin/start",
     "lint": "standard",
+    "nodemon": "nodemon --exec npm run dev --watch app.js --watch webpack.config.js --watch consumer/",
     "start": "NODE_ENV=production bin/start",
     "validate": "npm ls >/dev/null"
   },

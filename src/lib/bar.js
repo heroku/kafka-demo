@@ -138,7 +138,7 @@ export default class BarChart {
       .duration(options.transition || 0)
       .attr('x', (d) => this.xScale(d[this.xVariable]))
       .attr('width', this.xScale.bandwidth)
-      .attr('y', d => this.yScale(d[this.yVariable]))
-      .attr('height', d => this.yScale(0) - this.yScale(d[this.yVariable]))
+      .attr('y', (d) => this.yScale(d[this.yVariable]))
+      .attr('height', (d) => this.yScale(0) - this.yScale(d[this.yVariable]))
   }
 }

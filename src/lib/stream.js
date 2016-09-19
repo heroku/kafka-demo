@@ -69,14 +69,14 @@ export default class StreamChart {
     // x values must be the same for all data points in a stack
     // This sets the time to the lowest second for that index
     const times = raw[keys[0]].map((__, index) => {
-      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`)))
+      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`) || new Date().valueOf()))
       const date = new Date(value)
       date.setMilliseconds(0)
       return date
     })
 
     return times.map((time, index) => {
-      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`))
+      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`) || 0)
       return Object.assign({ [this.xVariable]: time }, _.zipObject(keys, values))
     })
   }

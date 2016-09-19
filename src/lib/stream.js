@@ -174,6 +174,5 @@ export default class StreamChart {
       .duration(options.transition || 0)
       .ease(d3.easeLinear)
       .attr('d', this.area)
-      // TODO http://bl.ocks.org/mbostock/1642874
   }
 }

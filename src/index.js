@@ -6,18 +6,18 @@ import Stream from './lib/stream'
 import Stats from './lib/stats'
 import Bubbles from './lib/bubbles'
 import Nav from './lib/nav'
-import { MAX_SIZE } from '../consumer/constants'
+import { MAX_SIZE, INTERVAL } from '../consumer/constants'
 
 const bar = new Bar({
   selector: '.chart-topics .chart',
-  transition: 1000,
+  transition: INTERVAL,
   x: 'id',
   y: 'count'
 })
 
 const stream = new Stream({
   selector: '.chart-stream .chart',
-  transition: 1000,
+  transition: INTERVAL,
   x: 'time',
   y: 'avgPerSecond',
   maxSize: MAX_SIZE
@@ -25,20 +25,20 @@ const stream = new Stream({
 
 const stats = new Stats({
   selector: '.chart-stats .chart',
-  transition: 1000,
+  transition: INTERVAL,
   x: ['avgPerSecond', 'avgPer60Seconds', 'avgPer600Seconds']
 })
 
 const bubbles = new Bubbles({
   selector: '.chart-related .chart',
-  transition: 1000
+  transition: INTERVAL
 })
 
 const nav = new Nav({
   selector: 'header nav'
 })
 
-const url = `ws${window.location.protocol === 'https:' ? 's' : ''}://${window.location.host}`
+const url = `ws${window.location.href.match(/^http(s?:\/\/.*)\/.*$/)[1]}`
 const ws = new window.WebSocket(url)
 
 ws.onmessage = (e) => {

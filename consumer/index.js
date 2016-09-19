@@ -67,12 +67,19 @@ module.exports = class Consumer {
       if (!initial) {
         // After the initial fetch, broadcast all topics together once each has
         // been received from kafka
-        const existingBroadcast = this._toBroadcast[type][name] || []
-        this._toBroadcast[type][name] = existingBroadcast.concat(messages)
+        this._toBroadcast[type][name] = (this._toBroadcast[type][name] || []).concat(messages)
 
         // If all topics have been received then broadcast and reset the object
         if (_.size(this._toBroadcast[type]) === this._topics.length) {
-          this._broadcast({ type, data: this._toBroadcast[type] })
+          this._broadcast({
+            type,
+            // Make sure broadcast data only has the same key order
+            data: this._topics.reduce((res, orderTopic) => {
+              res[orderTopic.name] = this._toBroadcast[type][orderTopic.name]
+              return res
+            }, {})
+          })
+
           this._toBroadcast[type] = {}
         }
       }

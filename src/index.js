@@ -5,6 +5,7 @@ import Bar from './charts/bar'
 import Stream from './charts/stream'
 import Stats from './charts/stats'
 import Bubbles from './charts/bubbles'
+import { MAX_SIZE } from '../consumer/constants'
 
 const bar = new Bar({
   selector: '.chart-topics .chart',
@@ -17,7 +18,8 @@ const stream = new Stream({
   selector: '.chart-stream .chart',
   transition: 1000,
   x: 'time',
-  y: 'avgPerSecond'
+  y: 'avgPerSecond',
+  maxSize: MAX_SIZE
 })
 
 const stats = new Stats({

@@ -7,6 +7,7 @@ const express = require('express')
 const webpack = require('webpack')
 const Consumer = require('./consumer')
 const app = express()
+const maxSize = require('./consumer/constants').MAX_SIZE
 
 /*
  * Configure web app and webpack pieces
@@ -27,7 +28,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const port = process.env.PORT || 3000
 server.on('request', app)
-server.listen(port, () => console.log(`http/ws server listening on ${port}`))
 
 /*
  * Configure WebSocketServer
@@ -43,7 +43,7 @@ const send = (data) => (client) => client.send(JSON.stringify(data))
 const consumer = new Consumer({
   broadcast: (data) => wss.clients.forEach(send(data)),
   topics: [{ name: 'news' }, { name: 'music' }],
-  types: [{ name: 'aggregate', maxSize: 30 * 60 }, { name: 'relatedwords', maxSize: 1 }],
+  types: [{ name: 'aggregate', maxSize }, { name: 'relatedwords', maxSize: 1 }],
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {
@@ -55,4 +55,5 @@ const consumer = new Consumer({
 
 consumer.init().then(() => {
   wss.on('connection', (client) => send(consumer.snapshot())(client))
+  server.listen(port, () => console.log(`http/ws server listening on ${port}`))
 })

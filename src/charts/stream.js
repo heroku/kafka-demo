@@ -2,6 +2,7 @@
 
 import * as d3 from 'd3'
 import _ from 'lodash'
+import SizedArray from '../../consumer/sizedArray'
 
 const minMargin = 15
 const margin = {
@@ -18,6 +19,7 @@ export default class StreamChart {
     this.xVariable = options.x
     this.yVariable = options.y
     this.transition = options.transition
+    this.maxSize = options.maxSize
 
     const svg = d3
       .select(this.container)
@@ -40,7 +42,7 @@ export default class StreamChart {
     this.stack = d3
       .stack()
       .order(d3.stackOrderInsideOut)
-      .offset(d3.stackOffsetWiggle)
+      .offset(d3.stackOffsetSilhouette)
 
     this.area = d3
       .area()
@@ -64,20 +66,22 @@ export default class StreamChart {
     // x values must be the same for all data points in a stack
     // This sets the time to the lowest second for that index
     const times = raw[keys[0]].map((__, index) => {
-      const value = Math.min(...keys.map((key) => raw[key][index][this.xVariable]))
+      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`)) || 0)
       const date = new Date(value)
       date.setMilliseconds(0)
       return date
     })
 
     return times.map((time, index) => {
-      const values = keys.map((key) => raw[key][index][this.yVariable])
+      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`) || 0)
       return Object.assign({ [this.xVariable]: time }, _.zipObject(keys, values))
     })
   }
 
   init (data) {
     this._lastData = this.formatData(data)
+    this._sizedArray = new SizedArray(this.maxSize)
+    this._sizedArray.push(this._lastData)
 
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })
@@ -100,7 +104,8 @@ export default class StreamChart {
     if (!this._initialized) return
 
     const newData = this.formatData(data)
-    this._lastData = [...this._lastData.slice(1), ...newData]
+    this._sizedArray.push(newData)
+    this._lastData = this._sizedArray.items()
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })
@@ -109,8 +114,9 @@ export default class StreamChart {
   }
 
   updateScaleAndAxesData () {
+    const max = d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add)) / 2
     this.xScale.domain(d3.extent(this._lastData, (d) => new Date(d[this.xVariable])))
-    this.yScale.domain([0, d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add))])
+    this.yScale.domain([-1 * max, max])
     this.xAxis.scale(this.xScale)
     this.yAxis.scale(this.yScale)
   }
@@ -155,8 +161,6 @@ export default class StreamChart {
 
     enterSelection
       .merge(updateSelection)
-      .transition()
-      .duration(options.transition || 0)
       .attr('d', this.area)
   }
 }

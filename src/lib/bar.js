@@ -143,5 +143,9 @@ export default class BarChart {
       .attr('width', this.xScale.bandwidth)
       .attr('y', (d) => this.yScale(d[this.yVariable]))
       .attr('height', (d) => this.yScale(0) - this.yScale(d[this.yVariable]))
+
+    enterSelection
+      .append('svg:title')
+      .text((d) => d.count)
   }
 }

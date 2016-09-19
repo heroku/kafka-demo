@@ -29,9 +29,10 @@ export default class BubblesChart {
   }
 
   formatData (raw) {
+    const length = _.size(raw)
     return _.transform(raw, (res, values, topic) => {
       const relations = _.map(_.last(values).relations, (r, name) => ({ name, r, topic }))
-      const topRelations = _.orderBy(relations, 'r', 'desc').slice(0, this.maxRelations)
+      const topRelations = _.orderBy(relations, 'r', 'desc').slice(0, Math.floor(this.maxRelations / length))
       res.push(...topRelations)
       return res
     }, [])
@@ -77,16 +78,28 @@ export default class BubblesChart {
       .enter()
       .append('g')
       .attr('class', 'circle-node')
+      .attr('transform', (d) => `translate(${d.x},${d.y})`)
 
     circles
       .append('circle')
-      .attr('cx', (d) => d.x)
-      .attr('cy', (d) => d.y)
       .attr('r', (d) => d.r)
       .attr('class', (d) => `chart-color-${this._topics.indexOf(d.topic) + 1}`)
 
     circles
-      .append('text')
+      .append('svg:title')
       .text((d) => `${d.name} ${d.r}`)
+
+    circles
+      .append('text')
+      .text((d) => d.name)
+      .attr('text-anchor', 'middle')
+      .attr('dy', '.35em')
+      .attr('fill', '#fff')
+      .style('font-size', (d, index, nodes) => {
+        const node = nodes[index].getComputedTextLength()
+        const size = Math.min(2 * d.r, (2 * d.r - 8) / node * 8)
+        const relativeSize = size * scale
+        return relativeSize < 8 ? 0 : `${size}px`
+      })
   }
 }

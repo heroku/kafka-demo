@@ -85,7 +85,7 @@ export default class BarChart {
 
   updateScaleAndAxesData () {
     this.xScale.domain(this._lastData.map(d => d[this.xVariable]))
-    this.yScale.domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))])
+    this.yScale.domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))]).nice()
     this.xAxis.scale(this.xScale)
     this.yAxis.scale(this.yScale)
   }

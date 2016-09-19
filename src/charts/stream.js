@@ -37,7 +37,10 @@ export default class StreamChart {
     this.xScale = d3.scaleTime()
     this.yScale = d3.scaleLinear()
     this.xAxis = d3.axisBottom()
+      .tickFormat((value) => `:${Math.round((new Date() - value) / 1000)}`)
+
     this.yAxis = d3.axisLeft()
+      .tickFormat(Math.abs)
 
     this.stack = d3
       .stack()
@@ -114,11 +117,17 @@ export default class StreamChart {
   }
 
   updateScaleAndAxesData () {
-    const max = d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add)) / 2
     this.xScale.domain(d3.extent(this._lastData, (d) => new Date(d[this.xVariable])))
-    this.yScale.domain([-1 * max, max])
+
+    // Using silhouette offset keeps the center at 0 so this sets the y scale
+    // so 0 is always in the middle
+    const max = d3.max(this._lastData, (d) => _.reduce(_.omit(d, this.xVariable), _.add)) / 2
+    this.yScale
+      .domain([-1 * max, max])
+      .nice()
+
     this.xAxis.scale(this.xScale)
-    this.yAxis.scale(this.yScale)
+    this.yAxis.scale(this.yScale).ticks(5)
   }
 
   updateScales () {
@@ -134,12 +143,14 @@ export default class StreamChart {
     this.xAxisG
       .transition()
       .duration(options.transition || 0)
+      .ease(d3.easeLinear)
       .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
     this.yAxisG
       .transition()
       .duration(options.transition || 0)
+      .ease(d3.easeLinear)
       .call(this.yAxis)
   }
 
@@ -161,6 +172,10 @@ export default class StreamChart {
 
     enterSelection
       .merge(updateSelection)
+      .transition()
+      .duration(options.transition || 0)
+      .ease(d3.easeLinear)
       .attr('d', this.area)
+      // TODO http://bl.ocks.org/mbostock/1642874
   }
 }

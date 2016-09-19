@@ -51,7 +51,7 @@ export default class Stats {
         } else if (typeof cell === 'string') {
           text = cell
         } else {
-          text = cell.toPrecision(2)
+          text = cell.toFixed(3).replace('.000', '')
         }
         td.textContent = text
         tr.appendChild(td)

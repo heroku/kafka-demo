@@ -16,8 +16,9 @@ body.heroku {
   .chart-color-3 { background: $hColor3; fill: $hColor3; }
   .chart-color-4 { background: $hColor4; fill: $hColor4; }
   path.domain { stroke: $hChartText; }
-  g.tick text { fill: $hChartText; }
+  g.tick text { fill: $hChartText; font-size: 11px; }
   g.tick line { stroke: $hChartText; }
+  text.label { fill: $hChartText; font-size: 12px; }
 }
 
 body.salesforce {
@@ -26,6 +27,7 @@ body.salesforce {
   .chart-color-3 { background: $sfColor3; fill: $sfColor3; }
   .chart-color-4 { background: $sfColor4; fill: $sfColor4; }
   path.domain { stroke: $sfChartText; }
-  g.tick text { fill: $sfChartText; }
+  g.tick text { fill: $sfChartText; font-size: 11px; }
   g.tick line { stroke: $sfChartText; }
+  text.label { fill: $sfChartText; font-size: 12px; }
 }

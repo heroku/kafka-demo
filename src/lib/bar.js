@@ -33,6 +33,12 @@ export default class BarChart {
     this.xAxisG = chartArea.append('g')
     this.yAxisG = chartArea.append('g')
 
+    this.xAxisLabel = chartArea.append('text')
+      .attr('class', 'label')
+
+    this.yAxisLabel = chartArea.append('text')
+      .attr('class', 'label')
+
     this.xScale = d3.scaleBand()
       .paddingInner(0.1)
       .paddingOuter(0.1)
@@ -115,10 +121,20 @@ export default class BarChart {
       .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
+    this.xAxisLabel
+      .attr('transform', `translate(${this.getWidth() / 2}, ${this.getHeight() + (margin.bottom - 5)})`)
+      .style('text-anchor', 'middle')
+      .text('Keywords')
+
     this.yAxisG
       .transition()
       .duration(options.transition || 0)
       .call(this.yAxis)
+
+    this.yAxisLabel
+      .attr('transform', `translate(${(margin.left * -1) + 12}, ${this.getHeight() / 2}) rotate(-90)`)
+      .style('text-anchor', 'middle')
+      .text('Message Count')
   }
 
   updateBars (options = {}) {
@@ -143,9 +159,5 @@ export default class BarChart {
       .attr('width', this.xScale.bandwidth)
       .attr('y', (d) => this.yScale(d[this.yVariable]))
       .attr('height', (d) => this.yScale(0) - this.yScale(d[this.yVariable]))
-
-    enterSelection
-      .append('svg:title')
-      .text((d) => d.count)
   }
 }

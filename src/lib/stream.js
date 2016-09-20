@@ -52,7 +52,7 @@ export default class StreamChart {
       .x((d) => this.xScale(new Date(d.data[this.xVariable])))
       .y0((d) => this.yScale(d[0]))
       .y1((d) => this.yScale(d[1]))
-      .curve(d3.curveNatural)
+      .curve(d3.curveBasis)
   }
 
   getHeight () {
@@ -65,18 +65,19 @@ export default class StreamChart {
 
   formatData (raw) {
     const keys = Object.keys(raw)
+    const minValues = Math.min(..._.values(raw).map((arr) => arr.length))
 
     // x values must be the same for all data points in a stack
     // This sets the time to the lowest second for that index
-    const times = raw[keys[0]].map((__, index) => {
-      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`) || new Date().valueOf()))
+    const times = _.range(minValues).map((__, index) => {
+      const value = Math.min(...keys.map((key) => _.at(raw, `${key}.${index}.${this.xVariable}`)))
       const date = new Date(value)
       date.setMilliseconds(0)
       return date
     })
 
     return times.map((time, index) => {
-      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`) || 0)
+      const values = keys.map((key) => _.at(raw, `${key}.${index}.${this.yVariable}`))
       return Object.assign({ [this.xVariable]: time }, _.zipObject(keys, values))
     })
   }
@@ -152,12 +153,14 @@ export default class StreamChart {
   }
 
   updateStacks (options = {}) {
-    const topics = Object.keys(_.omit(this._lastData.items()[0], this.xVariable))
+    const data = this._lastData.items()
+    const first = data[0]
+    const topics = Object.keys(_.omit(first, this.xVariable))
     this.stack.keys(topics)
 
     const updateSelection = this.chartArea
       .selectAll('.chart-path')
-      .data(this.stack(this._lastData.items()))
+      .data(this.stack(data))
 
     const enterSelection = updateSelection
       .enter()

@@ -8,6 +8,7 @@
 
 $gutter: 15px;
 $headerHeight: 50px;
+$footerHeight: 40px;
 $break: 800px;
 
 $hHeader: linear-gradient(to right, #3d3f74, #6757a0);
@@ -164,7 +165,7 @@ main {
   height: calc(100vh - $headerHeight);
   padding: 5px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   position: relative;
   z-index: 1;
   background: linear-gradient(to bottom, #f2f2f4, #fff);
@@ -172,12 +173,25 @@ main {
 
   @media screen and (width >= $break) {
     padding: $gutter;
-    padding-bottom: 0;
+    padding-bottom: 10px;
   }
 
   &.open {
     transform: translate(0px, $diagramHeight);
   }
+
+  @media screen and (width >= $break) {
+    .footer-legend {
+      flex-basis: $footerHeight;
+    }
+
+    .chart-list {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+  }
+
 }
 
 /* --- Chart containers --*/
@@ -191,10 +205,11 @@ main {
   @media screen and (width >= $break) {
     width: 50%;
     min-height: auto;
-    height: calc(45vh - $headerHeight);
+    height: calc(45vh - ($headerHeight + $footerHeight));
+    padding-bottom: 0;
 
     &:nth-child(-n+2) {
-      height: calc(55vh - $headerHeight);
+      height: calc(55vh - ($headerHeight + $footerHeight));
     }
   }
 
@@ -280,6 +295,46 @@ main {
         font-size: .7em;
         font-weight: normal;
       }
+    }
+  }
+}
+
+.footer-legend {
+  margin-top: $gutter;
+
+  @media screen and (width >= $break) {
+    height: $footerHeight;
+    margin-top: 0;
+  }
+
+  ul {
+    margin: 0 $gutter;
+    padding: 5px 0 0;
+    background: white;
+    border-top: 1px solid $hBorder;
+
+    li {
+      position: relative;
+      display: inline-block;
+      margin-right: 20px;
+      padding: 11px 0;
+      padding-left: 25px;
+      font-size: 12px;
+
+      &:before {
+        width: 16px;
+        height: 16px;
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 8px;
+      }
+
+      &.color-1:before {background: $hColor1;}
+      &.color-2:before {background: $hColor2;}
+      &.color-3:before {background: $hColor3;}
+      &.color-4:before {background: $hColor4;}
     }
   }
 }

@@ -34,8 +34,8 @@ export default class BarChart {
     this.yAxisG = chartArea.append('g')
 
     this.xScale = d3.scaleBand()
-      .paddingInner(0.05)
-      .paddingOuter(0.05)
+      .paddingInner(0.1)
+      .paddingOuter(0.1)
 
     this.yScale = d3.scaleLinear()
 

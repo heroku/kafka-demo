@@ -272,7 +272,7 @@ main {
     color: $hChartText;
   }
 
-  tr {
+  tr.data {
     height: 25%;
 
     &:nth-child(1) td:not(:first-child) { color: $hColor1; }
@@ -281,7 +281,11 @@ main {
     &:nth-child(4) td:not(:first-child) { color: $hColor4; }
   }
 
-  td {
+  tr.title {
+    height: 10%;
+  }
+
+  tr.data td {
     width: 25%;
 
     &:not(:first-child) {

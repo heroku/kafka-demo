@@ -6,15 +6,18 @@ export default class Stats {
   constructor (options) {
     this.container = document.querySelector(options.selector)
     this.xVariable = options.x
+    this.xTitles = options.titles
   }
 
   formatData (data) {
     const keys = Object.keys(data)
-    return keys.map((topic) => {
-      const values = data[topic]
-      const value = Array.isArray(values) ? _.last(values) : values
+    const rows = keys.map((topic) => {
+      const value = _.last(data[topic])
       return [topic, ...this.xVariable.map((x) => value[x])]
     })
+
+    rows.push(['', ...this.xTitles])
+    return rows
   }
 
   init (data) {
@@ -40,8 +43,10 @@ export default class Stats {
     const table = this.container.querySelector('table')
     _.invokeMap(table.querySelectorAll('tr'), 'remove')
 
-    this._lastData.forEach((row) => {
+    this._lastData.forEach((row, rowIndex) => {
+      const isTitle = rowIndex === (this._lastData.length - 1)
       const tr = document.createElement('tr')
+      tr.classList.add(isTitle ? 'title' : 'data')
       table.appendChild(tr)
 
       row.forEach((cell, index) => {

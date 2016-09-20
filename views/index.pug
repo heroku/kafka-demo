@@ -13,8 +13,6 @@ html
         .logo
         ul.nav-items
           li.title Kafka Demo App
-          li.nav-link Legend
-            ul.dropdown.nav-legend
           li.nav-link.architecture-link Architecture
           li.nav-link Learn More
             ul.dropdown.nav-learn
@@ -23,17 +21,24 @@ html
     .architecture
       iframe(width='100%', height='430px', scrolling='no', seamless, src='/images/kafka-diagram/kafka-diagram.html')
     main
-      .chart-container.chart-topics
-        span.title Topics Count
-        .chart.loading
-      .chart-container.chart-related
-        span.title Related Words
-        .chart.loading
-      .chart-container.chart-stats
-        span.title Averages
-        .chart.chart-averages.loading
-      .chart-container.chart-stream
-        span.title Topics
-        .chart.loading
+      .chart-list
+        .chart-container.chart-topics
+          span.title Count of Messages by Keyword
+          .chart.loading
+        .chart-container.chart-related
+          span.title Frequency of Related Words
+          .chart.loading
+        .chart-container.chart-stats
+          span.title Message Velocity
+          .chart.chart-averages.loading
+        .chart-container.chart-stream
+          span.title Message Volume During the Last Minute
+          .chart.loading
+      footer.footer-legend
+        ul
+          li.color-1 Topic 1
+          li.color-2 Topic 2
+          li.color-3 Topic 3
+          li.color-4 Topic 4
     for js in htmlWebpackPlugin.files.js
       script(src=js)

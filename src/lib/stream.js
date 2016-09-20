@@ -35,12 +35,13 @@ export default class StreamChart {
     this.yAxisG = this.chartArea.append('g')
 
     this.xScale = d3.scaleTime()
-    this.yScale = d3.scaleLinear()
+    this.yScale = d3.scaleLinear().nice()
 
     this.xAxis = d3.axisBottom()
       .tickFormat((value) => `:${Math.round((new Date() - value) / 1000)}`)
 
     this.yAxis = d3.axisLeft()
+      .ticks(5)
       .tickFormat(Math.abs)
 
     this.stack = d3
@@ -125,7 +126,7 @@ export default class StreamChart {
       .nice()
 
     this.xAxis.scale(this.xScale)
-    this.yAxis.scale(this.yScale).ticks(5)
+    this.yAxis.scale(this.yScale)
   }
 
   updateScales () {

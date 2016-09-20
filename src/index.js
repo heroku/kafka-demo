@@ -36,7 +36,8 @@ const bubbles = new Bubbles({
 })
 
 const nav = new Nav({
-  selector: 'header nav'
+  legend: '.footer-legend ul',
+  architecture: '.architecture-link'
 })
 
 const url = `ws${window.location.href.match(/^http(s?:\/\/.*)\/.*$/)[1]}`

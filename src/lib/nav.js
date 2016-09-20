@@ -2,10 +2,8 @@
 
 module.exports = class Nav {
   constructor (options) {
-    this.container = document.querySelector(options.selector)
-
-    this.legend = this.container.querySelector('.nav-legend')
-    this.architectureLink = this.container.querySelector('.nav-link.architecture-link')
+    this.legend = document.querySelector(options.legend)
+    this.architectureLink = document.querySelector(options.architecture)
     this.main = document.querySelector('main')
 
     this.architecture()

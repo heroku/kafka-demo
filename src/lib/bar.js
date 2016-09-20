@@ -2,6 +2,7 @@
 
 import * as d3 from 'd3'
 import _ from 'lodash'
+import dateFormat from 'dateFormat'
 
 const minMargin = 15
 const margin = {
@@ -58,12 +59,20 @@ export default class BarChart {
     return this.container.clientWidth - margin.left - margin.right
   }
 
+  yValue (d) {
+    return d[this.yVariable] - _.find(this._initialData, { id: d.id })[this.yVariable]
+  }
+
   formatData (data) {
     return Object.keys(data).map((topic) => _.last(data[topic]))
   }
 
   init (data) {
     this._lastData = this.formatData(data)
+    this._initialData = this._lastData
+
+    const startTime = new Date(Math.min(...this._lastData.map((d) => d.time)))
+    this.container.parentNode.querySelector('.start-time').textContent = dateFormat(startTime, 'h:MM:ss TT')
 
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })
@@ -98,7 +107,7 @@ export default class BarChart {
       .domain(this._lastData.map(d => d[this.xVariable]))
 
     this.yScale
-      .domain([0, d3.max(this._lastData.map(d => d[this.yVariable]))])
+      .domain([0, d3.max(this._lastData.map((d) => this.yValue(d)))])
       .nice()
 
     this.xAxis.scale(this.xScale)
@@ -157,7 +166,7 @@ export default class BarChart {
       .duration(options.transition || 0)
       .attr('x', (d) => this.xScale(d[this.xVariable]))
       .attr('width', this.xScale.bandwidth)
-      .attr('y', (d) => this.yScale(d[this.yVariable]))
-      .attr('height', (d) => this.yScale(0) - this.yScale(d[this.yVariable]))
+      .attr('y', (d) => this.yScale(this.yValue(d)))
+      .attr('height', (d) => this.yScale(0) - this.yScale(this.yValue(d)))
   }
 }

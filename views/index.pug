@@ -23,7 +23,11 @@ html
     main
       .chart-list
         .chart-container.chart-topics
-          span.title Count of Messages by Keyword
+          span.title
+            | Count of Messages by Keyword (since
+            | 
+            span.start-time ...
+            | )
           .chart.loading
         .chart-container.chart-related
           span.title Frequency of Related Words

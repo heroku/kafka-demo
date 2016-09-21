@@ -19,7 +19,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(require('./webpack.config'))
   app.use(require('connect-history-api-fallback')({ verbose: false }))
-  app.use(require('webpack-dev-middleware')(compiler))
+  app.use(require('webpack-dev-middleware')(compiler, { noInfo: true }))
 } else {
   app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
   app.get('/heroku', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))

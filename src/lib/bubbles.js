@@ -7,8 +7,9 @@ export default class BubblesChart {
   constructor (options) {
     this.container = document.querySelector(options.selector)
 
-    this.transition = options.transition
+    this.transition = options.transition / 2
     this.maxRelations = options.maxRelations
+    this._useInitial = false
 
     const svg = d3
       .select(this.container)
@@ -32,19 +33,33 @@ export default class BubblesChart {
     return this.container.clientWidth
   }
 
-  formatData (raw) {
+  getClass (d) {
+    return `chart-color-${this._topics.indexOf(d.topic) + 1} ${d.name}`
+  }
+
+  formatData (raw, initial) {
     const length = _.size(raw)
+
     return _.transform(raw, (res, values, topic) => {
-      const relations = _.map(_.last(values).relations, (r, name) => ({ name, r, topic }))
-      const topRelations = _.orderBy(relations, 'r', 'desc').slice(0, Math.floor(this.maxRelations / length))
-      res.push(...topRelations)
+      const previousValues = initial[topic]
+      const previous = _.map(_.last(previousValues).relations, (r, name) => ({ name, r, topic }))
+      const relations = _.map(_.last(values).relations, (r, name) => ({
+        name,
+        topic,
+        r: (r - (this._useInitial ? (_.find(previous, { name }) || { r: 0 }).r : 0)) || 1
+      }))
+
+      const topRelations = _.orderBy(relations, ['r', 'name'], ['desc', 'desc'])
+      res.push(...topRelations.slice(0, Math.floor(this.maxRelations / length)))
+
       return res
     }, [])
   }
 
   init (data) {
     this._topics = Object.keys(data)
-    this._lastData = this.formatData(data)
+    this._lastData = this.formatData(data, data)
+    this._initialData = data
 
     this.updateBubbles({ first: true })
     d3.select(this.container).classed('loading', false)
@@ -60,7 +75,7 @@ export default class BubblesChart {
   update (data) {
     if (!this._initialized) return
 
-    this._lastData = this.formatData(data)
+    this._lastData = this.formatData(data, this._initialData)
 
     this.updateBubbles({ transition: this.transition })
   }
@@ -73,53 +88,135 @@ export default class BubblesChart {
     const width = this.getWidth()
     const center = { x: width / 2, y: height / 2 }
     const translate = `${center.x},${center.y}`
-    const scale = Math.min(height, width) / (enclose.r * 2)
+    const scale = Math.min(height, width) / ((enclose.r || 1) * 2)
 
-    const circles = this.chartArea
+    this._textWidths = this._textWidths || {}
+    const baseWidth = 12
+    const fontSize = (d, index, nodes) => {
+      const size = ((d.r * 2) / this._textWidths[d.name]) * baseWidth * 0.7
+      const relativeSize = size * scale
+      return relativeSize < 10 ? 0 : `${size}px`
+    }
+
+    const showTooltip = (d) => {
+      this.tooltip
+        .transition()
+        .duration(200)
+        .style('opacity', 1)
+
+      this.tooltip.html(`${d.name}<br/>${d.r}`)
+
+      this.tooltip
+        .style('left', `${(d.x * scale) + (width / 2) - (this.tooltip.node().clientWidth / 2)}px`)
+        .style('top', `${(d.y * scale) + (height / 2) + (d.r * scale) + 2}px`)
+        .attr('class', `tooltip ${this.getClass(d)}`)
+    }
+
+    const hideTooltip = () => {
+      this.tooltip
+        .transition()
+        .duration(200)
+        .style('opacity', 0)
+    }
+
+    this.chartArea
+      .transition()
+      .duration(options.first ? 0 : this.transition)
+      .ease(d3.easeLinear)
       .attr('transform', `translate(${translate}) scale(${scale})`)
+
+    const containers = this.chartArea
       .selectAll('.circle-node')
-      .data(data)
+      .data(data, ({ name, topic }) => `${name}-${topic}`)
+
+    /*
+     * EXITING
+     */
+    const exiting = containers.exit()
+
+    exiting
+      .transition()
+      .duration(this.transition * 0.5)
+      .ease(d3.easeLinear)
+      .attr('transform', `translate(0,0)`)
+      .remove()
+
+    exiting
+      .select('circle')
+      .transition()
+      .duration(this.transition * 0.5)
+      .ease(d3.easeLinear)
+      .style('opacity', 0)
+      .attr('r', 0)
+
+    exiting
+      .select('text')
+      .remove()
+
+    /*
+     * UPDATE EXISTING
+     */
+    containers
+      .on('mouseenter', showTooltip)
+      .on('mouseleave', hideTooltip)
+      .transition()
+      .duration(this.transition)
+      .ease(d3.easeLinear)
+      .attr('transform', (d) => `translate(${d.x},${d.y})`)
+
+    containers
+      .select('circle')
+      .transition()
+      .duration(this.transition)
+      .ease(d3.easeLinear)
+      .attr('r', (d) => d.r)
+
+    containers
+      .select('text')
+      .transition()
+      .duration(this.transition)
+      .ease(d3.easeLinear)
+      .style('font-size', fontSize)
+
+    /*
+     * ADD NEW
+     */
+    const enter = containers
       .enter()
       .append('g')
+
+    enter
       .attr('class', 'circle-node')
+      .attr('transform', 'translate(0,0)')
+      .on('mouseenter', showTooltip)
+      .on('mouseleave', hideTooltip)
+      .transition()
+      .duration(this.transition)
+      .ease(d3.easeLinear)
       .attr('transform', (d) => `translate(${d.x},${d.y})`)
-      .on('mouseenter', (d) => {
-        this.tooltip
-          .transition()
-          .duration(200)
-          .style('opacity', 1)
 
-        this.tooltip
-          .html(`${d.name}<br/>${d.r}`)
-
-        this.tooltip
-          .style('left', `${(d.x * scale) + (width / 2) - (this.tooltip.node().clientWidth / 2)}px`)
-          .style('top', `${(d.y * scale) + (height / 2) + (d.r * scale) + 2}px`)
-          .attr('class', `tooltip chart-color-${this._topics.indexOf(d.topic) + 1}`)
-      })
-      .on('mouseleave', (d) => {
-        this.tooltip
-          .transition()
-          .duration(200)
-          .style('opacity', 0)
-      })
-
-    circles
+    enter
       .append('circle')
+      .attr('class', (d) => this.getClass(d))
       .attr('r', (d) => d.r)
-      .attr('class', (d) => `chart-color-${this._topics.indexOf(d.topic) + 1}`)
 
-    circles
+    // Keep a cache of all related words' computed text length
+    enter
+      .filter((d) => !this._textWidths[d.name])
+      .append('text')
+      .attr('font-size', `${baseWidth}px`)
+      .text((d) => d.name)
+      .each((d, i, nodes) => {
+        this._textWidths[d.name] = nodes[i].getComputedTextLength()
+        nodes[i].remove()
+      })
+
+    enter
       .append('text')
       .text((d) => d.name)
-      .attr('text-anchor', 'middle')
-      .attr('dy', '.35em')
+      .style('text-anchor', 'middle')
       .attr('fill', '#fff')
-      .style('font-size', (d, index, nodes) => {
-        const node = nodes[index].getComputedTextLength()
-        const size = Math.min(2 * d.r, (2 * d.r - 8) / node * 8)
-        const relativeSize = size * scale
-        return relativeSize < 8 ? 0 : `${size}px`
-      })
+      .attr('dy', '.35em')
+      .style('font-size', fontSize)
   }
 }

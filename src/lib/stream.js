@@ -2,6 +2,7 @@
 
 import * as d3 from 'd3'
 import _ from 'lodash'
+import zeroFill from 'zero-fill'
 import SizedArray from '../../consumer/sizedArray'
 
 const minMargin = 15
@@ -38,7 +39,7 @@ export default class StreamChart {
     this.yScale = d3.scaleLinear().nice()
 
     this.xAxis = d3.axisBottom()
-      .tickFormat((value) => `:${Math.round((new Date() - value) / 1000)}`)
+      .tickFormat((value) => `:${zeroFill(2, Math.round((new Date() - value) / 1000))}`)
 
     this.yAxis = d3.axisLeft()
       .ticks(5)

@@ -127,6 +127,7 @@ export default class BarChart {
     this.xAxisG
       .transition()
       .duration(options.transition || 0)
+      .ease(d3.easeLinear)
       .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
@@ -138,6 +139,7 @@ export default class BarChart {
     this.yAxisG
       .transition()
       .duration(options.transition || 0)
+      .ease(d3.easeLinear)
       .call(this.yAxis)
 
     this.yAxisLabel
@@ -164,6 +166,7 @@ export default class BarChart {
       .merge(updateSelection)
       .transition()
       .duration(options.transition || 0)
+      .ease(d3.easeLinear)
       .attr('x', (d) => this.xScale(d[this.xVariable]))
       .attr('width', this.xScale.bandwidth)
       .attr('y', (d) => this.yScale(this.yValue(d)))

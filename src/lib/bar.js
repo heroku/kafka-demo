@@ -2,7 +2,7 @@
 
 import * as d3 from 'd3'
 import _ from 'lodash'
-import dateFormat from 'dateFormat'
+import dateFormat from 'dateformat'
 
 const minMargin = 15
 const margin = {

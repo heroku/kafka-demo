@@ -33,7 +33,7 @@ const stats = new Stats({
 const bubbles = new Bubbles({
   selector: '.chart-related .chart',
   transition: INTERVAL,
-  maxRelations: 30
+  maxRelations: 20
 })
 
 const nav = new Nav({

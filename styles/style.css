@@ -242,7 +242,6 @@ main {
     height: 100%;
     background: #FFFFFF;
     position: relative;
-    overflow: hidden;
 
     body.heroku & {
       border-color: $hBorder;

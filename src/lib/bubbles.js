@@ -19,7 +19,7 @@ export default class BubblesChart {
     this.chartArea = svg
       .append('g')
 
-    this.tooltip = d3.select('body')
+    this.tooltip = d3.select(this.container)
       .append('div')
       .style('opacity', 0)
   }
@@ -87,12 +87,14 @@ export default class BubblesChart {
         this.tooltip
           .transition()
           .duration(200)
-          .style('opacity', 0.9)
+          .style('opacity', 1)
 
         this.tooltip
           .html(`${d.name}<br/>${d.r}`)
-          .style('left', `${d3.event.pageX}px`)
-          .style('top', `${d3.event.pageY}px`)
+
+        this.tooltip
+          .style('left', `${(d.x * scale) + (width / 2) - (this.tooltip.node().clientWidth / 2)}px`)
+          .style('top', `${(d.y * scale) + (height / 2) + (d.r * scale) + 2}px`)
           .attr('class', `tooltip chart-color-${this._topics.indexOf(d.topic) + 1}`)
       })
       .on('mouseleave', (d) => {

@@ -10,10 +10,11 @@ const postcssImport = require('postcss-import')
 
 const production = process.env.NODE_ENV === 'production'
 
-const html = (filename, bodyClass) => new HtmlPlugin({
+const html = (filename, bodyClass, title = 'Twitter Display with Heroku Kafka') => new HtmlPlugin({
   production,
   filename,
   bodyClass,
+  title,
   inject: false,
   template: path.join(__dirname, 'views', 'index.pug')
 })

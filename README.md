@@ -5,6 +5,8 @@ A simple app that streams tweets containing a specified set of keywords to web b
 Keywords are specified in the kafka-tweets app.  They are read from a Kafka topic named 'test' from the 0th (zeroth) partition in that topic.
 
 #### Development Setup
+**Node > v5.x required**
+
 ```shell
 npm install
 ```

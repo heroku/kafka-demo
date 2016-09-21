@@ -5,13 +5,22 @@ module.exports = class Nav {
     this.legend = document.querySelector(options.legend)
     this.architectureLink = document.querySelector(options.architecture)
     this.main = document.querySelector('main')
+    this.architectureFrame = document.querySelector('.architecture-iframe')
 
     this.architecture()
   }
 
   architecture () {
-    this.architectureLink
-      .addEventListener('click', () => this.main.classList.toggle('open'))
+    this.architectureLink.addEventListener('click', () => {
+      const isOpen = this.main.classList.contains('open')
+      if (isOpen) {
+        this.architectureFrame.removeAttribute('src')
+        this.main.classList.remove('open')
+      } else {
+        this.architectureFrame.setAttribute('src', '/images/kafka-diagram/kafka-diagram.html')
+        this.main.classList.add('open')
+      }
+    })
   }
 
   topics (topics) {

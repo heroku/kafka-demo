@@ -214,6 +214,10 @@ main {
     }
   }
 
+  text {
+    cursor: default;
+  }
+
   .title {
     text-transform: uppercase;
     text-align: center;
@@ -302,6 +306,27 @@ main {
         font-weight: normal;
       }
     }
+  }
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 6px 20px;
+  font-size: 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 1000;
+  color: #fff;
+
+  body.heroku & {
+    border-color: $hBorder;
+  }
+
+  body.salesforce & {
+    border-color: $sfBorder;
   }
 }
 

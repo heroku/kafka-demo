@@ -18,6 +18,10 @@ export default class BubblesChart {
 
     this.chartArea = svg
       .append('g')
+
+    this.tooltip = d3.select('body')
+      .append('div')
+      .style('opacity', 0)
   }
 
   getHeight () {
@@ -79,15 +83,29 @@ export default class BubblesChart {
       .append('g')
       .attr('class', 'circle-node')
       .attr('transform', (d) => `translate(${d.x},${d.y})`)
+      .on('mouseenter', (d) => {
+        this.tooltip
+          .transition()
+          .duration(200)
+          .style('opacity', 0.9)
+
+        this.tooltip
+          .html(`${d.name}<br/>${d.r}`)
+          .style('left', `${d3.event.pageX}px`)
+          .style('top', `${d3.event.pageY}px`)
+          .attr('class', `tooltip chart-color-${this._topics.indexOf(d.topic) + 1}`)
+      })
+      .on('mouseleave', (d) => {
+        this.tooltip
+          .transition()
+          .duration(200)
+          .style('opacity', 0)
+      })
 
     circles
       .append('circle')
       .attr('r', (d) => d.r)
       .attr('class', (d) => `chart-color-${this._topics.indexOf(d.topic) + 1}`)
-
-    circles
-      .append('svg:title')
-      .text((d) => `${d.name} ${d.r}`)
 
     circles
       .append('text')

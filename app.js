@@ -41,7 +41,10 @@ const send = (data) => (client) => client.send(JSON.stringify(data))
 const consumer = new Consumer({
   broadcast: (data) => wss.clients.forEach(send(data)),
   topics: constants.TOPICS.map((name) => ({ name })),
-  types: [{ name: 'aggregate', maxSize: constants.MAX_SIZE }, { name: 'relatedwords', maxSize: 1 }],
+  types: [
+    { name: 'aggregate', maxSize: constants.MAX_BUFFER_SIZE },
+    { name: 'relatedwords', maxSize: 1 }
+  ],
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {

@@ -125,14 +125,7 @@ export default class BarChart {
   }
 
   updateAxes (options = {}) {
-    if (options.first) {
-      this.xAxisG.attr('transform', `translate(0, ${this.getHeight()})`)
-    }
-
     this.xAxisG
-      .transition()
-      .duration(options.transition || 0)
-      .ease(d3.easeLinear)
       .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
@@ -142,9 +135,6 @@ export default class BarChart {
       .text('Keywords')
 
     this.yAxisG
-      .transition()
-      .duration(options.transition || 0)
-      .ease(d3.easeLinear)
       .call(this.yAxis)
 
     this.yAxisLabel

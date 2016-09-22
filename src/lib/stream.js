@@ -21,6 +21,7 @@ export default class StreamChart {
     this.yVariable = options.y
     this.transition = options.transition
     this.maxSize = options.maxSize
+    this.maxDisplaySize = options.maxDisplaySize
 
     const svg = d3
       .select(this.container)
@@ -28,18 +29,28 @@ export default class StreamChart {
       .attr('width', '100%')
       .attr('height', '100%')
 
-    this.chartArea = svg
+    const chartArea = svg
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-    this.xAxisG = this.chartArea.append('g')
-    this.yAxisG = this.chartArea.append('g')
+    this.clipPath = chartArea
+      .append('defs')
+      .append('clipPath')
+      .attr('id', 'clip')
+      .append('rect')
 
-    this.xScale = d3.scaleTime()
+    this.chartArea = chartArea.append('g').attr('clip-path', 'url(#clip)')
+
+    this.xAxisG = chartArea.append('g')
+    this.yAxisG = chartArea.append('g')
+
+    this.xScale = d3.scaleLinear().domain([this.maxDisplaySize, 0])
     this.yScale = d3.scaleLinear().nice()
 
     this.xAxis = d3.axisBottom()
-      .tickFormat((value) => `:${zeroFill(2, Math.round((new Date() - value) / 1000))}`)
+      .tickValues(_.range(0, this.maxDisplaySize + 1, 15))
+      .tickFormat((value) => `:${zeroFill(2, value)}`)
+      .scale(this.xScale)
 
     this.yAxis = d3.axisLeft()
       .ticks(5)
@@ -51,7 +62,11 @@ export default class StreamChart {
 
     this.area = d3
       .area()
-      .x((d) => this.xScale(new Date(d.data[this.xVariable])))
+      .x((d, index, items) => {
+        const last = index === items.length - 1
+        const secondsAgo = last ? 0 : Math.floor((new Date() - d.data[this.xVariable]) / 1000)
+        return this.xScale(secondsAgo)
+      })
       .y0((d) => this.yScale(d[0]))
       .y1((d) => this.yScale(d[1]))
       .curve(d3.curveBasis)
@@ -117,8 +132,6 @@ export default class StreamChart {
   }
 
   updateScaleAndAxesData () {
-    this.xScale.domain(d3.extent(this._lastData.items(), (d) => new Date(d[this.xVariable])))
-
     // Using silhouette offset keeps the center at 0 so this sets the y scale
     // so 0 is always in the middle
     const max = d3.max(this._lastData.items(), (d) => _.reduce(_.omit(d, this.xVariable), _.add)) / 2
@@ -126,7 +139,6 @@ export default class StreamChart {
       .domain([-1 * max, max])
       .nice()
 
-    this.xAxis.scale(this.xScale)
     this.yAxis.scale(this.yScale)
   }
 
@@ -136,21 +148,15 @@ export default class StreamChart {
   }
 
   updateAxes (options = {}) {
-    if (options.first) {
-      this.xAxisG.attr('transform', `translate(0, ${this.getHeight()})`)
-    }
+    this.clipPath
+      .attr('width', this.getWidth())
+      .attr('height', this.getHeight())
 
     this.xAxisG
-      .transition()
-      .duration(options.transition || 0)
-      .ease(d3.easeLinear)
       .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
     this.yAxisG
-      .transition()
-      .duration(options.transition || 0)
-      .ease(d3.easeLinear)
       .call(this.yAxis)
   }
 

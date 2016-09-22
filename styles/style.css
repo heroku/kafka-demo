@@ -32,13 +32,6 @@ header {
   height: $headerHeight;
   font-weight: 100;
 
-  .logo {
-    width: 108px;
-    height: 30px;
-    margin-top: 10px;
-    background: url('/images/logo-heroku-white.svg') no-repeat center center;
-  }
-
   nav {
     padding: 0 $gutter;
     display: flex;
@@ -100,35 +93,18 @@ header {
       text-decoration: none;
       color: $hText;
     }
-
-    &.nav-legend {
-
-      li {
-        position: relative;
-        padding: 10px 0;
-        padding-left: 30px;
-
-        &:before {
-          width: 20px;
-          height: 20px;
-          content: '';
-          display: block;
-          position: absolute;
-          left: 0;
-          top: 8px;
-        }
-
-        &.color-1:before {background: $hColor1;}
-        &.color-2:before {background: $hColor2;}
-        &.color-3:before {background: $hColor3;}
-        &.color-4:before {background: $hColor4;}
-      }
-    }
   }
 
   body.heroku & {
     background: $hHeader;
     color: $hHeaderText;
+
+    .logo {
+      width: 108px;
+      height: 30px;
+      margin-top: 10px;
+      background: url('/images/logo-heroku-white.svg') no-repeat center center;
+    }
   }
 
   body.salesforce & {
@@ -192,7 +168,6 @@ main {
       flex-wrap: wrap;
     }
   }
-
 }
 
 /* --- Chart containers --*/
@@ -267,22 +242,31 @@ main {
 
 /* --- Averages table --*/
 .chart-averages {
-
   table {
     width: 100%;
     height: 100%;
     padding: 20px;
     font-size: .9em;
-    color: $hChartText;
+    body.heroku & { color: $hChartText; }
+    body.salesforce & { color: $sfChartText; }
   }
 
   tr.data {
     height: 25%;
 
-    &:nth-child(1) td:not(:first-child) { color: $hColor1; }
-    &:nth-child(2) td:not(:first-child) { color: $hColor2; }
-    &:nth-child(3) td:not(:first-child) { color: $hColor3; }
-    &:nth-child(4) td:not(:first-child) { color: $hColor4; }
+    body.heroku & {
+      &:nth-child(1) td:not(:first-child) { color: $hColor1; }
+      &:nth-child(2) td:not(:first-child) { color: $hColor2; }
+      &:nth-child(3) td:not(:first-child) { color: $hColor3; }
+      &:nth-child(4) td:not(:first-child) { color: $hColor4; }
+    }
+
+    body.salesforce & {
+      &:nth-child(1) td:not(:first-child) { color: $sfColor1; }
+      &:nth-child(2) td:not(:first-child) { color: $sfColor2; }
+      &:nth-child(3) td:not(:first-child) { color: $sfColor3; }
+      &:nth-child(4) td:not(:first-child) { color: $sfColor4; }
+    }
   }
 
   tr.title {
@@ -301,9 +285,10 @@ main {
         margin-left: 5px;
         display: inline-block;
         content: '/s';
-        color: $hChartText;
         font-size: .7em;
         font-weight: normal;
+        body.heroku & { color: $hChartText; }
+        body.salesforce & { color: $sfChartText; }
       }
     }
   }
@@ -362,10 +347,19 @@ div.tooltip {
         top: 8px;
       }
 
-      &.color-1:before {background: $hColor1;}
-      &.color-2:before {background: $hColor2;}
-      &.color-3:before {background: $hColor3;}
-      &.color-4:before {background: $hColor4;}
+      body.heroku & {
+        &.color-1:before {background: $hColor1;}
+        &.color-2:before {background: $hColor2;}
+        &.color-3:before {background: $hColor3;}
+        &.color-4:before {background: $hColor4;}
+      }
+
+      body.salesforce & {
+        &.color-1:before {background: $sfColor1;}
+        &.color-2:before {background: $sfColor2;}
+        &.color-3:before {background: $sfColor3;}
+        &.color-4:before {background: $sfColor4;}
+      }
     }
   }
 }

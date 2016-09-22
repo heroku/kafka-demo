@@ -44,12 +44,18 @@ export default class StreamChart {
     this.xAxisG = chartArea.append('g')
     this.yAxisG = chartArea.append('g')
 
-    this.xScale = d3.scaleLinear().domain([this.maxDisplaySize, 0])
+    // The first points need to be rendered outside the x axis
+    const rightEdge = 3
+    this.xScale = d3.scaleLinear().domain([this.maxDisplaySize + rightEdge, rightEdge])
     this.yScale = d3.scaleLinear().nice()
 
     this.xAxis = d3.axisBottom()
-      .tickValues(_.range(0, this.maxDisplaySize + 1, 15))
-      .tickFormat((d) => `${Math.floor(d / 60)}:${zeroFill(2, d - (Math.floor(d / 60) * 60))}`)
+      .tickValues(_.range(rightEdge, this.maxDisplaySize + rightEdge + 1, 15))
+      .tickFormat((d) => {
+        const value = d - rightEdge
+        const m = Math.floor(value / 60)
+        return `${m}:${zeroFill(2, value - (m * 60))}`
+      })
       .scale(this.xScale)
 
     this.yAxis = d3.axisLeft()
@@ -186,6 +192,15 @@ export default class StreamChart {
       .transition()
       .duration(options.transition || 0)
       .ease(d3.easeLinear)
-      .attr('d', this.area)
+      .on('start', (d, index, nodes) => {
+        const node = nodes[index]
+
+        d3.select(node)
+          .attr('d', this.area)
+          .attr('transform', null)
+
+        d3.active(node)
+          .attr('transform', `translate(${this.xScale(this.xScale.domain()[0] + 1)},0)`)
+      })
   }
 }

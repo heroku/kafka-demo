@@ -23,6 +23,7 @@ export default class BubblesChart {
 
     this.tooltip = d3.select(this.container)
       .append('div')
+      .attr('class', 'tooltip')
       .style('opacity', 0)
   }
 
@@ -98,6 +99,9 @@ export default class BubblesChart {
     const translate = `${center.x},${center.y}`
     const scale = Math.min(height, width) / ((enclose.r || 1) * 2)
 
+    const dataId = ({ name, topic }) => `${name}-${topic}`
+    const tooltipHtml = ({ name, r }) => `${name}<br/>${r}`
+
     this._textWidths = this._textWidths || {}
     const calcFontSize = 12
     const fontSize = (d, index, nodes) => {
@@ -107,24 +111,26 @@ export default class BubblesChart {
     }
 
     const showTooltip = (d) => {
-      this.tooltip
-        .transition()
-        .duration(200)
-        .style('opacity', 1)
-
-      this.tooltip.html(`${d.name}<br/>${d.r}`)
+      this.tooltip.html(tooltipHtml(d))
 
       this.tooltip
+        .attr('id', dataId(d))
         .style('left', `${(d.x * scale) + (width / 2) - (this.tooltip.node().clientWidth / 2)}px`)
         .style('top', `${(d.y * scale) + (height / 2) + (d.r * scale) + 2}px`)
         .attr('class', `tooltip ${this.getClass(d)}`)
+        .style('opacity', 1)
     }
 
     const hideTooltip = () => {
       this.tooltip
-        .transition()
-        .duration(200)
+        .attr('id', null)
         .style('opacity', 0)
+    }
+
+    // Update tooltip html if it is active
+    const tid = this.tooltip.attr('id')
+    if (tid) {
+      this.tooltip.html(tooltipHtml(_.find(data, (d) => dataId(d) === tid)))
     }
 
     this.chartArea
@@ -135,7 +141,7 @@ export default class BubblesChart {
 
     const containers = this.chartArea
       .selectAll('.circle-node')
-      .data(data, ({ name, topic }) => `${name}-${topic}`)
+      .data(data, dataId)
 
     /*
      * EXITING

@@ -252,7 +252,7 @@ main {
   }
 
   tr.data {
-    height: 25%;
+    height: 19%;
 
     body.heroku & {
       &:nth-child(1) td:not(:first-child) { color: $hColor1; }
@@ -270,7 +270,7 @@ main {
   }
 
   tr.title {
-    height: 10%;
+    height: 5%;
   }
 
   tr.data td {

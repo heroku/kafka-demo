@@ -91,9 +91,9 @@ export default class BubblesChart {
     const scale = Math.min(height, width) / ((enclose.r || 1) * 2)
 
     this._textWidths = this._textWidths || {}
-    const baseWidth = 12
+    const calcFontSize = 12
     const fontSize = (d, index, nodes) => {
-      const size = ((d.r * 2) / this._textWidths[d.name]) * baseWidth * 0.7
+      const size = ((d.r * 2) / this._textWidths[d.name]) * calcFontSize * 0.7
       const relativeSize = size * scale
       return relativeSize < 10 ? 0 : `${size}px`
     }
@@ -121,7 +121,7 @@ export default class BubblesChart {
 
     this.chartArea
       .transition()
-      .duration(options.first ? 0 : this.transition)
+      .duration(options.transition)
       .ease(d3.easeLinear)
       .attr('transform', `translate(${translate}) scale(${scale})`)
 
@@ -160,21 +160,21 @@ export default class BubblesChart {
       .on('mouseenter', showTooltip)
       .on('mouseleave', hideTooltip)
       .transition()
-      .duration(this.transition)
+      .duration(options.transition)
       .ease(d3.easeLinear)
       .attr('transform', (d) => `translate(${d.x},${d.y})`)
 
     containers
       .select('circle')
       .transition()
-      .duration(this.transition)
+      .duration(options.transition)
       .ease(d3.easeLinear)
       .attr('r', (d) => d.r)
 
     containers
       .select('text')
       .transition()
-      .duration(this.transition)
+      .duration(options.transition)
       .ease(d3.easeLinear)
       .style('font-size', fontSize)
 
@@ -191,7 +191,7 @@ export default class BubblesChart {
       .on('mouseenter', showTooltip)
       .on('mouseleave', hideTooltip)
       .transition()
-      .duration(this.transition)
+      .duration(options.transition)
       .ease(d3.easeLinear)
       .attr('transform', (d) => `translate(${d.x},${d.y})`)
 
@@ -204,7 +204,7 @@ export default class BubblesChart {
     enter
       .filter((d) => !this._textWidths[d.name])
       .append('text')
-      .attr('font-size', `${baseWidth}px`)
+      .attr('font-size', `${calcFontSize}px`)
       .text((d) => d.name)
       .each((d, i, nodes) => {
         this._textWidths[d.name] = nodes[i].getComputedTextLength()

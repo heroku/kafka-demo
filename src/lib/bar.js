@@ -18,7 +18,8 @@ export default class BarChart {
 
     this.xVariable = options.x
     this.yVariable = options.y
-    this.transition = options.transition
+    this.transition = options.transition / 2
+    this._useInitial = true
 
     const svg = d3
       .select(this.container)
@@ -60,7 +61,7 @@ export default class BarChart {
   }
 
   yValue (d) {
-    return d[this.yVariable] - _.find(this._initialData, { id: d.id })[this.yVariable]
+    return d[this.yVariable] - (this._useInitial ? _.find(this._initialData, { id: d.id })[this.yVariable] : 0)
   }
 
   formatData (data) {
@@ -71,8 +72,12 @@ export default class BarChart {
     this._lastData = this.formatData(data)
     this._initialData = this._lastData
 
-    const startTime = new Date(Math.min(...this._lastData.map((d) => d.time)))
-    this.container.parentNode.querySelector('.start-time').textContent = dateFormat(startTime, 'h:MM:ss TT')
+    if (this._useInitial) {
+      const startTime = new Date(Math.min(...this._lastData.map((d) => d.time)))
+      this.container.parentNode.querySelector('.start-time').textContent = dateFormat(startTime, 'h:MM:ss TT')
+    } else {
+      this.container.parentNode.querySelector('.start-time-container').remove()
+    }
 
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })

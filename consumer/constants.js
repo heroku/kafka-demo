@@ -8,4 +8,4 @@ const interval = module.exports.INTERVAL = 1000
 const maxSize = module.exports.MAX_SIZE = 1 * 60 * (1000 / interval)
 module.exports.MAX_BUFFER_SIZE = Math.floor(maxSize * 1.10)
 
-module.exports.TOPICS = ['news', 'music']
+module.exports.TOPICS = ['news', 'music', 'dog', 'cat', 'fish']

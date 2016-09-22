@@ -8,7 +8,7 @@ const minMargin = 15
 const margin = {
   top: minMargin,
   right: minMargin,
-  bottom: minMargin + 8,
+  bottom: minMargin + 25,
   left: minMargin + 37
 }
 
@@ -130,7 +130,7 @@ export default class BarChart {
       .call(this.xAxis)
 
     this.xAxisLabel
-      .attr('transform', `translate(${this.getWidth() / 2}, ${this.getHeight() + (margin.bottom - 5)})`)
+      .attr('transform', `translate(${this.getWidth() / 2}, ${this.getHeight() + (margin.bottom - 7)})`)
       .style('text-anchor', 'middle')
       .text('Keywords')
 

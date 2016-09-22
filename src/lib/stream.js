@@ -49,7 +49,7 @@ export default class StreamChart {
 
     this.xAxis = d3.axisBottom()
       .tickValues(_.range(0, this.maxDisplaySize + 1, 15))
-      .tickFormat((value) => value === 60 ? '1:00' : `0:${zeroFill(2, value)}`)
+      .tickFormat((d) => `${Math.floor(d / 60)}:${zeroFill(2, d - (Math.floor(d / 60) * 60))}`)
       .scale(this.xScale)
 
     this.yAxis = d3.axisLeft()
@@ -59,11 +59,13 @@ export default class StreamChart {
     this.stack = d3
       .stack()
       .offset(d3.stackOffsetSilhouette)
+      .order(d3.stackOrderInsideOut)
 
     this.area = d3
       .area()
       .x((d, index, items) => {
         const last = index === items.length - 1
+        // Force the first data point to always line up with the right edge
         const secondsAgo = last ? 0 : Math.floor((new Date() - d.data[this.xVariable]) / 1000)
         return this.xScale(secondsAgo)
       })

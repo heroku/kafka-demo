@@ -138,7 +138,7 @@ export default class BarChart {
       .call(this.yAxis)
 
     this.yAxisLabel
-      .attr('transform', `translate(${(margin.left * -1) + 12}, ${this.getHeight() / 2}) rotate(-90)`)
+      .attr('transform', `translate(${(margin.left * -1) + 19}, ${this.getHeight() / 2}) rotate(-90)`)
       .style('text-anchor', 'middle')
       .text('Message Count')
   }

@@ -49,7 +49,7 @@ export default class StreamChart {
 
     this.xAxis = d3.axisBottom()
       .tickValues(_.range(0, this.maxDisplaySize + 1, 15))
-      .tickFormat((value) => `:${zeroFill(2, value)}`)
+      .tickFormat((value) => value === 60 ? '1:00' : `0:${zeroFill(2, value)}`)
       .scale(this.xScale)
 
     this.yAxis = d3.axisLeft()

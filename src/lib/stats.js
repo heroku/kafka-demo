@@ -57,7 +57,7 @@ export default class Stats {
         } else if (typeof cell === 'string') {
           text = cell
         } else if (typeof cell === 'number') {
-          text = index === 1 ? cell : cell.toFixed(3).replace('.000', '')
+          text = index === 1 ? cell : cell.toFixed(3)
         }
         td.textContent = text
         tr.appendChild(td)

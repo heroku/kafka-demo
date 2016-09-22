@@ -4,6 +4,8 @@ html
     meta(http-equiv='Content-type' content='text/html; charset=utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel='shortcut icon' href='https://d3k90kvix375hb.cloudfront.net/assets/favicon.ico' type='image/vnd.microsoft.icon')
+    if (!htmlWebpackPlugin.options.production)
+      script(src='http://localhost:35729/livereload.js')
     for css in htmlWebpackPlugin.files.css
       link(rel='stylesheet' type='text/css' href=css)
     title #{htmlWebpackPlugin.options.title}
@@ -33,7 +35,15 @@ html
               | )
           .chart.loading
         .chart-container.chart-related
-          span.title Frequency of Related Words
+          span.title
+            | Frequency of Related Words
+            | 
+            | 
+            span.start-time-container
+              | (since
+              |  
+              span.start-time ...
+              | )
           .chart.loading
         .chart-container.chart-stats
           span.title Message Velocity

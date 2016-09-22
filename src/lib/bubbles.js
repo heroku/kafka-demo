@@ -2,6 +2,7 @@
 
 import * as d3 from 'd3'
 import _ from 'lodash'
+import dateFormat from 'dateformat'
 
 export default class BubblesChart {
   constructor (options) {
@@ -60,6 +61,13 @@ export default class BubblesChart {
     this._topics = Object.keys(data)
     this._lastData = this.formatData(data, data)
     this._initialData = data
+
+    if (this._useInitial) {
+      const startTime = new Date(Math.min(..._.map(data, (d) => _.last(d).time)))
+      this.container.parentNode.querySelector('.start-time').textContent = dateFormat(startTime, 'h:MM:ss TT')
+    } else {
+      this.container.parentNode.querySelector('.start-time-container').remove()
+    }
 
     this.updateBubbles({ first: true })
     d3.select(this.container).classed('loading', false)

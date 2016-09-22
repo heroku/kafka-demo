@@ -9,6 +9,7 @@ const autoprefixer = require('autoprefixer')
 const postcssImport = require('postcss-import')
 
 const production = process.env.NODE_ENV === 'production'
+const theme = process.env.SALESFORCE_THEME === 'true' ? 'salesforce' : 'heroku'
 
 const html = (filename, bodyClass) => new HtmlPlugin({
   production,
@@ -51,8 +52,7 @@ module.exports = {
     autoprefixer
   ],
   plugins: [
-    html('index.html', 'heroku'),
-    html('salesforce.html', 'salesforce'),
+    html('index.html', theme),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     production && new ExtractTextPlugin('app.[contenthash].css')
   ].filter(Boolean)

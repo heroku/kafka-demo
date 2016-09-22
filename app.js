@@ -22,8 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-dev-middleware')(compiler, { noInfo: true }))
 } else {
   app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
-  app.get('/heroku', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
-  app.get('/salesforce', (req, res) => res.sendFile(path.join(__dirname, 'dist/salesforce.html')))
 }
 
 const port = process.env.PORT || 3000

@@ -32,6 +32,11 @@ header {
   height: $headerHeight;
   font-weight: 100;
 
+  .logo {
+    position: relative;
+    z-index: 10;
+  }
+
   nav {
     padding: 0 $gutter;
     display: flex;
@@ -67,6 +72,10 @@ header {
         content: '⁂';
         display: inline-block;
         opacity: .5;
+      }
+
+      @media screen and (max-width: 480px) {
+        display: none;
       }
     }
   }
@@ -112,9 +121,11 @@ header {
     color: $sfHeaderText;
 
     .logo {
-      width: 110px;
-      height: 77px;
+      width: 93px;
+      height: 65px;
+      top: 6px;
       background: url('/images/logo-salesforce.svg') no-repeat center center;
+      background-size: 93px 65px;
     }
   }
 }
@@ -153,8 +164,19 @@ main {
     padding-bottom: 10px;
   }
 
+  body.salesforce & {
+    padding-top: 20px;
+  }
+
   &.open {
     transform: translate(0px, $diagramHeight);
+
+    @media screen and (max-width: 680px) {
+      transform: translate(0px, 350px);
+    }
+    @media screen and (max-width: 480px) {
+      transform: translate(0px, 250px);
+    }
   }
 
   @media screen and (width >= $break) {

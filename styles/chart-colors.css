@@ -2,16 +2,16 @@ $hColor1: #482d8c;
 $hColor2: #3ca1da;
 $hColor3: #79c36d;
 $hColor4: #f9a151;
-$hColor5: #000;
-$hColor6: #ccc;
+$hColor5: #D64242;
+$hColor6: #596981;
 $hChartText: #74787c;
 
 $sfColor1: #18afe5;
 $sfColor2: #955aa4;
 $sfColor3: #f29e1f;
 $sfColor4: #1fbcb8;
-$sfColor5: #000;
-$sfColor6: #ccc;
+$sfColor5: #29347C;
+$sfColor6: #60879E;
 $sfChartText: #74787c;
 
 body.heroku {

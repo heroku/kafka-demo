@@ -155,6 +155,13 @@ main {
 
   &.open {
     transform: translate(0px, $diagramHeight);
+
+    @media screen and (max-width: 680px) {
+      transform: translate(0px, 350px);
+    }
+    @media screen and (max-width: 480px) {
+      transform: translate(0px, 250px);
+    }
   }
 
   @media screen and (width >= $break) {

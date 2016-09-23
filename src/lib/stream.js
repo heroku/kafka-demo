@@ -10,7 +10,7 @@ const margin = {
   top: minMargin,
   right: minMargin,
   bottom: minMargin + 8,
-  left: minMargin + 17
+  left: minMargin
 }
 
 export default class StreamChart {
@@ -59,8 +59,7 @@ export default class StreamChart {
       .scale(this.xScale)
 
     this.yAxis = d3.axisLeft()
-      .ticks(5)
-      .tickFormat(Math.abs)
+      .ticks(0)
 
     this.stack = d3
       .stack()

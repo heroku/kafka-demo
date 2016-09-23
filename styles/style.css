@@ -259,6 +259,8 @@ main {
       &:nth-child(2) td:not(:first-child) { color: $hColor2; }
       &:nth-child(3) td:not(:first-child) { color: $hColor3; }
       &:nth-child(4) td:not(:first-child) { color: $hColor4; }
+      &:nth-child(5) td:not(:first-child) { color: $hColor5; }
+      &:nth-child(6) td:not(:first-child) { color: $hColor6; }
     }
 
     body.salesforce & {
@@ -266,6 +268,8 @@ main {
       &:nth-child(2) td:not(:first-child) { color: $sfColor2; }
       &:nth-child(3) td:not(:first-child) { color: $sfColor3; }
       &:nth-child(4) td:not(:first-child) { color: $sfColor4; }
+      &:nth-child(5) td:not(:first-child) { color: $sfColor5; }
+      &:nth-child(6) td:not(:first-child) { color: $sfColor6; }
     }
 
     td {
@@ -356,6 +360,8 @@ div.tooltip {
         &.color-2:before {background: $hColor2;}
         &.color-3:before {background: $hColor3;}
         &.color-4:before {background: $hColor4;}
+        &.color-5:before {background: $hColor5;}
+        &.color-6:before {background: $hColor6;}
       }
 
       body.salesforce & {
@@ -363,6 +369,8 @@ div.tooltip {
         &.color-2:before {background: $sfColor2;}
         &.color-3:before {background: $sfColor3;}
         &.color-4:before {background: $sfColor4;}
+        &.color-5:before {background: $sfColor5;}
+        &.color-6:before {background: $sfColor6;}
       }
     }
   }

@@ -28,7 +28,7 @@ const stats = new Stats({
   selector: '.chart-stats .chart',
   transition: INTERVAL,
   x: ['avgPerSecond', 'avgPer60Seconds', 'avgPer600Seconds'],
-  titles: ['per second', 'per minute', 'per hour']
+  titles: ['', 'Last Minute Avg', 'Last Hour Avg']
 })
 
 const bubbles = new Bubbles({

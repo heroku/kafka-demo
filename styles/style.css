@@ -267,29 +267,33 @@ main {
       &:nth-child(3) td:not(:first-child) { color: $sfColor3; }
       &:nth-child(4) td:not(:first-child) { color: $sfColor4; }
     }
+
+    td {
+        width: 25%;
+
+        &:not(:first-child) {
+          font-weight: bold;
+          font-size: 1.5em;
+          text-align: center;
+
+          &:after {
+            margin-left: 5px;
+            display: inline-block;
+            content: '/s';
+            font-size: .7em;
+            font-weight: normal;
+            body.heroku & { color: $hChartText; }
+            body.salesforce & { color: $sfChartText; }
+          }
+        }
+      }
   }
 
   tr.title {
     height: 5%;
-  }
 
-  tr.data td {
-    width: 25%;
-
-    &:not(:first-child) {
-      font-weight: bold;
-      font-size: 1.5em;
-      text-align: center;
-
-      &:after {
-        margin-left: 5px;
-        display: inline-block;
-        content: '/s';
-        font-size: .7em;
-        font-weight: normal;
-        body.heroku & { color: $hChartText; }
-        body.salesforce & { color: $sfChartText; }
-      }
+    td {
+      text-decoration: uppercase;
     }
   }
 }

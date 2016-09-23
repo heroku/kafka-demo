@@ -1,0 +1,286 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol.list-unstyled, ul.list-unstyled {
+  list-style: none
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*-----------------------------
+** General styles
+*----------------------------*/
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1.4;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  color: #222;
+}
+
+h1 {
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 28px;
+  color: #5E5F5F;
+}
+
+h2 {
+  text-align: center;
+  font-size: 26px;
+  color: #714898;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h2, h3, p, ol, ul, pre {
+  margin-bottom: 20px;
+}
+
+ul:not(.list-unstyled),
+ol:not(.list-unstyled) {
+  padding-left: 20px;
+}
+
+pre {
+  padding: 10px 15px;
+  background: #F0ECF5;
+  border-radius: 3px;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+pre code {
+  padding: 0;
+  white-space: pre-wrap;
+}
+
+code {
+  padding: 3px 6px;
+  background: #F0ECF5;
+  border-radius: 3px;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  color: #6195CA;
+  transition: .2s opacity;;
+}
+
+a:hover {
+  opacity: .8;
+}
+
+::selection {
+  background: #79589F;
+  color: white;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+section {
+  padding-top: 50px;
+}
+
+.content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/*-----------------------------
+** Buttons
+*----------------------------*/
+
+.button {
+  min-width: 170px;
+  margin: 5px;
+  padding: 15px;
+  display: inline-block;
+  background: #79589F;
+  border-radius: 4px;
+  color: white;
+}
+
+@media screen and (max-width: 420px) {
+  .button {
+    width: 90%;
+  }
+}
+
+/*-----------------------------
+** Header
+*----------------------------*/
+
+header {
+  padding: 25px 0;
+  text-align: center;
+  font-size: 15px;
+}
+
+@media screen and (min-width: 670px) {
+  header {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;   
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align:center;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+header .title {
+  margin-bottom: 10px;
+  display: block;
+  font-weight: bold;
+  color: #5E5F5F;
+}
+
+.nav-main a {
+  margin: 0 10px;
+  display: inline-block;
+  color: #79589F;
+}
+
+/*-----------------------------
+** Hero
+*----------------------------*/
+
+#hero {
+  padding-top: 60px;
+  text-align: center;
+}
+
+@media screen and (max-width: 420px) {
+  #hero {
+    padding-top: 30px;
+  }
+}
+
+#hero p {
+  margin-bottom: 30px;
+  font-size: 18px;
+  color: #8E8E8E;
+}
+
+#hero .animation {
+  margin-top: 30px;
+  line-height: 0;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+/*-----------------------------
+** Get started
+*----------------------------*/
+
+#get-started {
+  padding-bottom: 40px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+/*-----------------------------
+** Architecture
+*----------------------------*/
+
+#architecture .animation {
+  margin: 60px 0;
+  line-height: 0;
+}
+
+/*-----------------------------
+** FOOTER
+*----------------------------*/
+
+footer {
+  padding: 30px 0;
+  border-top: 1px solid #E5E5E5;
+  text-align: center;
+  font-size: 15px;
+}
+
+footer .logo {
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+@media screen and (min-width: 670px) {
+  footer .container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align:center;
+    align-items: center;
+    text-align: left;
+  }
+
+  footer .logo {
+    margin-bottom: 0;
+  }
+}
+
+.nav-footer a {
+  margin: 0 10px;
+  display: inline-block;
+  color: #79589F;
+}

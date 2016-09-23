@@ -21,7 +21,7 @@ export default class BubblesChart {
     this.chartArea = svg
       .append('g')
 
-    this.tooltip = d3.select(this.container)
+    this.tooltip = d3.select('body')
       .append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0)
@@ -113,10 +113,12 @@ export default class BubblesChart {
     const showTooltip = (d) => {
       this.tooltip.html(tooltipHtml(d))
 
+      const rect = this.container.getBoundingClientRect()
+
       this.tooltip
         .attr('id', dataId(d))
-        .style('left', `${(d.x * scale) + (width / 2) - (this.tooltip.node().clientWidth / 2)}px`)
-        .style('top', `${(d.y * scale) + (height / 2) + (d.r * scale) + 2}px`)
+        .style('left', `${(d.x * scale) + (width / 2) - (this.tooltip.node().clientWidth / 2) + rect.left}px`)
+        .style('top', `${(d.y * scale) + (height / 2) + (d.r * scale) + 2 + rect.top}px`)
         .attr('class', `tooltip ${this.getClass(d)}`)
         .style('opacity', 1)
     }

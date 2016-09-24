@@ -12,10 +12,11 @@ const postcssImport = require('postcss-import')
 const production = process.env.NODE_ENV === 'production'
 const theme = process.env.SALESFORCE_THEME === 'true' ? 'salesforce' : 'heroku'
 
-const html = (filename, bodyClass) => new HtmlPlugin({
+const html = (filename, bodyClass, title = 'Kafka Demo App') => new HtmlPlugin({
   production,
   filename,
   bodyClass,
+  title,
   inject: false,
   template: path.join(__dirname, 'views', 'index.pug')
 })

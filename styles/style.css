@@ -241,9 +241,20 @@ header .title {
 ** Architecture
 *----------------------------*/
 
+#architecture {
+  padding: 20px;
+}
+
 #architecture .animation {
-  margin: 60px 0;
+  margin: 60px 0 40px;
+  padding: 5px;
   line-height: 0;
+}
+
+@media screen and (max-width: 650px) {
+  #architecture iframe {
+    height: 500px;
+  }
 }
 
 /*-----------------------------

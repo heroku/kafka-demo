@@ -12,6 +12,11 @@ const margin = {
   left: minMargin + 37
 }
 
+const yFormat = d3.format('.2s')
+const powers = _.range(1, 11).map((index) => Math.pow(10, index))
+const exponent = (n) => Math.log(n || 1) / Math.LN10
+const nextPower = (n) => powers[Math.floor(exponent(n))]
+
 export default class BarChart {
   constructor (options) {
     this.container = document.querySelector(options.selector)
@@ -45,11 +50,11 @@ export default class BarChart {
       .paddingInner(0.1)
       .paddingOuter(0.1)
 
-    this.yScale = d3.scaleLinear()
+    this.yScaleLinear = d3.scaleLinear()
+    this.yScaleLog = d3.scaleLog()
 
     this.xAxis = d3.axisBottom()
     this.yAxis = d3.axisLeft()
-      .tickFormat(d3.format('.2s'))
   }
 
   getHeight () {
@@ -62,6 +67,12 @@ export default class BarChart {
 
   yValue (d) {
     return d[this.yVariable] - (this._useInitial ? _.find(this._initialData, { id: d.id })[this.yVariable] : 0)
+  }
+
+  yScaleMin (value) {
+    // Log scales can't go below 1 or values turn into NaN and -Infinity
+    const min = this.yScale.base ? 1 : 0
+    return typeof value === 'number' ? Math.max(min, value) : min
   }
 
   formatData (data) {
@@ -111,10 +122,22 @@ export default class BarChart {
     this.xScale
       .domain(this._lastData.map(d => d[this.xVariable]))
 
-    this.yScale
-      .domain([0, d3.max(this._lastData.map((d) => this.yValue(d)))])
-      .nice()
+    const [min, max] = d3.extent(this._lastData.map((d) => this.yValue(d)))
+    const [minExp, maxExp] = [min, max].map(exponent)
+    const useLog = (maxExp - minExp > 1) && maxExp > Math.LN10
 
+    if (useLog) {
+      this.yScale = this.yScaleLog
+      this.yAxis
+        .tickValues([this.yScaleMin(), ...powers.filter((b) => b < max), nextPower(max)])
+        .tickFormat((d) => d === this.yScaleMin() ? '0' : yFormat(d))
+    } else {
+      this.yScale = this.yScaleLinear
+      this.yAxis
+        .tickFormat((d) => d === this.yScaleMin() ? '0' : yFormat(d))
+    }
+
+    this.yScale.domain([this.yScaleMin(), max]).nice()
     this.xAxis.scale(this.xScale)
     this.yAxis.scale(this.yScale)
   }
@@ -164,7 +187,7 @@ export default class BarChart {
       .ease(d3.easeLinear)
       .attr('x', (d) => this.xScale(d[this.xVariable]))
       .attr('width', this.xScale.bandwidth)
-      .attr('y', (d) => this.yScale(this.yValue(d)))
-      .attr('height', (d) => this.yScale(0) - this.yScale(this.yValue(d)))
+      .attr('y', (d) => this.yScale(this.yScaleMin(this.yValue(d))))
+      .attr('height', (d) => this.yScale(this.yScaleMin()) - this.yScale(this.yScaleMin(this.yValue(d))))
   }
 }

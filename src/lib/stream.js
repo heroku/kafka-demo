@@ -47,7 +47,7 @@ export default class StreamChart {
     // The first points need to be rendered outside the x axis
     const rightEdge = 3
     this.xScale = d3.scaleLinear().domain([this.maxDisplaySize + rightEdge, rightEdge])
-    this.yScale = d3.scaleLinear().nice()
+    this.yScale = d3.scaleLinear()
 
     this.xAxis = d3.axisBottom()
       .tickValues(_.range(rightEdge, this.maxDisplaySize + rightEdge + 1, 15))

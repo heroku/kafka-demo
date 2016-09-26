@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Heroku">
 
-    <title>Heroku Kafka Demo</title>
+    <title>Apache Kafka on Heroku: Data Pipeline Demo</title>
     <link rel="shortcut icon" href="https://www.herokucdn.com/favicon.ico">
     <link rel="stylesheet" href="styles/style.css">
   </head>
@@ -16,17 +16,16 @@
     <div class="container">
 
       <header>
-        <span class="title">Heroku Kafka Demo</span>
+        <span class="title">Apache Kafka on Heroku: Data Pipeline Demo</span>
         <nav class="nav-main">
-          <a href="">Live Demo App</a>
           <a href="https://github.com/heroku/kafka-demo">Fork on GitHub</a>
           <a href="https://heroku.com/kafka">Apache Kafka on Heroku</a>
         </nav>
       </header>
 
       <section id="hero">
-        <h1>Heroku Kafka Demo</h1>
-        <p>a helpful short description of the demo</p>
+        <h1>Apache Kafka on Heroku: Data Pipeline Demo</h1>
+        <p>Sample data processing pipeline architecture using Apache Kafka on Heroku</p>
         <a href="#get-started" class="button">Get started</a>
         <a href="#architecture" class="button">Architecture</a>
         <div class="animation">
@@ -43,6 +42,64 @@
       <section id="get-started">
         <div class="content">
           <h2>Get Started</h2>
+          <h3>Overview</h3>
+          This system consumes data from the <a href="https://dev.twitter.com/streaming/overview">Twitter Streaming API</a>, manipulates the data using a series of Heroku apps, and generates a dynamic visualization of the manipulated data.
+          <br/><br/>
+
+          [SCREENSHOT OF GUI]
+          <br/><br/>
+
+          The architecture uses five Heroku apps, each serving a different role in the data pipeline.
+
+          <br/><br/>
+          <ul>
+            <li><strong><a href="https://github.com/heroku/kafka-tweet-producer">Data Ingest</a></strong>: Read from Twitter streaming API and produce messages for high volume ingest on Kafka topic</li>
+            <li><strong><a href="https://github.com/crcastle/twitter-fanout">Data Fanout</a></strong>: Consume ingested messages and fans out to discrete keyword Kafka topics</li>
+            <li><strong><a href="https://github.com/crcastle/twitter-aggregate">Aggregate Statistic Calculation</a></strong>: Consume messages from keyword Kafka topics, and calculate and produce aggregate mention count to a topic</li>
+            <li><strong><a href="https://github.com/crcastle/twitter-relatedwords">Related Terms Generation</a></strong>: Consumes messages from keyword Kafka topics, and produce related words &amp; related word count to a topic</li>
+            <li><strong><a href="https://github.com/heroku/kafka-demo">Visualization</a></strong>: Consume messages from aggregate and related words Kafka topics and generate the dynamic stream visualizations in a web application</li>
+          </ul>
+
+          The following are instructions to deploy the full system.  See below if you want <a href="#architecture">more details about the architecture</a>.
+          <br/><br/>
+
+          <h3>Pre-Requisites</h3>
+          <ul>
+            <li><a href="https://signup.heroku.com/">Free Heroku account</a></li>
+            <li><a href="https://devcenter.heroku.com/articles/heroku-command-line">Heroku CLI</a> tool</li>
+          </ul>
+          <h3>Deploy</h3>
+          <ol>
+            <li>
+              Setup <strong>Data Ingest</strong>, by following the instructions in the <a href="https://github.com/heroku/kafka-tweet-producer#readme">kafka-tweet-producer README</a>.  You will...
+              <ul>
+                <li>Deploy the code to Heroku</li>
+                <li>Configure the Heroku app</li>
+                <li>Create the Apache Kafka on Heroku cluster that will be used by all apps in the data processing pipeline</li>
+                <li>Create a Twitter App so you can connect to the Twitter Streaming API with valid credentials</li>
+              </ul>
+            </li>
+            <li>
+              Setup <strong>Data Fanout</strong> by deploying the <a href="https://github.com/crcastle/twitter-fanout">twitter-fanout</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/crcastle/twitter-fanout#readme">README</a>.  You will...
+              <ul>
+                <li>Deploy the code to Heroku</li>
+                <li>Configure the Heroku app</li>
+                <li>Attach the Kafka on Heroku add-on you previously created to this app</li>
+              </ul>
+            </li>
+            <li>
+              Setup Aggregate Statistics calculation...
+            </li>
+            <li>
+              Setup Related Terms generation...
+            </li>
+            <li>
+              Setup the Visualization web app...
+            </li>
+          </ol>
+          <h3>Configuration Options</h3>
+          <h4>Change tracked keywords</h4>
+
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean molestie blandit nibh. Morbi lorem tellus, gravida at est eu, lobortis ornare lacus. Sed quis urna at tellus consectetur scelerisque.</p>
           <p>Maecenas id lobortis ex, quis egestas mauris. Vestibulum rutrum bibendum massa, ac dictum turpis semper vel. Donec pellentesque leo at lacus gravida, posuere sollicitudin nibh venenatis. Maecenas rhoncus lobortis fringilla.</p>
           <h3>Lorem ipsum dolor sit amet</h3>

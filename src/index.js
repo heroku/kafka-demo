@@ -27,7 +27,7 @@ const stream = new Stream({
 const stats = new Stats({
   selector: '.chart-stats .chart',
   transition: INTERVAL,
-  x: ['avgPerSecond', 'avgPer60Seconds', 'avgPer600Seconds'],
+  x: ['avgPerSecond', 'avgPer60Seconds', 'avgPer3600Seconds'],
   titles: ['', 'Last Minute Avg', 'Last Hour Avg']
 })
 

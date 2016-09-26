@@ -76,7 +76,7 @@ export default class BarChart {
   }
 
   formatData (data) {
-    return Object.keys(data).map((topic) => _.last(data[topic]))
+    return _.map(data, (values) => _.last(values))
   }
 
   init (data) {
@@ -124,7 +124,9 @@ export default class BarChart {
 
     const [min, max] = d3.extent(this._lastData.map((d) => this.yValue(d)))
     const [minExp, maxExp] = [min, max].map(exponent)
-    const useLog = (maxExp - minExp > 1) && maxExp > Math.LN10
+
+    // Dont revert back to a linear scale after going logarithmic
+    const useLog = (this.yScale && this.yScale.base) || ((maxExp - minExp > 1) && (maxExp > Math.LN10))
 
     if (useLog) {
       this.yScale = this.yScaleLog

@@ -43,15 +43,13 @@
         <div class="content">
           <h2>Get Started</h2>
           <h3>Overview</h3>
-          This system consumes data from the <a href="https://dev.twitter.com/streaming/overview">Twitter Streaming API</a>, manipulates the data using a series of Heroku apps, and generates a dynamic visualization of the manipulated data.
-          <br/><br/>
+          <p>This system consumes data from the <a href="https://dev.twitter.com/streaming/overview">Twitter Streaming API</a>, manipulates the data using a series of Heroku apps, and generates a dynamic visualization of the manipulated data.</p>
 
-          [SCREENSHOT OF GUI]
-          <br/><br/>
+          <img src="http://placehold.it/500x300"/>
+          [SCREENSHOT OF GUI]<br><br>
 
-          The architecture uses five Heroku apps, each serving a different role in the data pipeline.
+          <p>The architecture uses five Heroku apps, each serving a different role in the data pipeline.</p>
 
-          <br/><br/>
           <ul>
             <li><strong><a href="https://github.com/heroku/kafka-tweet-producer">Data Ingest</a></strong>: Read from Twitter streaming API and produce messages for high volume ingest on Kafka topic</li>
             <li><strong><a href="https://github.com/crcastle/twitter-fanout">Data Fanout</a></strong>: Consume ingested messages and fans out to discrete keyword Kafka topics</li>
@@ -60,8 +58,7 @@
             <li><strong><a href="https://github.com/heroku/kafka-demo">Visualization</a></strong>: Consume messages from aggregate and related words Kafka topics and generate the dynamic stream visualizations in a web application</li>
           </ul>
 
-          The following are instructions to deploy the full system.  See below if you want <a href="#architecture">more details about the architecture</a>.
-          <br/><br/>
+          <p>The following are instructions to deploy the full system.  See below if you want <a href="#architecture">more details about the architecture</a>.</p>
 
           <h3>Pre-Requisites</h3>
           <ul>
@@ -98,7 +95,32 @@
             </li>
           </ol>
           <h3>Configuration Options</h3>
+          <h4>Change theme</h4>
+          <p>By default a Heroku-inspired color palette is used in the Visualization web app.  This can be changed to a Salesforce-inspired color palette by setting the <code>SALESFORCE_THEME</code> environment variable to <code>true</code>.</p>
+          
           <h4>Change tracked keywords</h4>
+          <p>The data visualization has been tested with up to five keywords.  It looks best with three to five.  You may use more or less, but the data visualization may not behave as expected.</p>
+
+          <ol>
+            <li>
+              Create the necessary Kafka topics.  This may be done with the Heroku CLI or from the Kafka on Heroku dashboard.  Three topics are required for each keyword.  They must be named using the following format: <code>dog-keyword</code>, <code>dog-aggregate</code>, <code>dog-relatedwords</code>.
+            </li>
+            <li>
+              Update configuration of the Data Ingest app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
+            </li>
+            <li>
+              Update configuration of the Data Fanout app similar to the Data Ingest app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
+            </li>
+            <li>
+              Update the <code><a href="https://github.com/crcastle/twitter-aggregate/blob/master/Procfile">Procfile</a></code> for the Aggregate Statistics Calculation app to include a process for each keyword.
+            </li>
+            <li>
+              Update the <code><a href="https://github.com/crcastle/twitter-relatedwords/blob/master/Procfile">Procfile</a></code> for the Related Terms Generation app to include a process for each keyword.
+            </li>
+            <li>
+              Update the configuration of the Visualization similar to the Data Ingest and Data Fanout apps.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
+            </li>
+          </ol>
 
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean molestie blandit nibh. Morbi lorem tellus, gravida at est eu, lobortis ornare lacus. Sed quis urna at tellus consectetur scelerisque.</p>
           <p>Maecenas id lobortis ex, quis egestas mauris. Vestibulum rutrum bibendum massa, ac dictum turpis semper vel. Donec pellentesque leo at lacus gravida, posuere sollicitudin nibh venenatis. Maecenas rhoncus lobortis fringilla.</p>

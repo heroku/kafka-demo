@@ -44,11 +44,11 @@ export default class BubblesChart {
 
     return _.transform(raw, (res, values, topic) => {
       const previousValues = initial[topic]
-      const previous = _.map(_.last(previousValues).relations, (r, name) => ({ name, r, topic }))
+      const previous = this._useInitial ? _.map(_.last(previousValues).relations, (r, name) => ({ name, r, topic })) : []
       const relations = _.map(_.last(values).relations, (r, name) => ({
         name,
         topic,
-        r: (r - (this._useInitial ? (_.find(previous, { name }) || { r: 0 }).r : 0)) || 1
+        r: (r - (_.find(previous, { name }) || { r: 0 }).r) || 1
       }))
 
       const topRelations = _.orderBy(relations, ['r', 'name'], ['desc', 'desc'])

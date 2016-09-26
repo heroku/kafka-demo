@@ -10,25 +10,51 @@ export default class Stats {
   }
 
   formatData (data) {
-    const keys = Object.keys(data)
-    const rows = keys.map((topic) => {
-      const value = _.last(data[topic])
-      return [topic, ...this.xVariable.map((x) => value[x])]
+    return _.map(data, (values) => {
+      const value = _.last(values)
+      return this.xVariable.map((x) => value[x])
     })
-
-    rows.push(['', ...this.xTitles])
-    return rows
   }
 
   init (data) {
     this._lastData = this.formatData(data)
 
-    this.container.appendChild(document.createElement('table'))
-
+    this.initTable(data)
     this.updateTable({ first: true })
     this.container.classList.remove('loading')
 
     this._initialized = true
+  }
+
+  initTable (data) {
+    // Build initial static parts of table
+    const topics = Object.keys(data)
+    const cells = this.xVariable
+    const table = document.createElement('table')
+
+    topics.forEach((topic) => {
+      const tr = document.createElement('tr')
+      const title = document.createElement('td')
+
+      tr.classList.add('data')
+      title.textContent = topic
+      tr.appendChild(title)
+      cells.forEach((cell) => tr.appendChild(document.createElement('td')))
+      table.appendChild(tr)
+    })
+
+    const labels = document.createElement('tr')
+    labels.classList.add('title')
+    labels.appendChild(document.createElement('td'))
+    this.xTitles.forEach((label) => {
+      const td = document.createElement('td')
+      td.textContent = label
+      labels.appendChild(td)
+    })
+    table.appendChild(labels)
+
+    this._table = table
+    this.container.appendChild(table)
   }
 
   update (data) {
@@ -40,27 +66,13 @@ export default class Stats {
   }
 
   updateTable () {
-    const table = this.container.querySelector('table')
-    _.invokeMap(table.querySelectorAll('tr'), 'remove')
+    const trs = this._table.querySelectorAll('tr')
 
     this._lastData.forEach((row, rowIndex) => {
-      const isTitle = rowIndex === (this._lastData.length - 1)
-      const tr = document.createElement('tr')
-      tr.classList.add(isTitle ? 'title' : 'data')
-      table.appendChild(tr)
-
+      const tds = trs[rowIndex].querySelectorAll('td')
       row.forEach((cell, index) => {
-        const td = document.createElement('td')
-        let text
-        if (cell == null) {
-          text = 'N/A'
-        } else if (typeof cell === 'string') {
-          text = cell
-        } else if (typeof cell === 'number') {
-          text = index === 1 ? cell : cell.toFixed(3)
-        }
-        td.textContent = text
-        tr.appendChild(td)
+        const td = tds[index + 1]
+        td.textContent = cell == null ? 'N/A' : (index === 0 ? cell : cell.toFixed(3))
       })
     })
   }

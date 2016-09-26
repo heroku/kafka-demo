@@ -42,9 +42,13 @@ export default class BarChart {
 
     this.xAxisLabel = chartArea.append('text')
       .attr('class', 'label')
+      .style('text-anchor', 'middle')
+      .text('Keywords')
 
     this.yAxisLabel = chartArea.append('text')
       .attr('class', 'label')
+      .style('text-anchor', 'middle')
+      .text('Message Count')
 
     this.xScale = d3.scaleBand()
       .paddingInner(0.1)
@@ -156,16 +160,12 @@ export default class BarChart {
 
     this.xAxisLabel
       .attr('transform', `translate(${this.getWidth() / 2}, ${this.getHeight() + (margin.bottom - 7)})`)
-      .style('text-anchor', 'middle')
-      .text('Keywords')
 
     this.yAxisG
       .call(this.yAxis)
 
     this.yAxisLabel
       .attr('transform', `translate(${(margin.left * -1) + 19}, ${this.getHeight() / 2}) rotate(-90)`)
-      .style('text-anchor', 'middle')
-      .text('Message Count')
   }
 
   updateBars (options = {}) {

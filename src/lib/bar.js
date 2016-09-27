@@ -70,7 +70,7 @@ export default class BarChart {
   }
 
   yValue (d) {
-    return d[this.yVariable] - (this._useInitial ? _.find(this._initialData, { id: d.id })[this.yVariable] : 0)
+    return d[this.yVariable] - (this._useInitial ? _.find(this._initialData, { [this.xVariable]: d[this.xVariable] })[this.yVariable] : 0)
   }
 
   yScaleMin (value) {

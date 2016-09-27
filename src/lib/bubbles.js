@@ -4,6 +4,9 @@ import * as d3 from 'd3'
 import _ from 'lodash'
 import dateFormat from 'dateformat'
 
+const dataId = ({ name, topic }) => `${name}-${topic}`
+const tooltipHtml = ({ name, r }) => `${name}<br/>${r}`
+
 export default class BubblesChart {
   constructor (options) {
     this.container = document.querySelector(options.selector)
@@ -39,12 +42,15 @@ export default class BubblesChart {
     return `chart-color-${this._topics.indexOf(d.topic) + 1} ${d.name}`
   }
 
-  formatData (raw, initial) {
+  formatData (raw) {
     const length = _.size(raw)
 
     return _.transform(raw, (res, values, topic) => {
-      const previousValues = initial[topic]
-      const previous = this._useInitial ? _.map(_.last(previousValues).relations, (r, name) => ({ name, r, topic })) : []
+      let previous = []
+      if (this._useInitial) {
+        previous = _.map(_.last(this._initialData[topic]).relations, (r, name) => ({ name, r, topic }))
+      }
+
       const relations = _.map(_.last(values).relations, (r, name) => ({
         name,
         topic,
@@ -60,8 +66,8 @@ export default class BubblesChart {
 
   init (data) {
     this._topics = Object.keys(data)
-    this._lastData = this.formatData(data, data)
     this._initialData = data
+    this._lastData = this.formatData(data)
 
     if (this._useInitial) {
       const startTime = new Date(Math.min(..._.map(data, (d) => _.last(d).time)))
@@ -84,7 +90,7 @@ export default class BubblesChart {
   update (data) {
     if (!this._initialized) return
 
-    this._lastData = this.formatData(data, this._initialData)
+    this._lastData = this.formatData(data)
 
     this.updateBubbles({ transition: this.transition })
   }
@@ -98,9 +104,6 @@ export default class BubblesChart {
     const center = { x: width / 2, y: height / 2 }
     const translate = `${center.x},${center.y}`
     const scale = Math.min(height, width) / ((enclose.r || 1) * 2)
-
-    const dataId = ({ name, topic }) => `${name}-${topic}`
-    const tooltipHtml = ({ name, r }) => `${name}<br/>${r}`
 
     this._textWidths = this._textWidths || {}
     const calcFontSize = 12

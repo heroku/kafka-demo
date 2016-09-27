@@ -10,6 +10,10 @@ module.exports = class Nav {
     this.architecture()
   }
 
+  formatData (data) {
+    return Object.keys(data)
+  }
+
   architecture () {
     this.architectureLink.addEventListener('click', () => {
       const isOpen = this.main.classList.contains('open')
@@ -23,8 +27,8 @@ module.exports = class Nav {
     })
   }
 
-  topics (topics) {
-    topics.forEach((topic, index) => {
+  init (data) {
+    this.formatData(data).forEach((topic, index) => {
       const li = document.createElement('li')
       li.textContent = topic
       li.classList.add(`color-${index + 1}`)

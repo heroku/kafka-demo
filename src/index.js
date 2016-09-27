@@ -1,6 +1,7 @@
 'use strict'
 
 import '../styles/style.css'
+import _ from 'lodash'
 import Bar from './lib/bar'
 import Stream from './lib/stream'
 import Stats from './lib/stats'
@@ -8,39 +9,40 @@ import Bubbles from './lib/bubbles'
 import Nav from './lib/nav'
 import { MAX_SIZE, MAX_BUFFER_SIZE, INTERVAL } from '../consumer/constants'
 
-const bar = new Bar({
-  selector: '.chart-topics .chart',
-  transition: INTERVAL,
-  x: 'id',
-  y: 'count'
-})
+const aggregate = [
+  new Nav({
+    legend: '.footer-legend ul',
+    architecture: '.architecture-link'
+  }),
+  new Bar({
+    selector: '.chart-topics .chart',
+    transition: INTERVAL,
+    x: 'id',
+    y: 'count'
+  }),
+  new Stream({
+    selector: '.chart-stream .chart',
+    transition: INTERVAL,
+    x: 'time',
+    y: 'avgPerSecond',
+    maxSize: MAX_BUFFER_SIZE,
+    maxDisplaySize: MAX_SIZE
+  }),
+  new Stats({
+    selector: '.chart-stats .chart',
+    transition: INTERVAL,
+    x: ['avgPerSecond', 'avgPer60Seconds', 'avgPer3600Seconds'],
+    titles: ['', 'Last Minute Avg', 'Last Hour Avg']
+  })
+]
 
-const stream = new Stream({
-  selector: '.chart-stream .chart',
-  transition: INTERVAL,
-  x: 'time',
-  y: 'avgPerSecond',
-  maxSize: MAX_BUFFER_SIZE,
-  maxDisplaySize: MAX_SIZE
-})
-
-const stats = new Stats({
-  selector: '.chart-stats .chart',
-  transition: INTERVAL,
-  x: ['avgPerSecond', 'avgPer60Seconds', 'avgPer3600Seconds'],
-  titles: ['', 'Last Minute Avg', 'Last Hour Avg']
-})
-
-const bubbles = new Bubbles({
-  selector: '.chart-related .chart',
-  transition: INTERVAL,
-  maxRelations: 20
-})
-
-const nav = new Nav({
-  legend: '.footer-legend ul',
-  architecture: '.architecture-link'
-})
+const related = [
+  new Bubbles({
+    selector: '.chart-related .chart',
+    transition: INTERVAL,
+    maxRelations: 20
+  })
+]
 
 const url = `ws${window.location.href.match(/^http(s?:\/\/.*)\/.*$/)[1]}`
 const ws = new window.WebSocket(url)
@@ -50,21 +52,16 @@ ws.onmessage = (e) => {
 
   switch (type) {
     case 'snapshot':
-      nav.topics(Object.keys(data.aggregate))
-      bar.init(data.aggregate)
-      stream.init(data.aggregate)
-      stats.init(data.aggregate)
-      bubbles.init(data.relatedwords)
+      _.invokeMap(aggregate, 'init', data.aggregate)
+      _.invokeMap(related, 'init', data.relatedwords)
       break
 
     case 'aggregate':
-      bar.update(data)
-      stream.update(data)
-      stats.update(data)
+      _.invokeMap(aggregate, 'update', data)
       break
 
     case 'relatedwords':
-      bubbles.update(data)
+      _.invokeMap(related, 'update', data)
       break
   }
 }

@@ -64,7 +64,6 @@ export default class StreamChart {
     this.stack = d3
       .stack()
       .offset(d3.stackOffsetSilhouette)
-      .order(d3.stackOrderInsideOut)
 
     this.area = d3
       .area()

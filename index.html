@@ -59,7 +59,7 @@
             <li><strong><a href="https://github.com/heroku/kafka-demo">Visualization</a></strong>: Consume messages from aggregate and related words Kafka topics and generate the dynamic stream visualizations in a web application</li>
           </ul>
 
-          <p>The following are instructions to deploy the full system.  See below if you want <a href="#architecture">more details about the architecture</a>.</p>
+          <p>Here are instructions to deploy the full system.  See further below for an <a href="#architecture">architecture diagram</a> explaining the steps through which the data flows.</p>
 
           <h3>Pre-Requisites</h3>
           <ul>
@@ -120,7 +120,7 @@
 
           <ol>
             <li>
-              Create the necessary Kafka topics.  This may be done with the Heroku CLI or from the Kafka on Heroku dashboard.  Three topics are required for each keyword.  They must be named using the following format: <code>dog-keyword</code>, <code>dog-aggregate</code>, <code>dog-relatedwords</code> (an example if the keyword were 'dog').
+              Create the necessary Kafka topics.  This may be done with the <a href="https://devcenter.heroku.com/articles/kafka-on-heroku#understanding-topics">Heroku CLI</a> or from the Kafka on Heroku dashboard.  Three topics are required for each keyword.  They must be named using the following format: <code>dog-keyword</code>, <code>dog-aggregate</code>, <code>dog-relatedwords</code> (an example if the keyword were 'dog').
             </li>
             <li>
               Update configuration of the <strong>Data Ingest</strong> app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
@@ -147,7 +147,12 @@
     <section id="architecture">
       <div class="content">
         <h1>Architecture</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean molestie blandit nibh. Morbi lorem tellus, gravida at est eu, lobortis ornare lacus. Sed quis urna at tellus consectetur scelerisque.</p>
+        <p>
+          In addition to showing how the system is architected, this diagram also shows how data moves through the system.
+        </p>
+        <p>
+          The Kafka cluster is represented by the large light purple rectangle.  Within that, each named rectangle represents a Kafka topic.  The hexagons are Heroku apps that manipulate data.  They produce data to and/or consume data from Kafka topics.
+        </p>
       </div>
       <div class="animation">
         <iframe class="active"

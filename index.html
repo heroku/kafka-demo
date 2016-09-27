@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Heroku">
 
-    <title>Apache Kafka on Heroku: Data Pipeline Demo</title>
+    <title>Demo of Apache Kafka on Heroku</title>
     <link rel="shortcut icon" href="https://www.herokucdn.com/favicon.ico">
     <link rel="stylesheet" href="styles/style.css">
   </head>
@@ -16,7 +16,7 @@
     <div class="container">
 
       <header>
-        <span class="title">Apache Kafka on Heroku: Data Pipeline Demo</span>
+        <span class="title"></span>
         <nav class="nav-main">
           <a href="https://github.com/heroku/kafka-demo">Fork on GitHub</a>
           <a href="https://heroku.com/kafka">Apache Kafka on Heroku</a>
@@ -24,8 +24,8 @@
       </header>
 
       <section id="hero">
-        <h1>Apache Kafka on Heroku: Data Pipeline Demo</h1>
-        <p>Sample data processing pipeline architecture using Apache Kafka on Heroku</p>
+        <h1>Demo of Apache Kafka on Heroku</h1>
+        <p>Data processing pipeline architecture using Apache Kafka on Heroku</p>
         <a href="#get-started" class="button">Get started</a>
         <a href="#architecture" class="button">Architecture</a>
         <div class="animation">
@@ -45,16 +45,17 @@
           <h3>Overview</h3>
           <p>This system consumes data from the <a href="https://dev.twitter.com/streaming/overview">Twitter Streaming API</a>, manipulates the data using a series of Heroku apps, and generates a dynamic visualization of the manipulated data.</p>
 
-          <img src="http://placehold.it/500x300"/>
-          [SCREENSHOT OF GUI]<br><br>
+          <div id="screenshot">
+            <img src="images/kafka-on-heroku.gif"/>
+          </div>
 
           <p>The architecture uses five Heroku apps, each serving a different role in the data pipeline.</p>
 
           <ul>
             <li><strong><a href="https://github.com/heroku/kafka-tweet-producer">Data Ingest</a></strong>: Read from Twitter streaming API and produce messages for high volume ingest on Kafka topic</li>
-            <li><strong><a href="https://github.com/crcastle/twitter-fanout">Data Fanout</a></strong>: Consume ingested messages and fans out to discrete keyword Kafka topics</li>
-            <li><strong><a href="https://github.com/crcastle/twitter-aggregate">Aggregate Statistic Calculation</a></strong>: Consume messages from keyword Kafka topics, and calculate and produce aggregate mention count to a topic</li>
-            <li><strong><a href="https://github.com/crcastle/twitter-relatedwords">Related Terms Generation</a></strong>: Consumes messages from keyword Kafka topics, and produce related words &amp; related word count to a topic</li>
+            <li><strong><a href="https://github.com/heroku/kafka-twitter-fanout">Data Fanout</a></strong>: Consume ingested messages and fans out to discrete keyword Kafka topics</li>
+            <li><strong><a href="https://github.com/heroku/kafka-twitter-aggregate">Aggregate Statistic Calculation</a></strong>: Consume messages from keyword Kafka topics, and calculate and produce aggregate mention count to a topic</li>
+            <li><strong><a href="https://github.com/heroku/kafka-twitter-relatedwords">Related Terms Generation</a></strong>: Consumes messages from keyword Kafka topics, and produce related words &amp; related word count to a topic</li>
             <li><strong><a href="https://github.com/heroku/kafka-demo">Visualization</a></strong>: Consume messages from aggregate and related words Kafka topics and generate the dynamic stream visualizations in a web application</li>
           </ul>
 
@@ -62,7 +63,7 @@
 
           <h3>Pre-Requisites</h3>
           <ul>
-            <li><a href="https://signup.heroku.com/">Free Heroku account</a></li>
+            <li>Free <a href="https://signup.heroku.com/">Heroku account</a></li>
             <li><a href="https://devcenter.heroku.com/articles/heroku-command-line">Heroku CLI</a> tool</li>
           </ul>
           <h3>Deploy</h3>
@@ -77,67 +78,67 @@
               </ul>
             </li>
             <li>
-              Setup <strong>Data Fanout</strong> by deploying the <a href="https://github.com/crcastle/twitter-fanout">twitter-fanout</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/crcastle/twitter-fanout#readme">README</a>.  You will...
+              Setup <strong>Data Fanout</strong> by deploying the <a href="https://github.com/heroku/kafka-twitter-fanout">kafka-twitter-fanout</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-twitter-fanout#readme">README</a>.  You will...
               <ul>
                 <li>Deploy the code to Heroku</li>
                 <li>Configure the Heroku app</li>
-                <li>Attach the Kafka on Heroku add-on you previously created to this app</li>
+                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
               </ul>
             </li>
             <li>
-              Setup Aggregate Statistics calculation...
+              Setup <strong>Aggregate Statistics Calculation</strong> by deplying the <a href="https://github.com/heroku/kafka-twitter-aggregate">kafka-twitter-aggregate</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-twitter-aggregate#readme">README</a>.  You will...
+              <ul>
+                <li>Deploy the code to Heroku</li>
+                <li>Configure the Heroku app</li>
+                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
+              </ul>
             </li>
             <li>
-              Setup Related Terms generation...
+              Setup <strong>Related Terms Generation</strong> by deploying the <a href="https://github.com/heroku/kafka-twitter-relatedwords">kafka-twitter-relatedwords</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-twitter-relatedwords#readme">README</a>.  You will...
+              <ul>
+                <li>Deploy the code to Heroku</li>
+                <li>Configure the Heroku app</li>
+                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
+              </ul>
             </li>
             <li>
-              Setup the Visualization web app...
+              Setup the <strong>Visualization</strong> web app by deploying the <a href="https://github.com/heroku/kafka-demo">kafka-demo</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-demo#readme">README</a>. You will...
+              <ul>
+                <li>Deploy the code to Heroku</li>
+                <li>Configure the Heroku app</li>
+                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
+              </ul>
             </li>
           </ol>
           <h3>Configuration Options</h3>
-          <h4>Change theme</h4>
+
+          <h4>Switch palette between Heroku and Salesforce colors</h4>
           <p>By default a Heroku-inspired color palette is used in the Visualization web app.  This can be changed to a Salesforce-inspired color palette by setting the <code>SALESFORCE_THEME</code> environment variable to <code>true</code>.</p>
-          
-          <h4>Change tracked keywords</h4>
+
+          <h4>Change or add tracked keywords</h4>
           <p>The data visualization has been tested with up to five keywords.  It looks best with three to five.  You may use more or less, but the data visualization may not behave as expected.</p>
 
           <ol>
             <li>
-              Create the necessary Kafka topics.  This may be done with the Heroku CLI or from the Kafka on Heroku dashboard.  Three topics are required for each keyword.  They must be named using the following format: <code>dog-keyword</code>, <code>dog-aggregate</code>, <code>dog-relatedwords</code>.
+              Create the necessary Kafka topics.  This may be done with the Heroku CLI or from the Kafka on Heroku dashboard.  Three topics are required for each keyword.  They must be named using the following format: <code>dog-keyword</code>, <code>dog-aggregate</code>, <code>dog-relatedwords</code> (an example if the keyword were 'dog').
             </li>
             <li>
-              Update configuration of the Data Ingest app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
+              Update configuration of the <strong>Data Ingest</strong> app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
             </li>
             <li>
-              Update configuration of the Data Fanout app similar to the Data Ingest app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
+              Update configuration of the <strong>Data Fanout</strong> app similar to the <strong>Data Ingest</strong> app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
             </li>
             <li>
-              Update the <code><a href="https://github.com/crcastle/twitter-aggregate/blob/master/Procfile">Procfile</a></code> for the Aggregate Statistics Calculation app to include a process for each keyword.
+              Update the <code><a href="https://github.com/heroku/kafka-twitter-aggregate/blob/master/Procfile">Procfile</a></code> for the <strong>Aggregate Statistics Calculation</strong> app to include a process for each keyword.
             </li>
             <li>
-              Update the <code><a href="https://github.com/crcastle/twitter-relatedwords/blob/master/Procfile">Procfile</a></code> for the Related Terms Generation app to include a process for each keyword.
+              Update the <code><a href="https://github.com/heroku/kafka-twitter-relatedwords/blob/master/Procfile">Procfile</a></code> for the <strong>Related Terms Generation</strong> app to include a process for each keyword.
             </li>
             <li>
-              Update the configuration of the Visualization similar to the Data Ingest and Data Fanout apps.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
+              Update the configuration of the <strong>Visualization</strong> app similar to the <strong>Data Ingest</strong> and <strong>Data Fanout</strong> apps.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
             </li>
           </ol>
 
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean molestie blandit nibh. Morbi lorem tellus, gravida at est eu, lobortis ornare lacus. Sed quis urna at tellus consectetur scelerisque.</p>
-          <p>Maecenas id lobortis ex, quis egestas mauris. Vestibulum rutrum bibendum massa, ac dictum turpis semper vel. Donec pellentesque leo at lacus gravida, posuere sollicitudin nibh venenatis. Maecenas rhoncus lobortis fringilla.</p>
-          <h3>Lorem ipsum dolor sit amet</h3>
-          <ul>
-            <li>Nullam maximus eros ac aliquet fringilla.</li>
-            <li>Curabitur elementum dui velit, in imperdiet nisi interdum eu.</li>
-            <li>Mauris eu arcu eleifend, tincidunt eros non, luctus arcu.</li>
-          </ul>
-          <p>Suspendisse in libero facilisis, interdum erat vitae, scelerisque urna. Nam egestas felis in mattis euismod. Fusce <code>accumsan luctus ultrices</code> curabitur ac aliquet elit. Suspendisse massa ipsum, interdum id maximus et, facilisis sed sem. Proin varius tincidunt est. Integer tincidunt blandit lobortis. Cras vel semper nunc.</p>
-          <ol>
-            <li>Nullam maximus eros ac aliquet fringilla.</li>
-            <li>Curabitur elementum dui velit, in imperdiet nisi interdum eu.</li>
-            <li>Mauris eu arcu eleifend, tincidunt eros non, luctus arcu.</li>
-          </ol>
-          <pre><code>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</code></pre>
-          <p>Maecenas id lobortis ex, quis egestas mauris. Vestibulum rutrum bibendum massa, ac dictum turpis semper vel. Donec pellentesque leo at lacus gravida, posuere sollicitudin nibh venenatis. Maecenas rhoncus lobortis fringilla.</p>
         </div>
       </section>
 
@@ -163,7 +164,6 @@
       <div class="container">
         <a href="https://heroku.com" class="logo"><img src="images/logo-heroku.svg" /></a>
         <nav class="nav-footer">
-          <a href="">Live Demo App</a>
           <a href="https://github.com/heroku/kafka-demo">Fork on GitHub</a>
           <a href="https://heroku.com/kafka">Apache Kafka on Heroku</a>
         </nav>

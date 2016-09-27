@@ -135,6 +135,10 @@ a:hover {
   color: white;
 }
 
+strong {
+  font-weight: bold;
+}
+
 .container {
   max-width: 960px;
   margin: 0 auto;
@@ -240,6 +244,21 @@ header .title {
 #get-started {
   padding-bottom: 40px;
   border-bottom: 1px solid #E5E5E5;
+}
+
+#screenshot {
+  text-align: center;
+}
+
+#screenshot img {
+  border: 1px solid #eeeeee;
+  width: 500px;
+}
+
+@media screen and (max-width: 650px) {
+  #screenshot img {
+    width: 95%;
+  }
 }
 
 /*-----------------------------

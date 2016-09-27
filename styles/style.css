@@ -342,6 +342,8 @@ div.tooltip {
   pointer-events: none;
   z-index: 1000;
   color: #fff;
+  left: 0;
+  top: 0;
 
   body.heroku & {
     border-color: $hBorder;

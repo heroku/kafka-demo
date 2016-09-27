@@ -206,10 +206,7 @@ export default class BubblesChart {
 
     enterText
       .merge(updateText)
-      .transition()
-      .duration(options.transition)
-      .ease(d3.easeLinear)
-      .style('font-size', (d, index, nodes) => {
+      .style('font-size', (d) => {
         const size = ((d.r * 2) / (this._textWidths[d.name] || 50)) * CALC_FONT_SIZE * 0.7
         const relativeSize = size * scale
         return relativeSize < 10 ? 0 : `${size}px`

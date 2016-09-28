@@ -82,6 +82,7 @@ h2 {
 }
 
 h3 {
+  padding-top: 10px;
   font-size: 20px;
 }
 
@@ -94,9 +95,16 @@ h2, h3, h4, p, ol, ul, pre {
   margin-bottom: 20px;
 }
 
-ul:not(.list-unstyled),
-ol:not(.list-unstyled) {
+ul, ol {
   padding-left: 20px;
+}
+
+ul li, ol li {
+  margin-bottom: 5px;
+}
+
+li ul, li ol {
+  margin-top: 5px;
 }
 
 pre {
@@ -246,8 +254,10 @@ header .title {
   border-bottom: 1px solid #E5E5E5;
 }
 
-#screenshot {
-  text-align: center;
+#get-started img {
+  max-width: 95%;
+  margin: 0 auto 20px;
+  display: block;
 }
 
 #screenshot img {
@@ -255,18 +265,16 @@ header .title {
   width: 500px;
 }
 
-@media screen and (max-width: 650px) {
-  #screenshot img {
-    width: 95%;
-  }
-}
-
 /*-----------------------------
 ** Architecture
 *----------------------------*/
 
 #architecture {
-  padding: 20px;
+  padding: 40px 20px 20px;
+}
+
+#architecture h1 {
+  color: #714898;
 }
 
 #architecture .animation {

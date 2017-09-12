@@ -249,12 +249,12 @@ header .title {
 ** Get started
 *----------------------------*/
 
-#get-started {
+#overview {
   padding-bottom: 40px;
   border-bottom: 1px solid #E5E5E5;
 }
 
-#get-started img {
+#overview img {
   max-width: 95%;
   margin: 0 auto 20px;
   display: block;

@@ -41,8 +41,7 @@
 
       <section id="get-started">
         <div class="content">
-          <h2>Get Started</h2>
-          <h3>Overview</h3>
+          <h2>Overview</h2>
           <p>This system consumes data from the <a href="https://dev.twitter.com/streaming/overview">Twitter Streaming API</a>, manipulates the data using a series of Heroku apps, and generates a dynamic visualization of the manipulated data.</p>
 
           <div id="screenshot">
@@ -52,93 +51,12 @@
           <p>The architecture uses five Heroku apps, each serving a different role in the data pipeline.</p>
 
           <ul>
-            <li><strong><a href="https://github.com/heroku/kafka-tweet-producer">Data Ingest</a></strong>: Read from Twitter streaming API and produce messages for high volume ingest on Kafka topic</li>
-            <li><strong><a href="https://github.com/heroku/kafka-twitter-fanout">Data Fanout</a></strong>: Consume ingested messages and fans out to discrete keyword Kafka topics</li>
-            <li><strong><a href="https://github.com/heroku/kafka-twitter-aggregate">Aggregate Statistic Calculation</a></strong>: Consume messages from keyword Kafka topics, and calculate and produce aggregate mention count to a topic</li>
-            <li><strong><a href="https://github.com/heroku/kafka-twitter-relatedwords">Related Terms Generation</a></strong>: Consumes messages from keyword Kafka topics, and produce related words &amp; related word count to a topic</li>
-            <li><strong><a href="https://github.com/heroku/kafka-demo">Visualization</a></strong>: Consume messages from aggregate and related words Kafka topics and generate the dynamic stream visualizations in a web application</li>
+            <li><strong>Data Ingest</strong>: Read from Twitter streaming API and produce messages for high volume ingest on Kafka topic</li>
+            <li><strong>Data Fanout</strong>: Consume ingested messages and fans out to discrete keyword Kafka topics</li>
+            <li><strong>Aggregate Statistic Calculation</strong>: Consume messages from keyword Kafka topics, and calculate and produce aggregate mention count to a topic</li>
+            <li><strong>Related Terms Generation</strong>: Consumes messages from keyword Kafka topics, and produce related words &amp; related word count to a topic</li>
+            <li><strong>Visualization</strong>: Consume messages from aggregate and related words Kafka topics and generate the dynamic stream visualizations in a web application</li>
           </ul>
-
-          <p>Here are instructions to deploy the full system.  See further below for an <a href="#architecture">architecture diagram</a> explaining the steps through which the data flows.</p>
-
-          <h3>Pre-Requisites</h3>
-          <ul>
-            <li>Free <a href="https://signup.heroku.com/">Heroku account</a></li>
-            <li><a href="https://devcenter.heroku.com/articles/heroku-command-line">Heroku CLI</a> tool</li>
-          </ul>
-          <h3>Deploy</h3>
-          <ol>
-            <li>
-              Setup <strong>Data Ingest</strong>, by following the instructions in the <a href="https://github.com/heroku/kafka-tweet-producer#readme">kafka-tweet-producer README</a>.  You will...
-              <ul>
-                <li>Deploy the code to Heroku</li>
-                <li>Configure the Heroku app</li>
-                <li>Create the Apache Kafka on Heroku cluster that will be used by all apps in the data processing pipeline</li>
-                <li>Create a Twitter App so you can connect to the Twitter Streaming API with valid credentials</li>
-              </ul>
-            </li>
-            <li>
-              Setup <strong>Data Fanout</strong> by deploying the <a href="https://github.com/heroku/kafka-twitter-fanout">kafka-twitter-fanout</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-twitter-fanout#readme">README</a>.  You will...
-              <ul>
-                <li>Deploy the code to Heroku</li>
-                <li>Configure the Heroku app</li>
-                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
-              </ul>
-            </li>
-            <li>
-              Setup <strong>Aggregate Statistics Calculation</strong> by deplying the <a href="https://github.com/heroku/kafka-twitter-aggregate">kafka-twitter-aggregate</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-twitter-aggregate#readme">README</a>.  You will...
-              <ul>
-                <li>Deploy the code to Heroku</li>
-                <li>Configure the Heroku app</li>
-                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
-              </ul>
-            </li>
-            <li>
-              Setup <strong>Related Terms Generation</strong> by deploying the <a href="https://github.com/heroku/kafka-twitter-relatedwords">kafka-twitter-relatedwords</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-twitter-relatedwords#readme">README</a>.  You will...
-              <ul>
-                <li>Deploy the code to Heroku</li>
-                <li>Configure the Heroku app</li>
-                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
-              </ul>
-            </li>
-            <li>
-              Setup the <strong>Visualization</strong> web app by deploying the <a href="https://github.com/heroku/kafka-demo">kafka-demo</a> repo to a Heroku app.  Follow the instructions in the repo's <a href="https://github.com/heroku/kafka-demo#readme">README</a>. You will...
-              <ul>
-                <li>Deploy the code to Heroku</li>
-                <li>Configure the Heroku app</li>
-                <li>Attach the previously created Kafka on Heroku add-on to this app</li>
-              </ul>
-            </li>
-          </ol>
-          <h3>Configuration Options</h3>
-
-          <h4>Switch palette between Heroku and Salesforce colors</h4>
-          <p>By default a Heroku-inspired color palette is used in the Visualization web app.  This can be changed to a Salesforce-inspired color palette by setting the <code>SALESFORCE_THEME</code> environment variable to <code>true</code>.</p>
-
-          <h4>Change or add tracked keywords</h4>
-          <p>The data visualization has been tested with up to five keywords.  It looks best with three to five.  You may use more or less, but the data visualization may not behave as expected.</p>
-
-          <ol>
-            <li>
-              Create the necessary Kafka topics.  This may be done with the <a href="https://devcenter.heroku.com/articles/kafka-on-heroku#understanding-topics">Heroku CLI</a> or from the Kafka on Heroku dashboard.  Three topics are required for each keyword.  They must be named using the following format: <code>dog-keyword</code>, <code>dog-aggregate</code>, <code>dog-relatedwords</code> (an example if the keyword were 'dog').
-            </li>
-            <li>
-              Update configuration of the <strong>Data Ingest</strong> app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
-            </li>
-            <li>
-              Update configuration of the <strong>Data Fanout</strong> app similar to the <strong>Data Ingest</strong> app.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
-            </li>
-            <li>
-              Update the <code><a href="https://github.com/heroku/kafka-twitter-aggregate/blob/master/Procfile">Procfile</a></code> for the <strong>Aggregate Statistics Calculation</strong> app to include a process for each keyword.
-            </li>
-            <li>
-              Update the <code><a href="https://github.com/heroku/kafka-twitter-relatedwords/blob/master/Procfile">Procfile</a></code> for the <strong>Related Terms Generation</strong> app to include a process for each keyword.
-            </li>
-            <li>
-              Update the configuration of the <strong>Visualization</strong> app similar to the <strong>Data Ingest</strong> and <strong>Data Fanout</strong> apps.  The environment variable <code>TWITTER_TRACK_TERMS</code> must be a comma-separated list of all keywords you want to track.  e.g. <code>dog,cat,fish</code>
-            </li>
-          </ol>
-
         </div>
       </section>
 

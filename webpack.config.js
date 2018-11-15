@@ -7,15 +7,17 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
-const production = process.env.NODE_ENV === 'production'
-const theme = process.env.SALESFORCE_THEME === 'true' ? 'salesforce' : 'heroku'
+const { NODE_ENV, SALESFORCE_THEME, TWITTER_TRACK_TERMS } = process.env
+const PRODUCTION = NODE_ENV === 'production'
+const THEME = SALESFORCE_THEME === 'true' ? 'salesforce' : 'heroku'
 
 module.exports = {
-  mode: production ? 'production' : 'development',
+  devtool: PRODUCTION ? 'source-map' : 'cheap-module-source-map',
+  mode: PRODUCTION ? 'production' : 'development',
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: `app${production ? '.[hash]' : ''}.js`
+    filename: `app${PRODUCTION ? '.[hash]' : ''}.js`
   },
   stats: 'minimal',
   module: {
@@ -40,7 +42,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          production
+          PRODUCTION
             ? {
                 loader: MiniCssExtractPlugin.loader
               }
@@ -64,7 +66,6 @@ module.exports = {
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        cache: true,
         parallel: true,
         sourceMap: true,
         uglifyOptions: {
@@ -78,23 +79,21 @@ module.exports = {
   },
   plugins: [
     new HtmlPlugin({
-      production,
-      minify: production ? { collapseWhitespace: true } : false,
+      production: PRODUCTION,
+      minify: PRODUCTION ? { collapseWhitespace: true } : false,
       filename: 'index.html',
-      bodyClass: theme,
+      bodyClass: THEME,
       title: 'Kafka Demo App',
       inject: false,
       template: path.join(__dirname, 'views', 'index.pug')
     }),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     new webpack.DefinePlugin({
-      'process.env.TWITTER_TRACK_TERMS': JSON.stringify(
-        process.env.TWITTER_TRACK_TERMS
-      )
+      'process.env.TWITTER_TRACK_TERMS': JSON.stringify(TWITTER_TRACK_TERMS)
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'
     }),
-    !production && new LiveReloadPlugin({ quiet: true })
+    !PRODUCTION && new LiveReloadPlugin({ quiet: true })
   ].filter(Boolean)
 }

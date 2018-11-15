@@ -41,4 +41,5 @@ Or manually:
 heroku config:set KAFKA_URL=
 heroku config:set KAFKA_CLIENT_CERT=
 heroku config:set KAFKA_CLIENT_CERT_KEY=
+heroku config:set TWITTER_TRACK_TERMS=
 ```

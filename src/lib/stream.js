@@ -7,7 +7,7 @@ const minMargin = 15
 const margin = {
   top: minMargin,
   right: minMargin,
-  bottom: minMargin + 8,
+  bottom: minMargin + 20,
   left: minMargin
 }
 

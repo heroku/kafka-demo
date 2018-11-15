@@ -6,8 +6,6 @@ Keywords are specified in the kafka-tweets app. They are read from a Kafka topic
 
 #### Development Setup
 
-**Node > v5.x required**
-
 ```shell
 npm install
 ```

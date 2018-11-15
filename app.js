@@ -58,13 +58,14 @@ const consumer = new Consumer({
 
 consumer
   .init()
+  .catch((err) => {
+    console.error(`Consumer could not be initialized: ${err}`)
+    console.error(err)
+  })
   .then(() => {
     wss.on('connection', (client) => send(consumer.snapshot())(client))
     // eslint-disable-next-line no-console
     server.listen(port, () =>
-      console.log(`http/ws server listening on ${port}`)
+      console.log(`http/ws server listening on http://localhost:${port}`)
     )
-  })
-  .catch((err) => {
-    console.error(`server could not be started: ${err}`)
   })

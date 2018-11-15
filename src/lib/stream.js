@@ -153,6 +153,17 @@ export default class StreamChart {
     this.xAxisG
       .attr('transform', `translate(0, ${this.getHeight() + 15})`)
       .call(this.xAxis)
+
+    this.xAxisG
+      .selectAll('text')
+      .nodes()
+      .map((node, index, nodes) => {
+        if (index === 0) {
+          node.setAttribute('style', 'text-anchor: end')
+        } else if (index === nodes.length - 1) {
+          node.setAttribute('style', 'text-anchor: start')
+        }
+      })
   }
 
   updateStacks(options = {}) {

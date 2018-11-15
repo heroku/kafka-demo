@@ -1,4 +1,4 @@
-'use strict'
+/* eslint no-console:0 */
 
 const path = require('path')
 const server = require('http').createServer()
@@ -19,9 +19,11 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(require('./webpack.config'))
   app.use(require('connect-history-api-fallback')({ verbose: false }))
-  app.use(require('webpack-dev-middleware')(compiler, { noInfo: true }))
+  app.use(require('webpack-dev-middleware')(compiler, { stats: 'minimal' }))
 } else {
-  app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
+  app.get('/', (req, res) =>
+    res.sendFile(path.join(__dirname, 'dist/index.html'))
+  )
 }
 
 const port = process.env.PORT || 3000
@@ -54,7 +56,15 @@ const consumer = new Consumer({
   }
 })
 
-consumer.init().then(() => {
-  wss.on('connection', (client) => send(consumer.snapshot())(client))
-  server.listen(port, () => console.log(`http/ws server listening on ${port}`))
-})
+consumer
+  .init()
+  .then(() => {
+    wss.on('connection', (client) => send(consumer.snapshot())(client))
+    // eslint-disable-next-line no-console
+    server.listen(port, () =>
+      console.log(`http/ws server listening on ${port}`)
+    )
+  })
+  .catch((err) => {
+    console.error(`server could not be started: ${err}`)
+  })

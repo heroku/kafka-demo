@@ -1,22 +1,20 @@
-'use strict'
-
 import _ from 'lodash'
 
 export default class Stats {
-  constructor (options) {
+  constructor(options) {
     this.container = document.querySelector(options.selector)
     this.xVariable = options.x
     this.xTitles = options.titles
   }
 
-  formatData (data) {
+  formatData(data) {
     return _.map(data, (values) => {
       const value = _.last(values)
       return this.xVariable.map((x) => value[x])
     })
   }
 
-  init (data) {
+  init(data) {
     this._lastData = this.formatData(data)
 
     this.initTable(data)
@@ -26,7 +24,7 @@ export default class Stats {
     this._initialized = true
   }
 
-  initTable (data) {
+  initTable(data) {
     // Build initial static parts of table
     const topics = Object.keys(data)
     const cells = this.xVariable
@@ -39,7 +37,7 @@ export default class Stats {
       tr.classList.add('data')
       title.textContent = topic
       tr.appendChild(title)
-      cells.forEach((cell) => tr.appendChild(document.createElement('td')))
+      cells.forEach(() => tr.appendChild(document.createElement('td')))
       table.appendChild(tr)
     })
 
@@ -57,7 +55,7 @@ export default class Stats {
     this.container.appendChild(table)
   }
 
-  update (data) {
+  update(data) {
     if (!this._initialized) return
 
     this._lastData = this.formatData(data)
@@ -65,14 +63,15 @@ export default class Stats {
     this.updateTable()
   }
 
-  updateTable () {
+  updateTable() {
     const trs = this._table.querySelectorAll('tr')
 
     this._lastData.forEach((row, rowIndex) => {
       const tds = trs[rowIndex].querySelectorAll('td')
       row.forEach((cell, index) => {
         const td = tds[index + 1]
-        td.textContent = cell == null ? 'N/A' : (index === 0 ? cell : cell.toFixed(3))
+        td.textContent =
+          cell == null ? 'N/A' : index === 0 ? cell : cell.toFixed(3)
       })
     })
   }

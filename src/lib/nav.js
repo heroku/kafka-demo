@@ -1,7 +1,5 @@
-'use strict'
-
 module.exports = class Nav {
-  constructor (options) {
+  constructor(options) {
     this.legend = document.querySelector(options.legend)
     this.architectureLink = document.querySelector(options.architecture)
     this.main = document.querySelector('main')
@@ -10,24 +8,27 @@ module.exports = class Nav {
     this.architecture()
   }
 
-  formatData (data) {
+  formatData(data) {
     return Object.keys(data)
   }
 
-  architecture () {
+  architecture() {
     this.architectureLink.addEventListener('click', () => {
       const isOpen = this.main.classList.contains('open')
       if (isOpen) {
         this.architectureFrame.removeAttribute('src')
         this.main.classList.remove('open')
       } else {
-        this.architectureFrame.setAttribute('src', '/images/kafka-diagram/kafka-diagram.html')
+        this.architectureFrame.setAttribute(
+          'src',
+          '/images/kafka-diagram/kafka-diagram.html'
+        )
         this.main.classList.add('open')
       }
     })
   }
 
-  init (data) {
+  init(data) {
     this.formatData(data).forEach((topic, index) => {
       const li = document.createElement('li')
       li.textContent = topic

@@ -1,5 +1,3 @@
-'use strict'
-
 import '../styles/style.css'
 import _ from 'lodash'
 import Bar from './lib/bar'

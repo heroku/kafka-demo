@@ -1,5 +1,3 @@
-'use strict'
-
 import * as d3 from 'd3'
 import _ from 'lodash'
 import dateFormat from 'dateformat'
@@ -18,7 +16,7 @@ const exponent = (n) => Math.log(n || 1) / Math.LN10
 const nextPower = (n) => powers[Math.floor(exponent(n))]
 
 export default class BarChart {
-  constructor (options) {
+  constructor(options) {
     this.container = document.querySelector(options.selector)
 
     this.xVariable = options.x
@@ -40,17 +38,20 @@ export default class BarChart {
     this.xAxisG = chartArea.append('g')
     this.yAxisG = chartArea.append('g')
 
-    this.xAxisLabel = chartArea.append('text')
+    this.xAxisLabel = chartArea
+      .append('text')
       .attr('class', 'label')
       .style('text-anchor', 'middle')
       .text('Keywords')
 
-    this.yAxisLabel = chartArea.append('text')
+    this.yAxisLabel = chartArea
+      .append('text')
       .attr('class', 'label')
       .style('text-anchor', 'middle')
       .text('Message Count')
 
-    this.xScale = d3.scaleBand()
+    this.xScale = d3
+      .scaleBand()
       .paddingInner(0.1)
       .paddingOuter(0.1)
 
@@ -61,35 +62,44 @@ export default class BarChart {
     this.yAxis = d3.axisLeft()
   }
 
-  getHeight () {
+  getHeight() {
     return this.container.clientHeight - margin.top - margin.bottom
   }
 
-  getWidth () {
+  getWidth() {
     return this.container.clientWidth - margin.left - margin.right
   }
 
-  yValue (d) {
-    return d[this.yVariable] - (this._useInitial ? _.find(this._initialData, { [this.xVariable]: d[this.xVariable] })[this.yVariable] : 0)
+  yValue(d) {
+    return (
+      d[this.yVariable] -
+      (this._useInitial
+        ? _.find(this._initialData, { [this.xVariable]: d[this.xVariable] })[
+            this.yVariable
+          ]
+        : 0)
+    )
   }
 
-  yScaleMin (value) {
+  yScaleMin(value) {
     // Log scales can't go below 1 or values turn into NaN and -Infinity
     const min = this.yScale.base ? 1 : 0
     return typeof value === 'number' ? Math.max(min, value) : min
   }
 
-  formatData (data) {
+  formatData(data) {
     return _.map(data, (values) => _.last(values))
   }
 
-  init (data) {
+  init(data) {
     this._lastData = this.formatData(data)
     this._initialData = this._lastData
 
     if (this._useInitial) {
       const startTime = new Date(Math.min(...this._lastData.map((d) => d.time)))
-      this.container.parentNode.querySelector('.start-time').textContent = dateFormat(startTime, 'h:MM:ss TT')
+      this.container.parentNode.querySelector(
+        '.start-time'
+      ).textContent = dateFormat(startTime, 'h:MM:ss TT')
     } else {
       this.container.parentNode.querySelector('.start-time-container').remove()
     }
@@ -104,14 +114,14 @@ export default class BarChart {
     this._initialized = true
   }
 
-  resize () {
+  resize() {
     this.updateScaleAndAxesData()
     this.updateScales()
     this.updateAxes()
     this.updateBars()
   }
 
-  update (data) {
+  update(data) {
     if (!this._initialized) return
 
     this._lastData = this.formatData(data)
@@ -122,25 +132,29 @@ export default class BarChart {
     this.updateBars({ transition: this.transition })
   }
 
-  updateScaleAndAxesData () {
-    this.xScale
-      .domain(this._lastData.map(d => d[this.xVariable]))
+  updateScaleAndAxesData() {
+    this.xScale.domain(this._lastData.map((d) => d[this.xVariable]))
 
     const [min, max] = d3.extent(this._lastData.map((d) => this.yValue(d)))
     const [minExp, maxExp] = [min, max].map(exponent)
 
     // Dont revert back to a linear scale after going logarithmic
-    const useLog = (this.yScale && this.yScale.base) || ((maxExp - minExp > 1) && (maxExp > Math.LN10))
+    const useLog =
+      (this.yScale && this.yScale.base) ||
+      (maxExp - minExp > 1 && maxExp > Math.LN10)
 
     if (useLog) {
       this.yScale = this.yScaleLog
       this.yAxis
-        .tickValues([this.yScaleMin(), ...powers.filter((b) => b < max), nextPower(max)])
-        .tickFormat((d) => d === this.yScaleMin() ? '0' : yFormat(d))
+        .tickValues([
+          this.yScaleMin(),
+          ...powers.filter((b) => b < max),
+          nextPower(max)
+        ])
+        .tickFormat((d) => (d === this.yScaleMin() ? '0' : yFormat(d)))
     } else {
       this.yScale = this.yScaleLinear
-      this.yAxis
-        .tickFormat((d) => d === this.yScaleMin() ? '0' : yFormat(d))
+      this.yAxis.tickFormat((d) => (d === this.yScaleMin() ? '0' : yFormat(d)))
     }
 
     this.yScale.domain([this.yScaleMin(), max]).nice()
@@ -148,27 +162,31 @@ export default class BarChart {
     this.yAxis.scale(this.yScale)
   }
 
-  updateScales () {
+  updateScales() {
     this.xScale.range([0, this.getWidth()])
     this.yScale.range([this.getHeight(), 0])
   }
 
-  updateAxes (options = {}) {
+  updateAxes() {
     this.xAxisG
       .attr('transform', `translate(0, ${this.getHeight()})`)
       .call(this.xAxis)
 
-    this.xAxisLabel
-      .attr('transform', `translate(${this.getWidth() / 2}, ${this.getHeight() + (margin.bottom - 7)})`)
+    this.xAxisLabel.attr(
+      'transform',
+      `translate(${this.getWidth() / 2}, ${this.getHeight() +
+        (margin.bottom - 7)})`
+    )
 
-    this.yAxisG
-      .call(this.yAxis)
+    this.yAxisG.call(this.yAxis)
 
-    this.yAxisLabel
-      .attr('transform', `translate(${(margin.left * -1) + 19}, ${this.getHeight() / 2}) rotate(-90)`)
+    this.yAxisLabel.attr(
+      'transform',
+      `translate(${margin.left * -1 + 19}, ${this.getHeight() / 2}) rotate(-90)`
+    )
   }
 
-  updateBars (options = {}) {
+  updateBars(options = {}) {
     const updateSelection = this.barGroup
       .selectAll('.chart-rect')
       .data(this._lastData)
@@ -178,9 +196,7 @@ export default class BarChart {
       .append('rect')
       .attr('class', (__, index) => `chart-rect chart-color-${index + 1}`)
 
-    updateSelection
-      .exit()
-      .remove()
+    updateSelection.exit().remove()
 
     enterSelection
       .merge(updateSelection)
@@ -190,6 +206,11 @@ export default class BarChart {
       .attr('x', (d) => this.xScale(d[this.xVariable]))
       .attr('width', this.xScale.bandwidth)
       .attr('y', (d) => this.yScale(this.yScaleMin(this.yValue(d))))
-      .attr('height', (d) => this.yScale(this.yScaleMin()) - this.yScale(this.yScaleMin(this.yValue(d))))
+      .attr(
+        'height',
+        (d) =>
+          this.yScale(this.yScaleMin()) -
+          this.yScale(this.yScaleMin(this.yValue(d)))
+      )
   }
 }

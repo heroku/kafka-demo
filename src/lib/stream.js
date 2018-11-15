@@ -3,14 +3,6 @@ import _ from 'lodash'
 import zeroFill from 'zero-fill'
 import SizedArray from '../../consumer/sizedArray'
 
-const minMargin = 15
-const margin = {
-  top: minMargin,
-  right: minMargin,
-  bottom: minMargin + 20,
-  left: minMargin
-}
-
 export default class StreamChart {
   constructor(options) {
     this.container = document.querySelector(options.selector)
@@ -27,9 +19,7 @@ export default class StreamChart {
       .attr('width', '100%')
       .attr('height', '100%')
 
-    const chartArea = svg
-      .append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+    const chartArea = svg.append('g').attr('transform', 'translate(0, 0)')
 
     this.clipPath = chartArea
       .append('defs')
@@ -38,9 +28,7 @@ export default class StreamChart {
       .append('rect')
 
     this.chartArea = chartArea.append('g').attr('clip-path', 'url(#clip)')
-
-    this.xAxisG = chartArea.append('g')
-    this.yAxisG = chartArea.append('g')
+    this.xAxisG = chartArea.append('g').attr('class', 'x-axis')
 
     // The first points need to be rendered outside the x axis
     const rightEdge = 3
@@ -53,13 +41,11 @@ export default class StreamChart {
       .axisBottom()
       .tickValues(_.range(rightEdge, this.maxDisplaySize + rightEdge + 1, 15))
       .tickFormat((d) => {
-        const value = d - rightEdge
-        const m = Math.floor(value / 60)
-        return `${m}:${zeroFill(2, value - m * 60)}`
+        const seconds = d - rightEdge
+        const minutes = Math.floor(seconds / 60)
+        return `${minutes}:${zeroFill(2, seconds - minutes * 60)}`
       })
       .scale(this.xScale)
-
-    this.yAxis = d3.axisLeft().ticks(0)
 
     this.stack = d3.stack().offset(d3.stackOffsetSilhouette)
 
@@ -79,11 +65,11 @@ export default class StreamChart {
   }
 
   getHeight() {
-    return this.container.clientHeight - margin.top - margin.bottom
+    return this.container.clientHeight
   }
 
   getWidth() {
-    return this.container.clientWidth - margin.left - margin.right
+    return this.container.clientWidth
   }
 
   formatData(raw) {
@@ -152,8 +138,6 @@ export default class StreamChart {
         _.reduce(_.omit(d, this.xVariable), _.add)
       ) / 2
     this.yScale.domain([-1 * max, max]).nice()
-
-    this.yAxis.scale(this.yScale)
   }
 
   updateScales() {
@@ -167,10 +151,8 @@ export default class StreamChart {
       .attr('height', this.getHeight())
 
     this.xAxisG
-      .attr('transform', `translate(0, ${this.getHeight()})`)
+      .attr('transform', `translate(0, ${this.getHeight() + 15})`)
       .call(this.xAxis)
-
-    this.yAxisG.call(this.yAxis)
   }
 
   updateStacks(options = {}) {

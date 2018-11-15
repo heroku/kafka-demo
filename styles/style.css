@@ -6,7 +6,6 @@
 }
 
 $headerHeight: 50px;
-$break: 800px;
 
 $hHeader: linear-gradient(to right, #3d3f74, #6757a0);
 $hHeaderText: #fff;
@@ -158,7 +157,7 @@ header {
 
 main {
   height: calc(100vh - $headerHeight);
-  padding: 70px 70px 0;
+  padding: 10vh 5vw 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -216,7 +215,6 @@ main {
     height: 100%;
     background: #ffffff;
     position: relative;
-    overflow: hidden;
 
     body.heroku & {
       border-color: $hBorder;
@@ -236,6 +234,27 @@ main {
     width: 60px;
     text-align: center;
     content: '...';
+  }
+}
+
+.chart-stream {
+  margin-bottom: 100px;
+
+  svg,
+  svg > g {
+    overflow: visible;
+  }
+
+  .x-axis {
+    text {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .tick line,
+    > path {
+      display: none;
+    }
   }
 }
 
@@ -263,7 +282,7 @@ div.tooltip {
 }
 
 .footer-legend {
-  margin: 40px 0;
+  margin-bottom: 40px;
 
   ul {
     margin: 0;
@@ -278,9 +297,10 @@ div.tooltip {
       padding-left: 25px;
       font-size: 14px;
       line-height: 18px;
-      color: #757a7d;
+      color: $hChartText;
       text-transform: capitalize;
       margin-left: 8px;
+      font-weight: bold;
 
       &:before {
         width: 25px;

@@ -6,7 +6,7 @@
     "url": "https://github.com/crcastle/twitter-display/issues"
   },
   "dependencies": {
-    "d3": "^4.2.4",
+    "d3": "^5.7.0",
     "dateformat": "^3.0.3",
     "express": "^4.14.0",
     "lodash": "^4.16.1",

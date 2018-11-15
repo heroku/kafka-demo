@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "d3": "^4.2.4",
-    "dateformat": "^1.0.12",
+    "dateformat": "^3.0.3",
     "express": "^4.14.0",
     "lodash": "^4.16.1",
     "no-kafka": "^3.3.5",

@@ -60,7 +60,6 @@ consumer
   .init()
   .catch((err) => {
     console.error(`Consumer could not be initialized: ${err}`)
-    console.error(err)
   })
   .then(() => {
     wss.on('connection', (client) => send(consumer.snapshot())(client))

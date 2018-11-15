@@ -13,7 +13,7 @@
     "no-kafka": "^3.3.5",
     "normalize.css": "^8.0.1",
     "pug": "^2.0.0-beta6",
-    "ws": "^1.1.1",
+    "ws": "^6.1.0",
     "zero-fill": "^2.2.3"
   },
   "devDependencies": {

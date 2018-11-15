@@ -157,7 +157,7 @@ header {
 
 main {
   height: calc(100vh - $headerHeight);
-  padding: 10vh 5vw 0;
+  padding: 7vh 5vw 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -182,9 +182,26 @@ main {
 .chart-container {
   width: 100%;
   height: 100%;
-  padding-bottom: 0;
   display: flex;
   flex-direction: column;
+  margin-bottom: 120px;
+
+  svg,
+  svg > g {
+    overflow: visible;
+  }
+
+  .x-axis {
+    text {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .tick line,
+    > path {
+      display: none;
+    }
+  }
 
   text {
     cursor: default;
@@ -235,27 +252,6 @@ main {
     width: 60px;
     text-align: center;
     content: '...';
-  }
-}
-
-.chart-stream {
-  margin-bottom: 100px;
-
-  svg,
-  svg > g {
-    overflow: visible;
-  }
-
-  .x-axis {
-    text {
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .tick line,
-    > path {
-      display: none;
-    }
   }
 }
 

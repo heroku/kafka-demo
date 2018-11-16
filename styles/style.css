@@ -241,29 +241,6 @@ main {
   }
 }
 
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  padding: 6px 20px;
-  font-size: 14px;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 3px;
-  pointer-events: none;
-  z-index: 1000;
-  color: #fff;
-  left: 0;
-  top: 0;
-
-  body.heroku & {
-    border-color: $hBorder;
-  }
-
-  body.salesforce & {
-    border-color: $sfBorder;
-  }
-}
-
 .footer-legend {
   margin-bottom: 40px;
 

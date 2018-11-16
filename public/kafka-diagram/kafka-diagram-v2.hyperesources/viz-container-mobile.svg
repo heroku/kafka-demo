@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 138 123.76">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #dccee5;
+        stroke-miterlimit: 10;
+        stroke-dasharray: 4 4;
+      }
+    </style>
+  </defs>
+  <title>viz-container-mobile</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_7" data-name="Layer 7">
+      <rect class="cls-1" x="0.5" y="0.5" width="137" height="122.76" rx="4" ry="4"/>
+    </g>
+  </g>
+</svg>

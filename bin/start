@@ -42,11 +42,5 @@ if [ "${NODE_ENV}" = "production" ]; then
   npm run build
 fi
 
-NODE_VERSION=`node --version`
-if [ "${NODE_VERSION:1:1}" -ne "6" ]; then
-  echo "Node v6 is required"
-  exit 1
-fi
-
 # Start it up
 node app.js

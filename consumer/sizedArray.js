@@ -1,12 +1,10 @@
-'use strict'
-
 module.exports = class SizedArray {
-  constructor (size) {
+  constructor(size) {
     this._size = size
     this._items = []
   }
 
-  push (items) {
+  push(items) {
     const current = this._items.length
     const add = items.length
     const max = this._size
@@ -18,11 +16,11 @@ module.exports = class SizedArray {
     }
   }
 
-  items () {
+  items() {
     return this._items
   }
 
-  empty () {
+  empty() {
     return this._items.length === 0
   }
 }

@@ -1,37 +1,44 @@
-'use strict'
+/* eslint no-console:0 */
 
 const path = require('path')
 const server = require('http').createServer()
 const WebSocketServer = require('ws').Server
 const express = require('express')
 const webpack = require('webpack')
+const history = require('connect-history-api-fallback')
+const webpackDev = require('webpack-dev-middleware')
+
+const webpackConfig = require('./webpack.config')
 const Consumer = require('./consumer')
 const app = express()
 const constants = require('./consumer/constants')
+
+const PRODUCTION = process.env.NODE_ENV === 'production'
+const PORT = process.env.PORT || 3000
 
 /*
  * Configure web app and webpack pieces
  *
  */
-app.use(express.static(path.join(__dirname, 'dist')))
-app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
-if (process.env.NODE_ENV !== 'production') {
-  const compiler = webpack(require('./webpack.config'))
-  app.use(require('connect-history-api-fallback')({ verbose: false }))
-  app.use(require('webpack-dev-middleware')(compiler, { noInfo: true }))
+if (PRODUCTION) {
+  app.use(express.static(path.join(__dirname, 'dist')))
+  app.get('/', (req, res) =>
+    res.sendFile(path.join(__dirname, 'dist/index.html'))
+  )
 } else {
-  app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')))
+  app.use(history({ verbose: false }))
+  app.use(webpackDev(webpack(webpackConfig), { stats: 'minimal' }))
 }
 
-const port = process.env.PORT || 3000
 server.on('request', app)
 
 /*
  * Configure WebSocketServer
  *
  */
-const wss = new WebSocketServer({ server: server })
+const wss = new WebSocketServer({ server })
 const send = (data) => (client) => client.send(JSON.stringify(data))
 
 /*
@@ -41,10 +48,7 @@ const send = (data) => (client) => client.send(JSON.stringify(data))
 const consumer = new Consumer({
   broadcast: (data) => wss.clients.forEach(send(data)),
   topics: constants.TOPICS.map((name) => ({ name })),
-  types: [
-    { name: 'aggregate', maxSize: constants.MAX_BUFFER_SIZE },
-    { name: 'relatedwords', maxSize: 1 }
-  ],
+  types: [{ name: 'aggregate', maxSize: constants.MAX_BUFFER_SIZE }],
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {
@@ -54,7 +58,15 @@ const consumer = new Consumer({
   }
 })
 
-consumer.init().then(() => {
-  wss.on('connection', (client) => send(consumer.snapshot())(client))
-  server.listen(port, () => console.log(`http/ws server listening on ${port}`))
-})
+consumer
+  .init()
+  .catch((err) => {
+    console.error(`Consumer could not be initialized: ${err}`)
+    if (PRODUCTION) throw err
+  })
+  .then(() => {
+    wss.on('connection', (client) => send(consumer.snapshot())(client))
+    server.listen(PORT, () =>
+      console.log(`http/ws server listening on http://localhost:${PORT}`)
+    )
+  })

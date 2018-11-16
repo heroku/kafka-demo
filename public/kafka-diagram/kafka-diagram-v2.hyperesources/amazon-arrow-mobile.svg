@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 113.46 73.89">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #dccee5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #dccee5;
+      }
+    </style>
+  </defs>
+  <title>amazon-arrow-mobile</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_7" data-name="Layer 7">
+      <g>
+        <polyline class="cls-1" points="1 1 1 68.86 112.26 68.86"/>
+        <path class="cls-2" d="M105.42,73.66a.5.5,0,0,1,.15-.69L112,68.86l-6.45-4.11a.5.5,0,1,1,.54-.84l7.11,4.53a.5.5,0,0,1,0,.84l-7.11,4.53a.5.5,0,0,1-.69-.15Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

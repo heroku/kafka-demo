@@ -21,7 +21,7 @@ module.exports = class Nav {
       } else {
         this.architectureFrame.setAttribute(
           'src',
-          '/images/kafka-diagram/kafka-diagram.html'
+          '/images/kafka-diagram/kafka-diagram-v2.html'
         )
         this.main.classList.add('open')
       }

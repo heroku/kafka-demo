@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255.48 106.15">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ede9f5;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #dccee5;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <title>kafka-container-mobile</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_7" data-name="Layer 7">
+      <g>
+        <rect class="cls-1" x="1" y="1" width="253.48" height="104.15" rx="2.68" ry="2.68"/>
+        <rect class="cls-2" x="1" y="1" width="253.48" height="104.15" rx="2.68" ry="2.68"/>
+      </g>
+    </g>
+  </g>
+</svg>

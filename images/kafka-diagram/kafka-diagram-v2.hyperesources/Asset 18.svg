@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160.4 69.18">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #231f20;
+      }
+
+      .cls-2 {
+        font-size: 10px;
+        fill: #fff;
+        font-family: HelveticaNeue, Helvetica Neue;
+        letter-spacing: 0.01em;
+      }
+
+      .cls-3 {
+        letter-spacing: -0.01em;
+      }
+
+      .cls-4 {
+        letter-spacing: -0.01em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0.01em;
+      }
+
+      .cls-6 {
+        fill: none;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <title>Asset 18</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_7" data-name="Layer 7">
+      <g>
+        <g>
+          <rect class="cls-1" width="160.4" height="51.18" rx="6.28" ry="6.28"/>
+          <text class="cls-2" transform="translate(9.18 16.4)">A<tspan class="cls-3" x="6.58" y="0">r</tspan><tspan x="9.83" y="0">chive and query petabytes of </tspan><tspan x="0" y="12">data with </tspan><tspan class="cls-4" x="44.89" y="12">A</tspan><tspan class="cls-5" x="51.23" y="12">WS RedShift and </tspan><tspan x="0" y="24">Metabase.</tspan></text>
+        </g>
+        <g>
+          <line class="cls-6" x1="80.2" y1="49.51" x2="80.2" y2="67.22"/>
+          <circle class="cls-1" cx="80.2" cy="67.11" r="2.07"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

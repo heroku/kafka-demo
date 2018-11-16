@@ -17,9 +17,7 @@ $sfHeaderText: #29347c;
 $sfText: #054d61;
 $sfBorder: #d8dde6;
 
-$diagramHeight: 480px;
-$diagramHeightMobile: 540px;
-$diagramBreakpoint: 610px;
+$diagramHeight: 500px;
 
 body {
   position: relative;
@@ -131,7 +129,7 @@ header {
 .architecture {
   width: 100%;
   height: $diagramHeight;
-  padding: 20px 5px;
+  padding: 0 5px;
   position: absolute;
   top: $headerHeight;
   z-index: 0;
@@ -144,14 +142,6 @@ header {
 
   iframe {
     border: none;
-
-    @media screen and (max-width: $diagramBreakpoint) {
-      height: $diagramHeightMobile;
-    }
-  }
-
-  @media screen and (max-width: $diagramBreakpoint) {
-    height: $diagramHeightMobile;
   }
 }
 
@@ -171,10 +161,6 @@ main {
 
   &.open {
     transform: translate(0px, $diagramHeight);
-
-    @media screen and (max-width: $diagramBreakpoint) {
-      transform: translate(0px, $diagramHeightMobile);
-    }
   }
 }
 

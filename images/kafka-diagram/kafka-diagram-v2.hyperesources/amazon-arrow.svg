@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 174.86 10.06">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #dccee5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #dccee5;
+      }
+    </style>
+  </defs>
+  <title>amazon-arrow</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_7" data-name="Layer 7">
+      <g>
+        <line class="cls-1" x1="1" y1="5.03" x2="173.66" y2="5.03"/>
+        <path class="cls-2" d="M166.83,9.83a.5.5,0,0,1,.15-.69L173.43,5,167,.92a.5.5,0,0,1,.54-.84l7.11,4.53a.5.5,0,0,1,0,.84L167.52,10a.5.5,0,0,1-.69-.15Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

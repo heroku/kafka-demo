@@ -1,6 +1,5 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
-import zeroFill from 'zero-fill'
 import SizedArray from '../../consumer/sizedArray'
 
 export default class StreamChart {
@@ -42,8 +41,7 @@ export default class StreamChart {
       .tickValues(_.range(rightEdge, this.maxDisplaySize + rightEdge + 1, 15))
       .tickFormat((d) => {
         const seconds = d - rightEdge
-        const minutes = Math.floor(seconds / 60)
-        return `${minutes}:${zeroFill(2, seconds - minutes * 60)}`
+        return `${seconds}s`
       })
       .scale(this.xScale)
 

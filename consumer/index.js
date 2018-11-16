@@ -18,10 +18,16 @@ module.exports = class Consumer {
 
     // Create a separate consumer for each topic since each topic needs a specific offset
     this._consumers = this._kafkaTopics.map((clientId) => {
-      const defaultOptions = { idleTimeout: 100 }
       const id = { clientId }
       return new Kafka.SimpleConsumer(
-        Object.assign(defaultOptions, options.consumer, id)
+        Object.assign(
+          {
+            idleTimeout: 100,
+            connectionTimeout: 10 * 1000
+          },
+          options.consumer,
+          id
+        )
       )
     })
 

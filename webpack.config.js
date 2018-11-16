@@ -7,9 +7,24 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
-const { NODE_ENV, SALESFORCE_THEME, TWITTER_TRACK_TERMS } = process.env
-const PRODUCTION = NODE_ENV === 'production'
-const THEME = SALESFORCE_THEME === 'true' ? 'salesforce' : 'heroku'
+const PRODUCTION = process.env.NODE_ENV === 'production'
+
+const DEFAULT_THEME = 'heroku'
+const THEMES = ['salesforce', DEFAULT_THEME]
+const THEME = THEMES.includes(process.env.THEME)
+  ? process.env.THEME
+  : DEFAULT_THEME
+
+const htmlPlugin = (options) =>
+  new HtmlPlugin({
+    production: PRODUCTION,
+    minify: PRODUCTION ? { collapseWhitespace: true } : false,
+    filename: 'index.html',
+    title: 'Kafka Demo App',
+    inject: false,
+    template: path.join(__dirname, 'views', 'index.pug'),
+    ...options
+  })
 
 module.exports = {
   devtool: PRODUCTION ? 'source-map' : 'cheap-module-source-map',
@@ -78,22 +93,27 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlPlugin({
-      production: PRODUCTION,
-      minify: PRODUCTION ? { collapseWhitespace: true } : false,
-      filename: 'index.html',
-      bodyClass: THEME,
-      title: 'Kafka Demo App',
-      inject: false,
-      template: path.join(__dirname, 'views', 'index.pug')
+    htmlPlugin({
+      bodyClass: THEME
     }),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     new webpack.DefinePlugin({
-      'process.env.TWITTER_TRACK_TERMS': JSON.stringify(TWITTER_TRACK_TERMS)
+      'process.env.TWITTER_TRACK_TERMS': JSON.stringify(
+        process.env.TWITTER_TRACK_TERMS
+      )
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'
     }),
+    // Add other themes in dev mode for easier viewing
+    ...(PRODUCTION
+      ? []
+      : THEMES.map((theme) =>
+          htmlPlugin({
+            filename: `${theme}.html`,
+            bodyClass: theme
+          })
+        )),
     !PRODUCTION && new LiveReloadPlugin({ quiet: true })
   ].filter(Boolean)
 }

@@ -10,7 +10,7 @@ function cleanup {
 }
 trap cleanup SIGINT SIGTERM
 
-if [ "${NODE_ENV}" = "development" ]; then
+if [ "${NODE_ENV}" = "production" ]; then
   export KAFKA_URL="$(heroku config:get KAFKA_URL -a twitter-ingest)"
   export KAFKA_CLIENT_CERT="$(heroku config:get KAFKA_CLIENT_CERT -a twitter-ingest)"
   export KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY -a twitter-ingest)"

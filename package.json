@@ -51,7 +51,7 @@
       "plugin:prettier/recommended"
     ],
     "parserOptions": {
-      "ecmaVersion": 8,
+      "ecmaVersion": 10,
       "sourceType": "module"
     },
     "env": {
@@ -62,7 +62,7 @@
   },
   "eslintIgnore": [
     "dist/*",
-    "images/*"
+    "public/*"
   ],
   "license": "MIT",
   "main": "bin/start",

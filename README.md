@@ -25,6 +25,10 @@ npm run dev
 
 Open http://localhost:3000 in a browser and watch tweets stream in...
 
+#### Theming
+
+There are two themes: `heroku` and `salesforce`. The default is `heroku`. The theme change be changed by setting the `THEME` environment variable.
+
 #### Deploy
 
 ```shell

@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3000
  * Configure web app and webpack pieces
  *
  */
-app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 if (PRODUCTION) {
   app.use(express.static(path.join(__dirname, 'dist')))

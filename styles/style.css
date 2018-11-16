@@ -6,7 +6,6 @@
 }
 
 $headerHeight: 50px;
-
 $hHeader: linear-gradient(to right, #3d3f74, #6757a0);
 $hHeaderText: #fff;
 $hText: #73629e;
@@ -16,17 +15,24 @@ $sfHeader: #dae0e4;
 $sfHeaderText: #29347c;
 $sfText: #054d61;
 $sfBorder: #d8dde6;
+$sfHeaderHeight: 77px;
 
 $diagramHeight: 500px;
 
-body {
+body,
+html {
   position: relative;
   font-family: Helvetica, Arial, sans-serif;
+  overflow: hidden;
 }
 
 header {
   height: $headerHeight;
   font-weight: 100;
+
+  body.salesforce & {
+    height: $sfHeaderHeight;
+  }
 
   .logo {
     position: relative;
@@ -34,9 +40,11 @@ header {
   }
 
   nav {
+    height: 100%;
     padding: 0 15px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     ul {
       margin: 0;
@@ -107,8 +115,7 @@ header {
     .logo {
       width: 108px;
       height: 30px;
-      margin-top: 10px;
-      background: url('/images/logo-heroku-white.svg') no-repeat center center;
+      background: url('/public/logo-heroku-white.svg') no-repeat center center;
     }
   }
 
@@ -119,8 +126,7 @@ header {
     .logo {
       width: 93px;
       height: 65px;
-      top: 6px;
-      background: url('/images/logo-salesforce.svg') no-repeat center center;
+      background: url('/public/logo-salesforce.svg') no-repeat center center;
       background-size: 93px 65px;
     }
   }
@@ -143,6 +149,10 @@ header {
   iframe {
     border: none;
   }
+
+  body.salesforce & {
+    top: $sfHeaderHeight;
+  }
 }
 
 main {
@@ -155,12 +165,12 @@ main {
   background: linear-gradient(to bottom, #f2f2f4, #fff);
   transition: transform 0.5s;
 
-  body.salesforce & {
-    padding-top: 20px;
-  }
-
   &.open {
     transform: translate(0px, $diagramHeight);
+  }
+
+  body.salesforce & {
+    height: calc(100vh - $sfHeaderHeight);
   }
 }
 

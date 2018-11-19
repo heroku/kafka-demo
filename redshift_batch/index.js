@@ -30,6 +30,7 @@ let lock = false;
 kafkaConsumer.on('message', (msg) => {
   const now = performance.now();
   const sinceLast = now - lastUpdate;
+  console.log(msg.value);
   const value = JSON.parse(msg.value);
   const length = queue.push(value);
   //console.log(length);

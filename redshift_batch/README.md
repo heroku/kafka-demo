@@ -23,6 +23,10 @@ Copy config/default.json to config/production.json then edit the production.json
 }
 ```
 
+```sql
+CREATE TABLE ecommercelogs(id serial, time TIMESTAMP WITH TIME ZONE, session VARCHAR(255), action VARCHAR(255), product VARCHAR(255), category VARCHAR(255), campaign VARCHAR(255))
+```
+
 ## Running
 
 `node index.js`

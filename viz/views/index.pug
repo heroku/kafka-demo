@@ -13,10 +13,10 @@ html
     header
       nav
         .logo
+        span.title #{htmlWebpackPlugin.options.title}
         ul.nav-items
-          li.title #{htmlWebpackPlugin.options.title}
           li.nav-link.architecture-link Architecture
-          li.nav-link Learn More
+          li.nav-link.has-dropdown Learn More
             ul.dropdown.nav-learn
               li: a(href='https://github.com/heroku/kafka-demo') Fork on GitHub
               li: a(href='https://heroku.com/kafka') Apache Kafka on Heroku

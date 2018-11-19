@@ -10,6 +10,7 @@ $hHeader: linear-gradient(to right, #3d3f74, #6757a0);
 $hHeaderText: #fff;
 $hText: #73629e;
 $hBorder: #d8dde6;
+$hLinkBorder: rgba(0, 0, 0, 0.15);
 
 $sfHeader: #dae0e4;
 $sfHeaderText: #29347c;
@@ -41,7 +42,7 @@ header {
 
   nav {
     height: 100%;
-    padding: 0 15px;
+    padding: 0 0 0 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -60,27 +61,54 @@ header {
     display: inline-block;
     font-size: 0.9em;
 
-    &.nav-link:hover {
-      cursor: pointer;
+    &.nav-link {
+      border-left: 1px solid $hLinkBorder;
+      border-right: 1px solid $hLinkBorder;
+      margin-left: 0;
+      padding: 17px 15px;
 
-      .dropdown {
-        display: block;
+      &:first-of-type {
+        border-left: 2px solid $hLinkBorder !important;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        .dropdown {
+          display: block;
+        }
       }
     }
 
-    &.title {
-      font-weight: 400;
+    &.has-dropdown {
+      position: relative;
+      padding-right: 30px;
 
       &:after {
-        margin-left: 15px;
-        content: '⁂';
+        content: '\02c6';
+        font-size: 150%;
         display: inline-block;
-        opacity: 0.5;
+        position: absolute;
+        top: 7px;
+        right: 15px;
+        transform: rotate(180deg);
       }
+    }
+  }
 
-      @media screen and (max-width: 480px) {
-        display: none;
-      }
+  .title {
+    font-weight: 400;
+
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+
+    @media screen and (min-width: 800px) {
+      position: absolute;
+      left: 50%;
+      width: 200px;
+      margin-left: -100px;
+      text-align: center;
     }
   }
 
@@ -91,7 +119,7 @@ header {
     position: absolute;
     z-index: 10;
     right: -3px;
-    top: 40px;
+    top: 45px;
     background: #fff;
     border-radius: 4px;
     border: 1px solid $hBorder;

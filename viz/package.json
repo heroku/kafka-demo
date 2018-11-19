@@ -1,0 +1,93 @@
+{
+  "name": "twitter-display",
+  "description": "Demo for Kafka Twitter display",
+  "version": "1.0.0",
+  "bugs": {
+    "url": "https://github.com/crcastle/twitter-display/issues"
+  },
+  "dependencies": {
+    "d3": "^5.7.0",
+    "dateformat": "^3.0.3",
+    "express": "^4.14.0",
+    "lodash": "^4.16.1",
+    "no-kafka": "^3.3.5",
+    "normalize.css": "^8.0.1",
+    "pug": "^2.0.0-beta6",
+    "ws": "^6.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "acorn": "^6.0.4",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-lodash": "^3.3.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "connect-history-api-fallback": "^1.3.0",
+    "css-loader": "^1.0.1",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "git-validate": "^2.2.2",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.4",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.4.0",
+    "precss": "^3.1.2",
+    "prettier": "^1.15.2",
+    "pug-loader": "^2.3.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-middleware": "^3.4.0",
+    "webpack-livereload-plugin": "^2.1.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 10,
+      "sourceType": "module"
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    }
+  },
+  "eslintIgnore": [
+    "dist/*",
+    "public/*"
+  ],
+  "license": "MIT",
+  "main": "bin/start",
+  "pre-commit": [
+    "lint",
+    "validate"
+  ],
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:crcastle/twitter-display.git"
+  },
+  "scripts": {
+    "build": "NODE_ENV=production webpack",
+    "dev": "NODE_ENV=development bin/start",
+    "eslint": "eslint --fix .",
+    "lint": "npm run prettier && npm run eslint",
+    "nodemon": "nodemon --exec npm run dev --watch app.js --watch webpack.config.js --watch consumer/",
+    "prettier": "prettier --write '**/*.{js,md,css,json}'",
+    "prettier:list": "npm run prettier -- --list-different",
+    "start": "NODE_ENV=production bin/start",
+    "validate": "npm ls >/dev/null"
+  }
+}

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+function cleanup {
+  rm -f client.crt client.key
+  echo ""
+  echo "-----> Exiting."
+  exit
+}
+trap cleanup SIGINT SIGTERM
+
+if [ "${NODE_ENV}" = "development" ]; then
+  export KAFKA_URL="$(heroku config:get KAFKA_URL -a twitter-ingest)"
+  export KAFKA_CLIENT_CERT="$(heroku config:get KAFKA_CLIENT_CERT -a twitter-ingest)"
+  export KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY -a twitter-ingest)"
+  export TWITTER_TRACK_TERMS="$(heroku config:get TWITTER_TRACK_TERMS -a twitter-ingest)"
+fi
+
+if [[ -z "${KAFKA_CLIENT_CERT}" ]]; then
+  echo "KAFKA_CLIENT_CERT is not set. Aborting"
+  exit 1
+fi
+
+if [[ -z "${KAFKA_CLIENT_CERT_KEY}" ]]; then
+  echo "KAFKA_CLIENT_CERT_KEY is not set. Aborting"
+  exit 1
+fi
+
+if [[ -z "${KAFKA_URL}" ]]; then
+  echo "KAFKA_URL is not set. Aborting"
+  exit 1
+fi
+
+# Setup cert and cert key
+rm -f client.crt client.key
+echo -n "$KAFKA_CLIENT_CERT" > client.crt
+echo -n "$KAFKA_CLIENT_CERT_KEY" > client.key
+
+if [ "${NODE_ENV}" = "production" ]; then
+  # Build dist files in production
+  npm run build
+fi
+
+# Start it up
+node app.js

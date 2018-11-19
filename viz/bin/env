@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+heroku config:set KAFKA_URL="$(heroku config:get KAFKA_URL -a twitter-ingest)"
+heroku config:set KAFKA_CLIENT_CERT="$(heroku config:get KAFKA_CLIENT_CERT -a twitter-ingest)"
+heroku config:set KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY -a twitter-ingest)"
+heroku config:set TWITTER_TRACK_TERMS="$(heroku config:get TWITTER_TRACK_TERMS -a twitter-ingest)"

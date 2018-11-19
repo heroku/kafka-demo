@@ -1,0 +1,26 @@
+{
+  "name": "twitter-display",
+  "scripts": {},
+  "env": {
+    "KAFKA_CLIENT_CERT": {
+      "required": true
+    },
+    "KAFKA_CLIENT_CERT_KEY": {
+      "required": true
+    },
+    "KAFKA_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

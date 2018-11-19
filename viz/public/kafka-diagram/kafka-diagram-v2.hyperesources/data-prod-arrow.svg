@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.06 57.86">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #dccee5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #dccee5;
+      }
+    </style>
+  </defs>
+  <title>data-prod-arrow</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_7" data-name="Layer 7">
+      <g>
+        <line class="cls-1" x1="5.03" y1="1" x2="5.03" y2="56.66"/>
+        <path class="cls-2" d="M.23,49.83A.5.5,0,0,1,.92,50L5,56.43,9.14,50a.5.5,0,0,1,.84.54L5.45,57.63a.5.5,0,0,1-.84,0L.08,50.52a.5.5,0,0,1,.15-.69Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,95 @@
+$hColor1: #482d8c;
+$hColor2: #3ca1da;
+$hColor3: #79c36d;
+$hColor4: #f9a151;
+$hColor5: #d64242;
+$hColor6: #596981;
+$hChartText: #757a7d;
+
+$sfColor1: #18afe5;
+$sfColor2: #955aa4;
+$sfColor3: #f29e1f;
+$sfColor4: #1fbcb8;
+$sfColor5: #29347c;
+$sfColor6: #60879e;
+$sfChartText: #757a7d;
+
+body.heroku {
+  .chart-color-1 {
+    background: $hColor1;
+    fill: $hColor1;
+  }
+  .chart-color-2 {
+    background: $hColor2;
+    fill: $hColor2;
+  }
+  .chart-color-3 {
+    background: $hColor3;
+    fill: $hColor3;
+  }
+  .chart-color-4 {
+    background: $hColor4;
+    fill: $hColor4;
+  }
+  .chart-color-5 {
+    background: $hColor5;
+    fill: $hColor5;
+  }
+  .chart-color-6 {
+    background: $hColor6;
+    fill: $hColor6;
+  }
+  path.domain {
+    stroke: $hChartText;
+  }
+  g.tick text {
+    fill: $hChartText;
+  }
+  g.tick line {
+    stroke: $hChartText;
+  }
+  text.label {
+    fill: $hChartText;
+    font-size: 12px;
+  }
+}
+
+body.salesforce {
+  .chart-color-1 {
+    background: $sfColor1;
+    fill: $sfColor1;
+  }
+  .chart-color-2 {
+    background: $sfColor2;
+    fill: $sfColor2;
+  }
+  .chart-color-3 {
+    background: $sfColor3;
+    fill: $sfColor3;
+  }
+  .chart-color-4 {
+    background: $sfColor4;
+    fill: $sfColor4;
+  }
+  .chart-color-5 {
+    background: $hColor5;
+    fill: $hColor5;
+  }
+  .chart-color-6 {
+    background: $hColor6;
+    fill: $hColor6;
+  }
+  path.domain {
+    stroke: $sfChartText;
+  }
+  g.tick text {
+    fill: $sfChartText;
+  }
+  g.tick line {
+    stroke: $sfChartText;
+  }
+  text.label {
+    fill: $sfChartText;
+    font-size: 12px;
+  }
+}

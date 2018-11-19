@@ -1,0 +1,12 @@
+{
+  "queueSize": 50,
+  "timeout": 3000,
+  "database": "postgres://fritzy@localhost:5432/fritzy",
+  "kafka": {
+    "topic": "ecommerce-logs",
+    "group": "redshift-batch",
+    "config": {
+      "kafkaHost": "localhost:9092"
+    }
+  }
+}

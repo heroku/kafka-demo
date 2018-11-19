@@ -1,0 +1,28 @@
+# redshift\_batch
+
+Batches kafka messages into redshift.
+
+## Install
+
+`npm install`
+
+Copy config/default.json to config/production.json then edit the production.json
+
+```js
+{
+  "queueSize": 50, // number of msgs to queue up before inserting
+  "timeout": 3000, // max time to queue before inserting
+  "database": "postgres://fritzy@localhost:5432/fritzy", // pg connection string
+  "kafka": {  
+    "topic": "ecommerce-logs", // kafka topic
+    "group": "redshift-batch", // consumer group id
+    "config": { // kafka-node configuration object
+      "kafkaHost": "localhost:9092"
+    }
+  }
+}
+```
+
+## Running
+
+`node index.js`

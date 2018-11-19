@@ -62,7 +62,7 @@ if (config.output.type === "csv") {
   const bar = new ProgressBar(':bar ', { total: diff });
   let last = start.clone();
 
-  const client = new Kafka.KafkaClient({kafkaHost: 'localhost:9092'});
+  const client = new Kafka.KafkaClient(config.output.kafka);
   const producer = new Kafka.Producer(client);
   let ended = 0;
   let sf = null;
@@ -72,7 +72,7 @@ if (config.output.type === "csv") {
       producer.send([
         {
           topic: config.output.topic,
-          message: event,
+          messages: [JSON.stringify(event)],
           partition: 0
         }
       ], (err, result) => {

@@ -6,7 +6,7 @@ Batches kafka messages into redshift.
 
 `npm install`
 
-Copy config/default.json to config/production.json then edit the production.json
+Copy config/default.json to config/local.json then edit the production.json
 
 ```js
 {
@@ -16,8 +16,12 @@ Copy config/default.json to config/production.json then edit the production.json
   "kafka": {  
     "topic": "ecommerce-logs", // kafka topic
     "group": "redshift-batch", // consumer group id
-    "config": { // kafka-node configuration object
-      "kafkaHost": "localhost:9092"
+    "config": { // no-kafka configuration object
+      "kafkaHost": "kafka://localhost:9092",
+      "ssl": {
+        "key": "",
+        "cert: ""
+      }
     }
   }
 }

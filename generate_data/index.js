@@ -2,7 +2,8 @@ const Moment = require('moment');
 const ShoppingFeed = require('./shoppingfeed');
 const ProgressBar = require('progress');
 const CsvStringify = require('csv-stringify');
-const Kafka = require('kafka-node');
+//const Kafka = require('kafka-node');
+const Kafka = require('no-kafka');
 const fs = require('fs');
 const argv = require('minimist')(process.argv);
 
@@ -62,28 +63,25 @@ if (config.output.type === "csv") {
   const bar = new ProgressBar(':bar ', { total: diff });
   let last = start.clone();
 
-  const client = new Kafka.KafkaClient(config.output.kafka);
-  const producer = new Kafka.Producer(client);
+  const producer = new Kafka.Producer(config.output.kafka);
   let ended = 0;
   let sf = null;
 
   const handleOutput = (event) => {
-    return new Promise((resolve, reject) => {
-      producer.send([
-        {
-          topic: config.output.topic,
-          messages: [JSON.stringify(event)],
-          partition: 0
-        }
-      ], (err, result) => {
-        if (err) return reject(err);
-        resolve();
-      });
+    producer.send({
+      topic: config.output.topic,
+      message: { value: JSON.stringify(event) },
+      partition: 0
+    })
+      .then((r) => {
+      })
+    .catch((e) => {
+      console.log(e);
+      throw e;
     });
   };
 
   const handleProgress = (time) => {
-
     const amount = time.diff(last, 'ms');
     bar.tick(amount / 1000);
     //console.log(amount);
@@ -104,7 +102,7 @@ if (config.output.type === "csv") {
 
   sf = new ShoppingFeed(config, handleOutput, handleProgress, handleEnd);
 
-  producer.on('ready', function () {
+  producer.init().then(() => {
     sf.updateBatch(Moment(config.primeUntil));
   });
 

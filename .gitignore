@@ -1,4 +1,4 @@
-production.json
+local.json
 # Logs
 logs
 *.log

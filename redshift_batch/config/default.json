@@ -6,7 +6,11 @@
     "topic": "ecommerce-logs",
     "group": "redshift-batch",
     "config": {
-      "kafkaHost": "localhost:9092"
+      "connectionString": "kafka://localhost:9092",
+      "ssl": {
+        "cert": "",
+        "key": ""
+      }
     }
   }
 }

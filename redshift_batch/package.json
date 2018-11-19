@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "getconfig": "^4.5.0",
-    "kafka-node": "^3.0.1",
+    "no-kafka": "^3.3.5",
     "pg-promise": "^8.5.2"
   }
 }

@@ -33,8 +33,12 @@ Create or using an existing config.
   "output": {
     "type": "kafka", // kafka or csv
     "topic": "ecommerce-logs", // kafka specific topic
-    "kafka": { // config that initializes node-kafka client
-      "kafkaHost": "localhost:9092"
+    "kafka": { // config that initializes no-kafka client
+      "connectionString": "kafka://localhost:9092"
+      "ssl": {
+        "cert": "",
+        "key": "",
+      }
     }
   },
   "badCategory": "EKUX", // category of products where the wishlist feature is broken

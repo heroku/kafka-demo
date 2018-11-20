@@ -1,4 +1,4 @@
-{
+const config = {
   "maxWait": 10,
   "campaignVolumeMult": 1.5,
   "maxSessions": 500,
@@ -14,7 +14,11 @@
     "type": "kafka",
     "topic": "ecommerce-logs",
     "kafka": {
-      "kafkaHost": "localhost:9092"
+        "connectionString": process.env.KAFKA_URL || "kafka://localhost:9092",
+        "ssl": {
+          "cert": process.env.KAFKA_CLIENT_CERT || "",
+          "key": process.env.KAFKA_CLIENT_CERT_KEY || ""
+        }
     }
   },
   "badCategory": "EKUX",
@@ -359,3 +363,9 @@
     0.6
   ]
 }
+
+if (process.env.KAFKA_PREFIX) {
+    config.output.topic = process.env.KAFKA_PREFIX + config.output.topic;
+}
+
+module.exports = config;

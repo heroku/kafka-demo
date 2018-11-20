@@ -5,10 +5,11 @@ const CsvStringify = require('csv-stringify');
 //const Kafka = require('kafka-node');
 const Kafka = require('no-kafka');
 const fs = require('fs');
+const path = require('path');
 const argv = require('minimist')(process.argv);
 
-const configFile = fs.readFileSync(argv.c);
-const config = JSON.parse(configFile);
+const configFilePath = path.resolve(argv.c);
+const config = require(configFilePath);
 
 if (config.output.type === "csv") {
 

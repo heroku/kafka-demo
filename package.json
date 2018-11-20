@@ -1,0 +1,19 @@
+{
+  "name": "kafka-stream-viz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "npm run install-generate",
+    "install-redshift": "cd redshift_batch && npm install",
+    "install-generate": "cd generate_data && npm install",
+    "install-viz": "cd viz && npm install"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.9.0"
+  }
+}

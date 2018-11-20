@@ -1,7 +1,6 @@
 /* eslint no-console:0 */
 
 const path = require('path')
-const fs = require('fs')
 const server = require('http').createServer()
 const WebSocketServer = require('ws').Server
 const express = require('express')
@@ -53,8 +52,8 @@ const consumer = new Consumer({
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {
-      cert: fs.readFileSync(path.resolve(__dirname, 'client.crt')).toString(),
-      key: fs.readFileSync(path.resolve(__dirname, 'client.key')).toString()
+      cert: './client.crt',
+      key: './client.key'
     }
   }
 })

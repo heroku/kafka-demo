@@ -1,25 +1,17 @@
-//const _ = require('lodash')
 const Kafka = require('no-kafka')
-const SizedArray = require('./sizedArray')
 const Moment = require('moment')
 
-/*
-const combine = (arr1, arr2, combinator) =>
-  _.flatten(arr1.map((a) => arr2.map((b) => combinator(a, b))))
-*/
-
 module.exports = class Consumer {
-  constructor({ interval, maxSize, broadcast, topic, consumer }) {
-    this._maxSize = maxSize
-    this._snapshot = new SizedArray(maxSize)
+  constructor({ interval, broadcast, topic, consumer }) {
     this._broadcast = broadcast
+    this._interval = interval
 
     this.startTime = null
     this.latestTime = null
     this.categories = {}
 
     this._consumer = new Kafka.SimpleConsumer({
-      idleTimeout: interval,
+      idleTimeout: this._interval,
       connectionTimeout: 10 * 1000,
       clientId: topic,
       ...consumer
@@ -32,18 +24,8 @@ module.exports = class Consumer {
 
     return consumer
       .init()
-      .then(() => consumer.offset(topic))
-      .then((latest) => {
-        consumer.subscribe(
-          topic,
-          0,
-          {
-            offset: latest - this._maxSize
-          },
-          this.onMessage.bind(this)
-        )
-        setInterval(this.cullAndBroadcast.bind(this), 1000)
-      })
+      .then(() => consumer.subscribe(topic, this.onMessage.bind(this)))
+      .then(() => setInterval(this.cullAndBroadcast.bind(this), this._interval))
   }
 
   onMessage(messageSet) {
@@ -63,10 +45,7 @@ module.exports = class Consumer {
           id: item.category,
           times: [],
           first: time,
-          count: 0,
-          avgPerSecond: 0,
-          avgPer60Seconds: 0,
-          avgPer3600Seconds: 0
+          count: 0
         }
       }
       this.categories[item.category].times.push(time)
@@ -74,18 +53,6 @@ module.exports = class Consumer {
       if (this.latestTime === null || time.isAfter(this.latestTime)) {
         this.latestTime = time.clone()
       }
-    }
-
-    const initial = this._snapshot.empty()
-    this._snapshot.push(items)
-
-    if (!initial) {
-      /*
-      this._broadcast({
-        type: 'aggregate',
-        data: items
-      })
-      */
     }
   }
 
@@ -122,16 +89,12 @@ module.exports = class Consumer {
         avgPerSecond: avgPerSecond
       })
     }
+    const time = new Date().valueOf()
     this._broadcast({
-      type: 'aggregate',
-      data: items
+      data: items.reduce((res, cat) => {
+        res[cat.id] = [{ ...cat, time }]
+        return res
+      }, {})
     })
-  }
-
-  snapshot() {
-    return {
-      type: 'snapshot',
-      data: this._snapshot.items()
-    }
   }
 }

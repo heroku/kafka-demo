@@ -40,17 +40,16 @@ server.on('request', app)
  *
  */
 const wss = new WebSocketServer({ server })
-const send = (client, data) => client.send(JSON.stringify(data))
 
 /*
  * Configure Kafka consumer
  *
  */
 const consumer = new Consumer({
-  broadcast: (data) => wss.clients.forEach((client) => send(client, data)),
+  broadcast: (data) =>
+    wss.clients.forEach((client) => client.send(JSON.stringify(data))),
   interval: constants.INTERVAL,
   topic: constants.KAFKA_TOPIC,
-  maxSize: constants.MAX_BUFFER_SIZE,
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {
@@ -67,7 +66,6 @@ consumer
     if (PRODUCTION) throw err
   })
   .then(() => {
-    wss.on('connection', (client) => send(client, consumer.snapshot()))
     server.listen(PORT, () =>
       console.log(`http/ws server listening on http://localhost:${PORT}`)
     )

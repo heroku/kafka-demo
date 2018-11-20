@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
-import SizedArray from '../../consumer/sizedArray'
+import SizedArray from './sizedArray'
 
 export default class StreamChart {
   constructor(options) {
@@ -96,9 +96,8 @@ export default class StreamChart {
     })
   }
 
-  init(data) {
+  init() {
     this._lastData = new SizedArray(this.maxSize)
-    this._lastData.push(this.formatData(data))
 
     this.updateScaleAndAxesData({ first: true })
     this.updateScales({ first: true })

@@ -12,7 +12,7 @@ module.exports = class SizedArray {
     if (current + add >= max) {
       this._items = [...this._items, ...items].slice(current + add - max)
     } else {
-      this._items.push(items)
+      this._items.push(...items)
     }
   }
 

@@ -1,6 +1,5 @@
 import '../styles/style.css'
 
-import _ from 'lodash'
 import Stream from './lib/stream'
 import Nav from './lib/nav'
 import { MAX_SIZE, MAX_BUFFER_SIZE, INTERVAL } from '../consumer/constants'
@@ -23,16 +22,9 @@ const aggregate = [
 const url = `ws${window.location.href.match(/^http(s?:\/\/.*)\/.*$/)[1]}`
 const ws = new window.WebSocket(url)
 
+aggregate.forEach((a) => a.init())
+
 ws.onmessage = (e) => {
-  const { type, data } = JSON.parse(e.data)
-
-  switch (type) {
-    case 'snapshot':
-      _.invokeMap(aggregate, 'init', data.aggregate)
-      break
-
-    case 'aggregate':
-      _.invokeMap(aggregate, 'update', data)
-      break
-  }
+  const { data } = JSON.parse(e.data)
+  aggregate.forEach((a) => a.update(data))
 }

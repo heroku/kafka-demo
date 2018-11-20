@@ -28,12 +28,17 @@ module.exports = class Nav {
     })
   }
 
-  init(data) {
+  init() {}
+
+  update(data) {
     this.formatData(data).forEach((topic, index) => {
-      const li = document.createElement('li')
-      li.textContent = topic
-      li.classList.add(`color-${index + 1}`)
-      this.legend.appendChild(li)
+      if (!this.legend.querySelector(`#topic-${topic}`)) {
+        const li = document.createElement('li')
+        li.textContent = topic
+        li.setAttribute('id', `topic-${topic}`)
+        li.classList.add(`color-${index + 1}`)
+        this.legend.appendChild(li)
+      }
     })
   }
 }

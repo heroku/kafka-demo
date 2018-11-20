@@ -1,6 +1,7 @@
 /* eslint no-console:0 */
 
 const path = require('path')
+const fs = require('fs')
 const server = require('http').createServer()
 const WebSocketServer = require('ws').Server
 const express = require('express')
@@ -39,21 +40,22 @@ server.on('request', app)
  *
  */
 const wss = new WebSocketServer({ server })
-const send = (data) => (client) => client.send(JSON.stringify(data))
+const send = (client, data) => client.send(JSON.stringify(data))
 
 /*
  * Configure Kafka consumer
  *
  */
 const consumer = new Consumer({
-  broadcast: (data) => wss.clients.forEach(send(data)),
-  topics: constants.TOPICS.map((name) => ({ name })),
-  types: [{ name: 'aggregate', maxSize: constants.MAX_BUFFER_SIZE }],
+  broadcast: (data) => wss.clients.forEach((client) => send(client, data)),
+  interval: constants.INTERVAL,
+  topic: constants.KAFKA_TOPIC,
+  maxSize: constants.MAX_BUFFER_SIZE,
   consumer: {
     connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
     ssl: {
-      certFile: path.resolve(__dirname, 'client.crt'),
-      keyFile: path.resolve(__dirname, 'client.key')
+      cert: fs.readFileSync(path.resolve(__dirname, 'client.crt')).toString(),
+      key: fs.readFileSync(path.resolve(__dirname, 'client.key')).toString()
     }
   }
 })
@@ -65,7 +67,7 @@ consumer
     if (PRODUCTION) throw err
   })
   .then(() => {
-    wss.on('connection', (client) => send(consumer.snapshot())(client))
+    wss.on('connection', (client) => send(client, consumer.snapshot()))
     server.listen(PORT, () =>
       console.log(`http/ws server listening on http://localhost:${PORT}`)
     )

@@ -98,9 +98,7 @@ module.exports = {
     }),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     new webpack.DefinePlugin({
-      'process.env.TWITTER_TRACK_TERMS': JSON.stringify(
-        process.env.TWITTER_TRACK_TERMS
-      )
+      'process.env.KAFKA_TOPIC': JSON.stringify(process.env.KAFKA_TOPIC)
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'

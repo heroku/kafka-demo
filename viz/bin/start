@@ -14,7 +14,9 @@ if [ "${NODE_ENV}" = "development" ]; then
   export KAFKA_URL="$(heroku config:get KAFKA_URL -a twitter-ingest)"
   export KAFKA_CLIENT_CERT="$(heroku config:get KAFKA_CLIENT_CERT -a twitter-ingest)"
   export KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY -a twitter-ingest)"
-  export TWITTER_TRACK_TERMS="$(heroku config:get TWITTER_TRACK_TERMS -a twitter-ingest)"
+  # TODO: use env var from heroku instance
+  # export KAFKA_TOPIC="$(heroku config:get KAFKA_TOPIC -a twitter-ingest)"
+  export KAFKA_TOPIC="ecommerce-logs"
 fi
 
 if [[ -z "${KAFKA_CLIENT_CERT}" ]]; then

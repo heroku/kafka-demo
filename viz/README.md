@@ -15,7 +15,7 @@ Additionally these environment variables need to be defined:
 - `KAFKA_URL`: A comma separated list of SSL URLs to the Kafka brokers making up the cluster.
 - `KAFKA_CLIENT_CERT`: The required client certificate (in PEM format) to authenticate clients against the broker.
 - `KAFKA_CLIENT_CERT_KEY`: The required client certificate key (in PEM format) to authenticate clients against the broker.
-- `TWITTER_TRACK_TERMS`: The terms to track from Twitter.
+- `KAFKA_TOPIC`: The Kafka topics to subscribe to.
 
 #### Development Server
 
@@ -45,5 +45,5 @@ Or manually:
 heroku config:set KAFKA_URL=
 heroku config:set KAFKA_CLIENT_CERT=
 heroku config:set KAFKA_CLIENT_CERT_KEY=
-heroku config:set TWITTER_TRACK_TERMS=
+heroku config:set KAFKA_TOPIC=
 ```

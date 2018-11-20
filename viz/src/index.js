@@ -28,11 +28,13 @@ ws.onmessage = (e) => {
 
   switch (type) {
     case 'snapshot':
-      _.invokeMap(aggregate, 'init', data.aggregate)
+      console.log('snap', data)
+      //_.invokeMap(aggregate, 'init', data.aggregate)
       break
 
     case 'aggregate':
-      _.invokeMap(aggregate, 'update', data)
+      console.log('agg', data)
+      //_.invokeMap(aggregate, 'update', data)
       break
   }
 }

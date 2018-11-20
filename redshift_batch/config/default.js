@@ -1,7 +1,7 @@
 const config = {
   "queueSize": 50,
   "timeout": 3000,
-  "database": "postgres://fritzy@localhost:5432/fritzy",
+  "database": process.env.DATABASE_URL || "postgresql://localhost:5432",
   "kafka": {
     "topic": "ecommerce-logs",
     "group": "redshift-batch",

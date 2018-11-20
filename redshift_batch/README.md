@@ -28,7 +28,7 @@ Copy config/default.json to config/local.json then edit the production.json
 ```
 
 ```sql
-CREATE TABLE ecommercelogs(id serial, time TIMESTAMP WITH TIME ZONE, session VARCHAR(255), action VARCHAR(255), product VARCHAR(255), category VARCHAR(255), campaign VARCHAR(255))
+CREATE TABLE ecommercelogs(id INT IDENTITY(1, 1), time TIMESTAMP WITH TIME ZONE, session VARCHAR(255), action VARCHAR(255), product VARCHAR(255), category VARCHAR(255), campaign VARCHAR(255))
 ```
 
 ## Running

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm run install-redshift && npm run install-generate",
+    "install": "npm run install-redshift && npm run install-generate && npm run install-viz",
     "install-redshift": "cd redshift_batch && npm install",
     "install-generate": "cd generate_data && npm install",
     "install-viz": "cd viz && npm install"

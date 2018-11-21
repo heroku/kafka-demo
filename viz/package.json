@@ -81,7 +81,7 @@
     "url": "git@github.com:crcastle/twitter-display.git"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "dev": "NODE_ENV=development bin/start",
     "eslint": "eslint --fix .",
     "lint": "npm run prettier && npm run eslint",

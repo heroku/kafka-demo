@@ -98,9 +98,9 @@ module.exports = {
     }),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     new webpack.DefinePlugin({
-      'process.env.KAFKA_TOPIC':
-        JSON.stringify(process.env.KAFKA_PREFIX) +
-        JSON.stringify(process.env.KAFKA_TOPIC)
+      'process.env.KAFKA_TOPIC': JSON.stringify(
+        process.env.KAFKA_PREFIX + process.env.KAFKA_TOPIC
+      )
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'

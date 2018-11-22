@@ -20,7 +20,7 @@ const htmlPlugin = (options) =>
     production: PRODUCTION,
     minify: PRODUCTION ? { collapseWhitespace: true } : false,
     filename: 'index.html',
-    title: 'Kafka Demo App',
+    title: 'Product Analytics with Kafka',
     inject: false,
     template: path.join(__dirname, 'views', 'index.pug'),
     ...options

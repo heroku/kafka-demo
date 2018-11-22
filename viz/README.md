@@ -1,4 +1,4 @@
-## twitter-display
+## kafka-stream-viz
 
 A simple app that streams tweets containing a specified set of keywords to web browser clients.
 

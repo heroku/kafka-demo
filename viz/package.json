@@ -1,9 +1,9 @@
 {
-  "name": "twitter-display",
-  "description": "Demo for Kafka Twitter display",
+  "name": "kafka-stream-viz",
+  "description": "A demo showing Heroku+AWS integration using Apache Kafka on Heroku and AWS RedShift.",
   "version": "1.0.0",
   "bugs": {
-    "url": "https://github.com/crcastle/twitter-display/issues"
+    "url": "https://github.com/heroku-examples/kafka-stream-viz/issues"
   },
   "dependencies": {
     "d3": "^5.7.0",
@@ -78,7 +78,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:crcastle/twitter-display.git"
+    "url": "git@github.com:crcastle/kafka-stream-viz.git"
   },
   "scripts": {
     "build": "NODE_ENV=production webpack",

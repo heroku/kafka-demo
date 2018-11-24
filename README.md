@@ -7,7 +7,7 @@ This is an example of a system that captures a large stream of product usage dat
 Here's an overview of how the system works.
 
 <p align="center">
-  <img src="docs/kafka-stream-viz-architecture.gif" width="50%" />
+  <img src="docs/kafka-stream-viz-architecture.gif" width="75%" />
 </p>
 
 ## Structure

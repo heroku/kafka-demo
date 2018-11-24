@@ -1,27 +1,37 @@
-# Kafka-stream-viz
+# Example Product Usage Analytics System
 
+This is an example of a system that captures a large stream of product usage data, or events. The stream of events is captured by [Apache Kafka](https://kafka.apache.org/) and made available to other downstream consumers. In this example, there are two downstream consumers of the data. The data flowing through Kafka can be viewed in near real-time using a web-based data visualization app. The other consumer stores all the data in [AWS RedShift](https://aws.amazon.com/redshift/), a relational database that Amazon describes as "a fast, scalable data warehouse." Then we can query and visualize the data in RedShift from a SQL-compliant analytics tool. This example uses [Metabase deployed to Heroku](https://elements.heroku.com/buttons/metabase/metabase-deploy). [Metabase](https://www.metabase.com/) is an open-source analytics tool used by many organizations, large and small.
 
+**This entire system can be deployed in 15 minutes -- most of that time spent waiting for Heroku and AWS to provision services.**
+
+Here's an overview of how the system works.
+
+<p align="center">
+  <img src="docs/kafka-stream-viz-architecture.gif" width="50%" />
+</p>
 
 ## Structure
 
-This project includes 3 apps: generate\_data, reshift\_batch, and viz. Each app is in its corresponding directory.
+This project includes 3 apps:
 
-## Install
+1. A data producer called `generate_data`. Data is simulated in this example, but this could be replaced with almost anything that produces data: a marketing website, a SaaS product, a point-of-sale device, a kiosk, internet-connected thermostat or car. And more than one data producer can be added.
+1. A real-time data visualizer called `viz`, which shows relative volume of different categories of data being written into Kafka.
+1. And a Kafka-to-RedShift writer called `reshift_batch`, which simply reads data from Kafka and writes it to RedShift.
+
+They all share data using [Apache Kafka on Heroku](https://www.heroku.com/kafka).
+
+You can optionally deploy Metabase to Heroku to query RedShift. Check out [Metabase's Heroku Deploy Button](https://elements.heroku.com/buttons/metabase/metabase).
+
+## Deploy
 
 ### Prerequisites
 
-- An AWS RedShift cluster. If you want an easy way to create a RedShift cluster, a Heroku Private Space, and peering between the Private Space and AWS VPC in which the RedShift cluster lives, check out [this Terraform script](https://github.com/heroku-examples/terraform-heroku-peered-redshift).
+- An AWS RedShift cluster. Check out [this Terraform script](https://github.com/heroku-examples/terraform-heroku-peered-redshift) for an easy way to create a RedShift cluster along with a Heroku Private Space and a private peering connection between the Heroku Private Space and the RedShift's AWS VPC. *Not free! This will incur cost on AWS and Heroku.*
+- Node.js
 
-- Add animated GIF to readme
-- Finish bottom of this README
-- Update `viz` README
-- Try out demo script
-- Edit demo script
-- Record demo script
+### Deploy to Heroku
 
-### Heroku
-
-```
+```shell
 git clone git@github.com:heroku-examples/kafka-stream-viz.git
 cd kafka-stream-viz
 heroku create
@@ -29,18 +39,18 @@ heroku addons:create heroku-kafka:basic-0
 git push heroku master
 ```
 
-Optionally, you can also deploy Metabase to Heroku and query data in RedShift. Use [Metabase's Heroku Deploy button](https://elements.heroku.com/buttons/metabase/metabase). Once deployed, you'll need to configure Metabase with RedShift cluster URL, database name, username, and password.
+Optionally, you can deploy Metabase to Heroku and query data in RedShift. Use [Metabase's Heroku Deploy button](https://elements.heroku.com/buttons/metabase/metabase). Once deployed, you'll need to configure Metabase with the RedShift cluster URL, database name, username, and password.
 
-### Local
+### Deploy Locally
 
-```
+```shell
 git clone git@github.com:heroku-examples/kafka-stream-viz.git
 npm i
 ```
 
 ## Run
 
-The following environment variables must be defined. If you used the Heroku install instructions above, all of them are already defined except for `DATABASE_URL`.
+The following environment variables must be defined. If you used the Heroku deploy instructions above, all of the variables are already defined except for `DATABASE_URL`.
 
 - `DATABASE_URL`: Connection string to an AWS RedShift cluster
 - `KAFKA_URL`: Comma-separated list of Apache Kafka broker URLs
@@ -52,53 +62,3 @@ The following environment variables must be defined. If you used the Heroku inst
 Then in each of the `generate_data`, `viz`, and `redshift_batch` directories, run `npm start`.
 
 Open the URL in the startup output of the `viz` app. It will likely be `http://localhost:3000`.
-
-## kafka-stream-viz
-
-A simple app that streams tweets containing a specified set of keywords to web browser clients.
-
-Keywords are specified in the kafka-tweets app. They are read from a Kafka topic named 'test' from the 0th (zeroth) partition in that topic.
-
-#### Development Setup
-
-```shell
-npm install
-```
-
-Additionally these environment variables need to be defined:
-
-- `KAFKA_URL`: A comma separated list of SSL URLs to the Kafka brokers making up the cluster.
-- `KAFKA_CLIENT_CERT`: The required client certificate (in PEM format) to authenticate clients against the broker.
-- `KAFKA_CLIENT_CERT_KEY`: The required client certificate key (in PEM format) to authenticate clients against the broker.
-- `KAFKA_TOPIC`: The Kafka topics to subscribe to.
-
-#### Development Server
-
-```shell
-npm run dev
-```
-
-Open http://localhost:3000 in a browser and watch tweets stream in...
-
-#### Theming
-
-There are two themes: `heroku` and `salesforce`. The default is `heroku`. The theme change be changed by setting the `THEME` environment variable.
-
-#### Deploy
-
-```shell
-git clone git@github.com:crcastle/twitter-display.git
-cd twitter-display
-heroku create
-```
-
-You can define the below environment variables manually, or you can run this command to define them from another app that already has a Kafka cluster attached: `heroku addons:attach my-originating-app::KAFKA` (where "my-originating-app" is the app to which the cluster is already attached)
-
-Or manually:
-
-```
-heroku config:set KAFKA_URL=
-heroku config:set KAFKA_CLIENT_CERT=
-heroku config:set KAFKA_CLIENT_CERT_KEY=
-heroku config:set KAFKA_TOPIC=
-```

@@ -48,7 +48,7 @@ const auth = basicAuth({
 app.get('/admin/reload', auth, (req, res) => {
   return db
     .none(query)
-    .then((data) => res.send(`Fixture data truncated and reloaded: ${data}`))
+    .then(() => res.send(`Fixture data truncated and reloaded.`))
     .catch((error) => res.send(`ERROR: ${error}`))
 })
 

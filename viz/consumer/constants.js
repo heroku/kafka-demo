@@ -9,3 +9,4 @@ module.exports.MAX_BUFFER_SIZE = Math.floor(maxSize * 1.1)
 module.exports.KAFKA_TOPIC = `${
   process.env.KAFKA_PREFIX ? process.env.KAFKA_PREFIX : ''
 }${process.env.KAFKA_TOPIC}`
+console.log(`Kafka topic: ${module.exports.KAFKA_TOPIC}`) // eslint-disable-line no-console

@@ -2,6 +2,7 @@
 
 const path = require('path')
 const server = require('http').createServer()
+const { spawn } = require('child_process')
 const WebSocketServer = require('ws').Server
 const express = require('express')
 const basicAuth = require('express-basic-auth')
@@ -13,6 +14,7 @@ const webpackConfig = require('./webpack.config')
 const Consumer = require('./consumer')
 const app = express()
 const constants = require('./consumer/constants')
+let dataGeneratorProcess = null
 
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const PORT = process.env.PORT || 3000
@@ -31,11 +33,34 @@ const auth = basicAuth({
 })
 
 app.get('/admin/reload', auth, (req, res) => {
+  // TODO: change to SQL query loading fixture data
   res.send('reloaded')
 })
 
 app.get('/admin/start', auth, (req, res) => {
-  res.send('started')
+  if (dataGeneratorProcess) {
+    return res.send('Already running. Restart Heroku `web` process to stop.')
+  } else {
+    dataGeneratorProcess = spawn('node', ['index.js', '-c', 'kafka.js'], {
+      cwd: path.resolve(process.cwd(), '..', 'generate_data')
+    })
+
+    dataGeneratorProcess.on('error', (err) => {
+      console.log(`Failed to start data generator: ${err}`)
+      dataGeneratorProcess = null
+    })
+    dataGeneratorProcess.on('close', (code) => {
+      console.log(`Data generator process stopped with code ${code}.`)
+      dataGeneratorProcess = null
+    })
+    dataGeneratorProcess.stdout.on('data', (data) =>
+      console.log(`data generator stdout: ${data}`)
+    )
+    dataGeneratorProcess.stderr.on('data', (data) =>
+      console.log(`data generator stderr: ${data}`)
+    )
+    res.send('Data generator started.')
+  }
 })
 
 if (PRODUCTION) {

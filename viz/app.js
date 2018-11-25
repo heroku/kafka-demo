@@ -4,6 +4,7 @@ const path = require('path')
 const server = require('http').createServer()
 const WebSocketServer = require('ws').Server
 const express = require('express')
+const basicAuth = require('express-basic-auth')
 const webpack = require('webpack')
 const history = require('connect-history-api-fallback')
 const webpackDev = require('webpack-dev-middleware')
@@ -21,6 +22,21 @@ const PORT = process.env.PORT || 3000
  *
  */
 app.use('/public', express.static(path.join(__dirname, 'public')))
+
+// Configure admin routes for demoer
+const auth = basicAuth({
+  users: { '': process.env.ADMIN_PASSWORD || 'supersecret' },
+  challenge: true,
+  realm: 'Demo Admin'
+})
+
+app.get('/admin/reload', auth, (req, res) => {
+  res.send('reloaded')
+})
+
+app.get('/admin/start', auth, (req, res) => {
+  res.send('started')
+})
 
 if (PRODUCTION) {
   app.use(express.static(path.join(__dirname, 'dist')))

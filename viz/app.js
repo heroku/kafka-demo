@@ -16,6 +16,19 @@ const app = express()
 const constants = require('./consumer/constants')
 let dataGeneratorProcess = null
 
+const Postgres = require('pg-promise')({
+  capSQL: true
+})
+const db = Postgres(process.env.DATABASE_URL || 'postgresql://localhost:5432')
+const query = Postgres.helpers.concat([
+  { query: new Postgres.QueryFile('./sql/truncate.sql', { minify: true }) },
+  {
+    query: new Postgres.QueryFile('./sql/load.sql', { minify: true }),
+    values: [process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY]
+  }
+])
+db.connect()
+
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const PORT = process.env.PORT || 3000
 
@@ -33,8 +46,10 @@ const auth = basicAuth({
 })
 
 app.get('/admin/reload', auth, (req, res) => {
-  // TODO: change to SQL query loading fixture data
-  res.send('reloaded')
+  return db
+    .none(query)
+    .then((data) => res.send(`Fixture data truncated and reloaded: ${data}`))
+    .catch((error) => res.send(`ERROR: ${error}`))
 })
 
 app.get('/admin/start', auth, (req, res) => {

@@ -14,6 +14,7 @@
     "moment": "^2.22.2",
     "no-kafka": "^3.3.5",
     "normalize.css": "^8.0.1",
+    "pg-promise": "^8.5.2",
     "pug": "^2.0.0-beta6",
     "ws": "^6.1.0"
   },

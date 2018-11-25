@@ -6,6 +6,10 @@ const interval = (module.exports.INTERVAL = 1000)
 const maxSize = (module.exports.MAX_SIZE = 1 * 60 * (1000 / interval))
 module.exports.MAX_BUFFER_SIZE = Math.floor(maxSize * 1.1)
 
+<<<<<<< HEAD
 module.exports.KAFKA_TOPIC = `${
   process.env.KAFKA_PREFIX ? process.env.KAFKA_PREFIX : ''
 }${process.env.KAFKA_TOPIC}`
+=======
+module.exports.KAFKA_TOPIC = process.env.KAFKA_TOPIC
+>>>>>>> Fix setting KAFKA_TOPIC env var when NODE_ENV=development

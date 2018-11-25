@@ -44,8 +44,8 @@ Create or using an existing config.
   "badCategory": "EKUX", // category of products where the wishlist feature is broken
   "products": { // any number of products
     "sku": { // unique sku for product
-      "category: "sub-sku", // category of product
-      "weight": 49 // 0-100 integer wait 
+      "category": "sub-sku", // category of product
+      "weight": 49 // 0-100 integer wait
     }
   },
   volume: [ // array of 24 floats 0.0 - 1.0 to indicate the relative volume percentage

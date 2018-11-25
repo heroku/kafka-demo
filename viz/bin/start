@@ -17,8 +17,7 @@ if [ "${NODE_ENV}" = "development" ]; then
   # TODO: use env var from heroku instance
   # export KAFKA_TOPIC="$(heroku config:get KAFKA_TOPIC -a twitter-ingest)"
   export KAFKA_TOPIC="ecommerce-logs"
-  KAFKA_PREFIX=$(heroku config:get KAFKA_PREFIX)
-  [[ ! -z $KAFKA_PREFIX ]] && export KAFKA_TOPIC=$KAFKA_PREFIX$KAFKA_TOPIC
+  export KAFKA_PREFIX=$(heroku config:get KAFKA_PREFIX)
 fi
 
 if [[ -z "${KAFKA_CLIENT_CERT}" ]]; then

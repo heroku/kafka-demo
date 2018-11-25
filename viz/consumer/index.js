@@ -64,13 +64,16 @@ module.exports = class Consumer {
       let idx = 0
       let cullCount = 0
       do {
-        if (collate.times[idx].isBefore(cullFrom)) {
+        if (
+          !Moment.isMoment(collate.times[idx]) ||
+          collate.times[idx].isBefore(cullFrom)
+        ) {
           cullCount++
         } else {
           break
         }
         idx++
-      } while (idx <= collate.times.length)
+      } while (idx < collate.times.length)
       for (idx = 0; idx < cullCount; idx++) {
         collate.times.shift()
       }

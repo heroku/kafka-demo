@@ -72,6 +72,9 @@ export default class StreamChart {
 
   formatData(raw) {
     const keys = Object.keys(raw)
+    if (keys.length === 0) {
+      return null
+    }
     const minValues = Math.min(..._.values(raw).map((arr) => arr.length))
 
     // x values must be the same for all data points in a stack
@@ -119,7 +122,11 @@ export default class StreamChart {
   update(data) {
     if (!this._initialized) return
 
-    this._lastData.push(this.formatData(data))
+    const fmtData = this.formatData(data)
+    if (fmtData === null) {
+      return
+    }
+    this._lastData.push(fmtData)
 
     this.updateScaleAndAxesData({ transition: this.transition })
     this.updateScales({ transition: this.transition })
@@ -163,10 +170,29 @@ export default class StreamChart {
       })
   }
 
+  backFillData(topics, data) {
+    let found = false
+    for (const row of data) {
+      for (const topic of topics) {
+        if (!row.hasOwnProperty(topic)) {
+          found = true
+          row[topic] = [0]
+        }
+      }
+      if (found === false) {
+        break
+      }
+    }
+    return data
+  }
+
   updateStacks(options = {}) {
-    const data = this._lastData.items()
-    const first = data[0]
+    let data = this._lastData.items()
+    const first = data[data.length - 1]
     const topics = Object.keys(_.omit(first, this.xVariable))
+
+    data = this.backFillData(topics, data)
+
     this.stack.keys(topics)
 
     const updateSelection = this.chartArea

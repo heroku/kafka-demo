@@ -27,10 +27,6 @@ const config = {
         "category": "EKUX",
         "weight": 60
     },
-    "ACME-MCP2-J4HJYV-5": {
-        "category": "MCP2",
-        "weight": 49
-    },
     "ACME-3W3U-4ZMVYU-5": {
         "category": "3W3U",
         "weight": 42
@@ -147,17 +143,9 @@ const config = {
         "category": "3W3U",
         "weight": 80
     },
-    "ACME-MCP2-F79HAZ-5": {
-        "category": "MCP2",
-        "weight": 46
-    },
     "ACME-3RUM-KBRUED-6": {
         "category": "3RUM",
         "weight": 24
-    },
-    "ACME-MCP2-CHG9ZQ-2": {
-        "category": "MCP2",
-        "weight": 53
     },
     "ACME-EKUX-KJ96RY-4": {
         "category": "EKUX",
@@ -223,10 +211,6 @@ const config = {
         "category": "YRFF",
         "weight": 24
     },
-    "ACME-MCP2-FQ3BCN-4": {
-        "category": "MCP2",
-        "weight": 34
-    },
     "ACME-UZZA-C8H43J-4": {
         "category": "UZZA",
         "weight": 34
@@ -242,10 +226,6 @@ const config = {
     "ACME-UZZA-Q8QK74-5": {
         "category": "UZZA",
         "weight": 32
-    },
-    "ACME-MCP2-VD8THE-3": {
-        "category": "MCP2",
-        "weight": 91
     },
     "ACME-3W3U-X4BR8Q-4": {
         "category": "3W3U",
@@ -318,10 +298,6 @@ const config = {
     "ACME-3RUM-AEB3CA-5": {
         "category": "3RUM",
         "weight": 12
-    },
-    "ACME-MCP2-9PTV44-1": {
-        "category": "MCP2",
-        "weight": 49
     },
     "ACME-6GF4-EGHHYU-4": {
         "category": "6GF4",

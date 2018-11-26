@@ -1,10 +1,10 @@
 {
   "maxWait": 10,
-  "campaignVolumeMult": 1.5,
+  "campaignVolumeMult": 1,
   "maxSessions": 500,
   "campaign": "ae271515-3b71-4c02-88b1-a009fe34279e",
-  "startTime": "2018-09-02T00:00:00-07:00",
-  "endTime": "2018-09-03T00:00:00-07:00",
+  "startTime": "2018-08-26T00:00:00-07:00",
+  "endTime": "2018-09-02T07:00:00-07:00",
   "campaignTime": "2018-09-02T06:10:00-07:00",
   "primeUntil": "2018-09-02T09:00:00-07:00",
   "campaignPercentage": 0.33,

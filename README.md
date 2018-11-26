@@ -1,8 +1,8 @@
-# Example Product Analytics System
+# Example Product/User Analytics System Using Apache Kafka, AWS RedShift, and Metabase
 
-This is an example of a system that captures a large stream of product usage data, or events. The stream of events is captured by [Apache Kafka](https://kafka.apache.org/) and made available to other downstream consumers. In this example, there are two downstream consumers of the data. The data flowing through Kafka can be viewed in near real-time using a web-based data visualization app. The other consumer stores all the data in [AWS RedShift](https://aws.amazon.com/redshift/), a relational database that Amazon describes as "a fast, scalable data warehouse." Then we can query and visualize the data in RedShift from a SQL-compliant analytics tool. This example uses [Metabase deployed to Heroku](https://elements.heroku.com/buttons/metabase/metabase-deploy). [Metabase](https://www.metabase.com/) is an open-source analytics tool used by many organizations, large and small.
+This is an example of a system that captures a large stream of product usage data, or events, and provides both real-time data visualization and SQL-based data analytics. The stream of events is captured by [Apache Kafka](https://kafka.apache.org/) and made available to other downstream consumers. In this example, there are two downstream consumers of the data. The data flowing through Kafka can be viewed in near real-time using a web-based data visualization app. The other consumer stores all the data in [AWS RedShift](https://aws.amazon.com/redshift/), a relational database that Amazon describes as "a fast, scalable data warehouse." Then we can query and visualize the data in RedShift from a SQL-compliant analytics tool. This example uses [Metabase deployed to Heroku](https://elements.heroku.com/buttons/metabase/metabase-deploy). [Metabase](https://www.metabase.com/) is an open-source analytics tool used by many organizations, large and small.
 
-**This entire system can be deployed in 15 minutes -- most of that time spent waiting for Heroku and AWS to provision services.**
+**This entire system can be deployed in 15 minutes -- most of that time spent waiting for Heroku and AWS to provision services -- and it requires very little ongoing operational maintenance.**
 
 Here's an overview of how the system works.
 
@@ -36,10 +36,23 @@ git clone git@github.com:heroku-examples/kafka-stream-viz.git
 cd kafka-stream-viz
 heroku create
 heroku addons:create heroku-kafka:basic-0
+heroku kafka:topics:create ecommerce-logs
+heroku kafka:consumer-groups:create redshift-batch
 git push heroku master
 ```
 
-Optionally, you can deploy Metabase to Heroku and query data in RedShift. Use [Metabase's Heroku Deploy button](https://elements.heroku.com/buttons/metabase/metabase). Once deployed, you'll need to configure Metabase with the RedShift cluster URL, database name, username, and password.
+Alternatively, you can use the Heroku Deploy button:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+And then create the necessary Kafka topic and consumer group:
+
+```shell
+heroku kafka:topics:create ecommerce-logs #this can also be created at https://data.heroku.com/
+heroku kafka:consumer-groups:create redshift-batch
+```
+
+Optionally, you can deploy Metabase to Heroku and use SQL to query and visualize data in RedShift. Use [Metabase's Heroku Deploy button](https://elements.heroku.com/buttons/metabase/metabase). Once deployed, you'll need to configure Metabase with the RedShift cluster URL, database name, username, and password.
 
 ### Deploy Locally
 

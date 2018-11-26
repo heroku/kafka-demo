@@ -1,0 +1,46 @@
+{
+  "name": "Example Product/User Analytics System Using Apache Kafka, AWS RedShift, and Metabase",
+  "description": "This is an example of a system that captures a large stream of product usage data, or events, and provides both real-time data visualization and SQL-based data analytics.",
+  "keywords": [
+    "heroku",
+    "aws-redshift",
+    "metabase",
+    "kafka",
+    "data analytics",
+    "data visualization"
+  ],
+  "repository": "https://github.com/heroku-examples/analytics-with-kafka-redshift-metabase",
+  "success_url": "/",
+  "env": {
+    "AWS_ACCESS_KEY_ID": {
+      "description": "AWS access key used by RedShift to access fixture data in S3"
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "AWS secret access key used by RedShift to access fixture data in S3"
+    },
+    "ADMIN_PASSWORD": {
+      "description": "Password to use Demo Admin functionality. Default is 'supersecret'."
+    },
+    "DATABASE_URL": {
+      "description": "Connection string to RedShift database (e.g. postgres://username:password@my-redshift-cluster.abcdef123456.us-east-1.redshift.amazonaws.com:5439/db_name)"
+    },
+    "KAFKA_TOPIC": {
+      "description": "Kafka topic name. Default is 'ecommerce-logs'.",
+      "value": "ecommerce-logs"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    },
+    "generate_data": {
+      "quantity": 0
+    },
+    "redshift_batch": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-kafka:basic-0"
+  ]
+}

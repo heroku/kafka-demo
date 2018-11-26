@@ -1,5 +1,5 @@
 {
-  "name": "kafka-stream-viz",
+  "name": "analytics-with-kafka-redshift-metabase",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

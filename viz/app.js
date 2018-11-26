@@ -78,6 +78,16 @@ app.get('/admin/start', auth, (req, res) => {
   }
 })
 
+app.get('/admin/kill', auth, (req, res) => {
+  if (dataGeneratorProcess) {
+    dataGeneratorProcess.kill('SIGHUP')
+    dataGeneratorProcess = null
+    return res.send('Kill signal sent to data generator.')
+  } else {
+    return res.send('Data generator not running.')
+  }
+})
+
 if (PRODUCTION) {
   app.use(express.static(path.join(__dirname, 'dist')))
   app.get('/', (req, res) =>

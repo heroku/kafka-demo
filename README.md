@@ -38,6 +38,8 @@ heroku create
 heroku addons:create heroku-kafka:basic-0
 heroku kafka:topics:create ecommerce-logs
 heroku kafka:consumer-groups:create redshift-batch
+heroku config:set KAFKA_TOPIC=ecommerce-logs
+heroku config:set KAFKA_CONSUMER_GROUP=redshift-batch
 git push heroku master
 ```
 
@@ -70,6 +72,7 @@ The following environment variables must be defined. If you used the Heroku depl
 - `KAFKA_CLIENT_CERT`: Contents of the client certificate (in PEM format) to authenticate clients against the broker
 - `KAFKA_CLIENT_CERT_KEY`: Contents of the client certificate key (in PEM format) to authenticate clients against the broker
 - `KAFKA_TOPIC`: Kafka topic the system will produce to and consume from
+- `KAFKA_CONSUMER_GROUP`: Kafka consumer group name that is used by `redshift_batch` process type to write to Redshift.
 - `KAFKA_PREFIX`: (optional) This is only used by [Heroku's multi-tenant Apache Kafka plans](https://devcenter.heroku.com/articles/multi-tenant-kafka-on-heroku) (i.e. `basic` plans)
 
 Then in each of the `generate_data`, `viz`, and `redshift_batch` directories, run `npm start`.

@@ -25,8 +25,14 @@
       "description": "Connection string to RedShift database (e.g. postgres://username:password@my-redshift-cluster.abcdef123456.us-east-1.redshift.amazonaws.com:5439/db_name)"
     },
     "KAFKA_TOPIC": {
-      "description": "Kafka topic name. Default is 'ecommerce-logs'.",
-      "value": "ecommerce-logs"
+      "description": "Kafka topic name. Leave the default unless you have a reason to change it.",
+      "value": "ecommerce-logs",
+      "required": true
+    },
+    "KAFKA_CONSUMER_GROUP": {
+      "description": "Kafka consumer group name that is used by `redshift_batch` process type. Leave the default unless you have a reason to change it.",
+      "value": "redshift-batch",
+      "required": true
     }
   },
   "formation": {

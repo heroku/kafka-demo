@@ -24,7 +24,11 @@ const query = Postgres.helpers.concat([
   { query: new Postgres.QueryFile('./sql/truncate.sql', { minify: true }) },
   {
     query: new Postgres.QueryFile('./sql/load.sql', { minify: true }),
-    values: [process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY]
+    values: [
+      process.env.FIXTURE_DATA_S3,
+      process.env.AWS_ACCESS_KEY_ID,
+      process.env.AWS_SECRET_ACCESS_KEY
+    ]
   }
 ])
 db.connect()

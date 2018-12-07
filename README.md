@@ -40,6 +40,7 @@ heroku kafka:topics:create ecommerce-logs
 heroku kafka:consumer-groups:create redshift-batch
 heroku config:set KAFKA_TOPIC=ecommerce-logs
 heroku config:set KAFKA_CONSUMER_GROUP=redshift-batch
+heroku config:set FIXTURE_DATA_S3='s3://aws-heroku-integration-demo/fixture.csv'
 git push heroku master
 ```
 
@@ -68,6 +69,7 @@ npm i
 The following environment variables must be defined. If you used the Heroku deploy instructions above, all of the variables are already defined except for `DATABASE_URL`.
 
 - `DATABASE_URL`: Connection string to an AWS RedShift cluster
+- `FIXTURE_DATA_S3`: S3 path to CSV of fixture data to load into Redshift before starting data stream through Kafka (e.g. s3://aws-heroku-integration-demo/fixture.csv)
 - `KAFKA_URL`: Comma-separated list of Apache Kafka broker URLs
 - `KAFKA_CLIENT_CERT`: Contents of the client certificate (in PEM format) to authenticate clients against the broker
 - `KAFKA_CLIENT_CERT_KEY`: Contents of the client certificate key (in PEM format) to authenticate clients against the broker

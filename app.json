@@ -24,6 +24,10 @@
     "DATABASE_URL": {
       "description": "Connection string to RedShift database (e.g. postgres://username:password@my-redshift-cluster.abcdef123456.us-east-1.redshift.amazonaws.com:5439/db_name)"
     },
+    "FIXTURE_DATA_S3": {
+      "description": "S3 path to CSV of fixture data to load into Redshift before starting data stream through Kafka. Leave the default unless you have a reason to change it.",
+      "value": "s3://aws-heroku-integration-demo/fixture.csv"
+    },
     "KAFKA_TOPIC": {
       "description": "Kafka topic name. Leave the default unless you have a reason to change it.",
       "value": "ecommerce-logs",

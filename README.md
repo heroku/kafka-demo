@@ -1,6 +1,6 @@
-# Example Product/User Analytics System Using Apache Kafka, AWS RedShift, and Metabase
+# Example Product/User Analytics System Using Apache Kafka, AWS Redshift, and Metabase
 
-This is an example of a system that captures a large stream of product usage data, or events, and provides both real-time data visualization and SQL-based data analytics. The stream of events is captured by [Apache Kafka](https://kafka.apache.org/) and made available to other downstream consumers. In this example, there are two downstream consumers of the data. The data flowing through Kafka can be viewed in near real-time using a web-based data visualization app. The other consumer stores all the data in [AWS RedShift](https://aws.amazon.com/redshift/), a relational database that Amazon describes as "a fast, scalable data warehouse." Then we can query and visualize the data in RedShift from a SQL-compliant analytics tool. This example uses [Metabase deployed to Heroku](https://elements.heroku.com/buttons/metabase/metabase-deploy). [Metabase](https://www.metabase.com/) is an open-source analytics tool used by many organizations, large and small.
+This is an example of a system that captures a large stream of product usage data, or events, and provides both real-time data visualization and SQL-based data analytics. The stream of events is captured by [Apache Kafka](https://kafka.apache.org/) and made available to other downstream consumers. In this example, there are two downstream consumers of the data. The data flowing through Kafka can be viewed in near real-time using a web-based data visualization app. The other consumer stores all the data in [AWS Redshift](https://aws.amazon.com/redshift/), a relational database that Amazon describes as "a fast, scalable data warehouse." Then we can query and visualize the data in Redshift from a SQL-compliant analytics tool. This example uses [Metabase deployed to Heroku](https://elements.heroku.com/buttons/metabase/metabase-deploy). [Metabase](https://www.metabase.com/) is an open-source analytics tool used by many organizations, large and small.
 
 **This entire system can be deployed in 15 minutes -- most of that time spent waiting for Heroku and AWS to provision services -- and it requires very little ongoing operational maintenance.**
 
@@ -16,17 +16,17 @@ This project includes 3 apps:
 
 1. A data producer called `generate_data`. Data is simulated in this example, but this could be replaced with almost anything that produces data: a marketing website, a SaaS product, a point-of-sale device, a kiosk, internet-connected thermostat or car. And more than one data producer can be added.
 1. A real-time data visualizer called `viz`, which shows relative volume of different categories of data being written into Kafka.
-1. And a Kafka-to-RedShift writer called `reshift_batch`, which simply reads data from Kafka and writes it to RedShift.
+1. And a Kafka-to-Redshift writer called `reshift_batch`, which simply reads data from Kafka and writes it to Redshift.
 
 They all share data using [Apache Kafka on Heroku](https://www.heroku.com/kafka).
 
-You can optionally deploy Metabase to Heroku to query RedShift. Check out [Metabase's Heroku Deploy Button](https://elements.heroku.com/buttons/metabase/metabase).
+You can optionally deploy Metabase to Heroku to query Redshift. Check out [Metabase's Heroku Deploy Button](https://elements.heroku.com/buttons/metabase/metabase).
 
 ## Deploy
 
 ### Prerequisites
 
-- An AWS RedShift cluster. Check out [this Terraform script](https://github.com/heroku-examples/terraform-heroku-peered-redshift) for an easy way to create a RedShift cluster along with a Heroku Private Space and a private peering connection between the Heroku Private Space and the RedShift's AWS VPC. *Not free! This will incur cost on AWS and Heroku.*
+- An AWS Redshift cluster. Check out [this Terraform script](https://github.com/heroku-examples/terraform-heroku-peered-redshift) for an easy way to create a Redshift cluster along with a Heroku Private Space and a private peering connection between the Heroku Private Space and the Redshift's AWS VPC. *Not free! This will incur cost on AWS and Heroku.*
 - Node.js
 
 ### Deploy to Heroku
@@ -55,7 +55,7 @@ heroku kafka:topics:create ecommerce-logs #this can also be created at https://d
 heroku kafka:consumer-groups:create redshift-batch
 ```
 
-Optionally, you can deploy Metabase to Heroku and use SQL to query and visualize data in RedShift. Use [Metabase's Heroku Deploy button](https://elements.heroku.com/buttons/metabase/metabase). Once deployed, you'll need to configure Metabase with the RedShift cluster URL, database name, username, and password.
+Optionally, you can deploy Metabase to Heroku and use SQL to query and visualize data in Redshift. Use [Metabase's Heroku Deploy button](https://elements.heroku.com/buttons/metabase/metabase). Once deployed, you'll need to configure Metabase with the Redshift cluster URL, database name, username, and password.
 
 ### Deploy Locally
 
@@ -68,7 +68,7 @@ npm i
 
 The following environment variables must be defined. If you used the Heroku deploy instructions above, all of the variables are already defined except for `DATABASE_URL`.
 
-- `DATABASE_URL`: Connection string to an AWS RedShift cluster
+- `DATABASE_URL`: Connection string to an AWS Redshift cluster
 - `FIXTURE_DATA_S3`: S3 path to CSV of fixture data to load into Redshift before starting data stream through Kafka (e.g. s3://aws-heroku-integration-demo/fixture.csv)
 - `KAFKA_URL`: Comma-separated list of Apache Kafka broker URLs
 - `KAFKA_CLIENT_CERT`: Contents of the client certificate (in PEM format) to authenticate clients against the broker

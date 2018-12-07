@@ -1,8 +1,10 @@
-#!/usr/bin/env bash
-
-set -eo pipefail
-
-heroku config:set KAFKA_URL="$(heroku config:get KAFKA_URL -a twitter-ingest)"
-heroku config:set KAFKA_CLIENT_CERT="$(heroku config:get KAFKA_CLIENT_CERT -a twitter-ingest)"
-heroku config:set KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY -a twitter-ingest)"
-heroku config:set KAFKA_TOPIC="$(heroku config:get KAFKA_TOPIC -a twitter-ingest)"
+# You can replace the value of these variables with something else if you do not have a Heroku app from which to populate them.
+# See README.md or app.json for a description of each var
+export KAFKA_URL="$(heroku config:get KAFKA_URL)"
+export KAFKA_CLIENT_CERT="$(heroku config:get KAFKA_CLIENT_CERT)"
+export KAFKA_CLIENT_CERT_KEY="$(heroku config:get KAFKA_CLIENT_CERT_KEY)"
+export KAFKA_TOPIC="$(heroku config:get KAFKA_TOPIC)"
+export KAFKA_CONSUMER_GROUP="$(heroku config:get KAFKA_CONSUMER_GROUP)"
+export FIXTURE_DATA_S3="$(heroku config:get FIXTURE_DATA_S3)"
+export DATABASE_URL="$(heroku config:get DATABASE_URL)"
+export KAFKA_PREFIX="$(heroku config:get KAFKA_PREFIX)"

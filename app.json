@@ -43,9 +43,6 @@
     "web": {
       "quantity": 1
     },
-    "generate_data": {
-      "quantity": 0
-    },
     "redshift_batch": {
       "quantity": 1
     }

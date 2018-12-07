@@ -42,7 +42,10 @@ const PORT = process.env.PORT || 3000
  */
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
-// Configure admin routes for demoer
+/*
+ * Configure admin routes for demoer
+ *
+ */
 const auth = basicAuth({
   users: { '': process.env.ADMIN_PASSWORD || 'supersecret' },
   challenge: true,

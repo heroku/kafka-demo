@@ -9,6 +9,15 @@ const basicAuth = require('express-basic-auth')
 const webpack = require('webpack')
 const history = require('connect-history-api-fallback')
 const webpackDev = require('webpack-dev-middleware')
+const argv = require('optimist').argv;
+const NODB = !!argv.nodb;
+const NOKAFKA = !!argv.nokafka;
+if (NODB) {
+  console.log('DATABASE DISABLED');
+}
+if (NODB) {
+  console.log('KAFKA DISABLED');
+}
 
 const webpackConfig = require('./webpack.config')
 const Consumer = require('./consumer')
@@ -16,25 +25,31 @@ const app = express()
 const constants = require('./consumer/constants')
 let dataGeneratorProcess = null
 
-const Postgres = require('pg-promise')({
-  capSQL: true
-})
-const db = Postgres(process.env.DATABASE_URL || 'postgresql://localhost:5432')
-const query = Postgres.helpers.concat([
-  { query: new Postgres.QueryFile('./sql/truncate.sql', { minify: true }) },
-  {
-    query: new Postgres.QueryFile('./sql/load.sql', { minify: true }),
-    values: [
-      process.env.FIXTURE_DATA_S3,
-      process.env.AWS_ACCESS_KEY_ID,
-      process.env.AWS_SECRET_ACCESS_KEY
-    ]
-  }
-])
-db.connect()
+
+let Postgres, db, query;
+if (!NODB) {
+  Postgres = require('pg-promise')({
+    capSQL: true
+  })
+  db = Postgres(process.env.DATABASE_URL || 'postgresql://localhost:5432')
+  query = Postgres.helpers.concat([
+    { query: new Postgres.QueryFile('./sql/truncate.sql', { minify: true }) },
+    {
+      query: new Postgres.QueryFile('./sql/load.sql', { minify: true }),
+      values: [
+        process.env.FIXTURE_DATA_S3,
+        process.env.AWS_ACCESS_KEY_ID,
+        process.env.AWS_SECRET_ACCESS_KEY
+      ]
+    }
+  ])
+  db.connect()
+}
 
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const PORT = process.env.PORT || 3000
+
+
 
 /*
  * Configure web app and webpack pieces
@@ -53,6 +68,9 @@ const auth = basicAuth({
 })
 
 app.get('/admin/reload', auth, (req, res) => {
+  if (NODB) {
+    return res.send('App running without a progres database.')
+  }
   return db
     .none(query)
     .then(() => res.send(`Fixture data truncated and reloaded.`))
@@ -117,28 +135,34 @@ const wss = new WebSocketServer({ server })
  * Configure Kafka consumer
  *
  */
-const consumer = new Consumer({
-  broadcast: (data) =>
-    wss.clients.forEach((client) => client.send(JSON.stringify(data))),
-  interval: constants.INTERVAL,
-  topic: constants.KAFKA_TOPIC,
-  consumer: {
-    connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
-    ssl: {
-      cert: './client.crt',
-      key: './client.key'
+if (!NOKAFKA) {
+  const consumer = new Consumer({
+    broadcast: (data) =>
+      wss.clients.forEach((client) => client.send(JSON.stringify(data))),
+    interval: constants.INTERVAL,
+    topic: constants.KAFKA_TOPIC,
+    consumer: {
+      connectionString: process.env.KAFKA_URL.replace(/\+ssl/g, ''),
+      ssl: {
+        cert: './client.crt',
+        key: './client.key'
+      }
     }
-  }
-})
+  })
 
-consumer
-  .init()
-  .catch((err) => {
-    console.error(`Consumer could not be initialized: ${err}`)
-    if (PRODUCTION) throw err
-  })
-  .then(() => {
-    server.listen(PORT, () =>
-      console.log(`http/ws server listening on http://localhost:${PORT}`)
-    )
-  })
+  consumer
+    .init()
+    .catch((err) => {
+      console.error(`Consumer could not be initialized: ${err}`)
+      if (PRODUCTION) throw err
+    })
+    .then(() => {
+      server.listen(PORT, () =>
+        console.log(`http/ws server listening on http://localhost:${PORT}`)
+      )
+    })
+} else {
+  server.listen(PORT, () =>
+    console.log(`http/ws server listening on http://localhost:${PORT}`)
+  )
+}

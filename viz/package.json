@@ -14,6 +14,7 @@
     "moment": "^2.22.2",
     "no-kafka": "^3.3.5",
     "normalize.css": "^8.0.1",
+    "optimist": "^0.6.1",
     "pg-promise": "^8.5.2",
     "pug": "^2.0.0-beta6",
     "ws": "^6.1.0"
@@ -85,6 +86,7 @@
   "scripts": {
     "build": "NODE_ENV=production webpack",
     "dev": "NODE_ENV=development bin/start",
+    "local-nodb": "NODE_ENV=development node app.js --nodb --nokafka",
     "eslint": "eslint --fix .",
     "lint": "npm run prettier && npm run eslint",
     "nodemon": "nodemon --exec npm run dev --watch app.js --watch webpack.config.js --watch consumer/",

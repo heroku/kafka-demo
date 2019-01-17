@@ -1,37 +1,14 @@
-doctype html
-html
-  head
-    meta(http-equiv='Content-type' content='text/html; charset=utf-8')
-    meta(name='viewport' content='width=device-width, initial-scale=1')
-    link(rel='shortcut icon' href='https://www.herokucdn.com/favicon.ico' type='image/vnd.microsoft.icon')
-    if (!htmlWebpackPlugin.options.production)
-      script(src='http://localhost:35729/livereload.js')
-    for css in htmlWebpackPlugin.files.css
-      link(rel='stylesheet' type='text/css' href=css)
-    title #{htmlWebpackPlugin.options.title}
-  body(class=htmlWebpackPlugin.options.bodyClass)
-    header
-      nav
-        .logo
-        span.title #{htmlWebpackPlugin.options.title}
-        ul.nav-items
-          li.nav-link.architecture-link Architecture
-          li.nav-link.has-dropdown Learn More
-            ul.dropdown.nav-learn
-              li: a(href='https://github.com/heroku-examples/analytics-with-kafka-redshift-metabase') Fork on GitHub
-              li: a(href='https://heroku.com/kafka') Apache Kafka on Heroku
-          li.nav-link.has-dropdown Demo Admin
-            ul.dropdown.nav-learn
-              li: a(href='/admin/reload', target='_blank') Truncate and Reload Fixture Data
-              li: a(href='/admin/start', target='_blank') Start Data Generator
-              li: a(href='/admin/kill', target='_blank') Stop Data Generator
-    .architecture
-      iframe.architecture-iframe(width='100%', height='500px', scrolling='no', seamless)
-    main
-      .chart-container.chart-stream
-        span.title Wishlist Additions By Product Category
-        .chart.loading
-      footer.footer-legend
-        ul
-    for js in htmlWebpackPlugin.files.js
-      script(src=js)
+extends layout
+
+block nav
+  include nav-home
+
+block architecture
+  .architecture
+    iframe.architecture-iframe(width='100%', height='500px', scrolling='no', seamless)
+
+block content
+  .chart-container.chart-stream
+    span.title Wishlist Additions By Product Category
+    .chart.loading
+  

@@ -23,7 +23,7 @@ $diagramHeight: 500px;
 body,
 html {
   position: relative;
-  font-family: "BentonSans", "Helvetica Neue", sans-serif;
+  font-family: 'BentonSans', 'Helvetica Neue', sans-serif;
   overflow: hidden;
 }
 

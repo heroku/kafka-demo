@@ -96,6 +96,21 @@ module.exports = {
     htmlPlugin({
       bodyClass: THEME
     }),
+    htmlPlugin({ 
+      filename: 'audience/index.html', 
+      template: path.join(__dirname, 'views', 'audience.pug'),
+      bodyClass: THEME
+    }),
+    htmlPlugin({ 
+      filename: 'present/index.html', 
+      template: path.join(__dirname, 'views', 'present.pug'),
+      bodyClass: THEME
+    }),
+    htmlPlugin({ 
+      filename: 'booth/index.html', 
+      template: path.join(__dirname, 'views', 'booth.pug'),
+      bodyClass: THEME
+    }),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     new webpack.DefinePlugin({
       'process.env.KAFKA_TOPIC': JSON.stringify(

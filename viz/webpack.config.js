@@ -96,18 +96,18 @@ module.exports = {
     htmlPlugin({
       bodyClass: THEME
     }),
-    htmlPlugin({ 
-      filename: 'audience/index.html', 
+    htmlPlugin({
+      filename: 'audience/index.html',
       template: path.join(__dirname, 'views', 'audience.pug'),
       bodyClass: THEME
     }),
-    htmlPlugin({ 
-      filename: 'present/index.html', 
+    htmlPlugin({
+      filename: 'present/index.html',
       template: path.join(__dirname, 'views', 'present.pug'),
       bodyClass: THEME
     }),
-    htmlPlugin({ 
-      filename: 'booth/index.html', 
+    htmlPlugin({
+      filename: 'booth/index.html',
       template: path.join(__dirname, 'views', 'booth.pug'),
       bodyClass: THEME
     }),

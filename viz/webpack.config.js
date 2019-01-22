@@ -98,19 +98,19 @@ module.exports = {
     }),
     htmlPlugin({
       filename: 'audience/index.html',
-      title:'Audience',
+      title: 'Audience',
       template: path.join(__dirname, 'views', 'audience.pug'),
       bodyClass: THEME
     }),
     htmlPlugin({
       filename: 'presentation/index.html',
-      title:'Presentation',
+      title: 'Presentation',
       template: path.join(__dirname, 'views', 'presentation.pug'),
       bodyClass: THEME
     }),
     htmlPlugin({
       filename: 'booth/index.html',
-      title:'Booth',
+      title: 'Booth',
       template: path.join(__dirname, 'views', 'booth.pug'),
       bodyClass: THEME
     }),

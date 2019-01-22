@@ -6,5 +6,14 @@ block nav
       a(href='#') A link
 
 block content
-  p this is where the progress bars will go
-  
+  h1 Wishlist additions by product category
+  p Brief instructions: uisque mattis nisi velit, et faucibus dolor volutpat quis.
+
+  //- Category Name
+  section.category-controls
+    button.minus -
+    button.plus +
+    div.progress-bar
+      h2 Category Name
+      div.progress-bar-glass
+        div.progress-bar-juice(style='width:50%')

@@ -1,0 +1,50 @@
+.category-controls {
+  display: flex;
+  justify-content: space-between;
+
+  .plus {
+    order: 1;
+  }
+
+  .minus {
+    order: -1;
+  }
+
+  h2 {
+    margin: 0 0 10px;
+  }
+}
+
+.category-controls button {
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+}
+
+.progress-bar {
+  flex: 1;
+  text-align: center;
+  margin: 0 10px;
+
+  dispay: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.progress-bar-glass {
+  background: #dedede;
+  width: 100%;
+  height: 8px;
+  border-radius: 50px;
+  position: relative;
+}
+
+.progress-bar-juice {
+  background: $hColor1;
+  height: 8px;
+  border-radius: 50px;
+  position: absolute;
+  top:0;
+  left: 0;
+}

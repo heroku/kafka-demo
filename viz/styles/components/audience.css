@@ -1,4 +1,7 @@
 .audience {
+  main {
+    align-items: center;
+  }
   h1 {
     margin-bottom: 10px;
   }
@@ -9,6 +12,8 @@
 }
 
 .category-controls {
+  width: 100%;
+  max-width: 500px;
   display: flex;
   justify-content: space-between;
   align-items: center;

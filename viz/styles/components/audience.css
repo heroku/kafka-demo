@@ -1,6 +1,10 @@
 .category-controls {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; /* don't let them overlap */
+  flex-grow: 1; /* but do let them fill up the remaining height */
+  margin-bottom: 20px;
 
   .plus {
     order: 1;
@@ -12,13 +16,42 @@
 
   h2 {
     margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
   }
 }
 
 .category-controls button {
+  position: relative;
+  /*  display: flex;
+  justify-content: center;
+  align-items: center;*/
+
   border-radius: 50px;
   width: 50px;
   height: 50px;
+  border: none;
+  font-size: 30px;
+  color: white;
+  background: #ccc;
+
+  &:focus {
+    border-radius: 50px;
+    outline: none;
+    border: 4px solid rgba(255, 255, 255, 0.5);
+  }
+
+  &:active:after {
+    width: 60px;
+    height: 60px;
+    display: block;
+    border-radius: 60px;
+    background: rgba(0, 0, 0, 0.3);
+    content: '';
+    top: -9px;
+    left: -9px;
+    position: absolute;
+  }
 }
 
 .progress-bar {
@@ -41,10 +74,72 @@
 }
 
 .progress-bar-juice {
-  background: $hColor1;
+  background: #aaa;
   height: 8px;
   border-radius: 50px;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+/* Colors */
+
+.category-controls.category-1 {
+  button {
+    background: $hColor1;
+  }
+  .progress-bar-juice {
+    background: $hColor1;
+  }
+  h2 {
+    color: $hColor1;
+  }
+}
+
+.category-controls.category-2 {
+  button {
+    background: $hColor2;
+  }
+  .progress-bar-juice {
+    background: $hColor2;
+  }
+  h2 {
+    color: $hColor2;
+  }
+}
+
+.category-controls.category-3 {
+  button {
+    background: $hColor3;
+  }
+  .progress-bar-juice {
+    background: $hColor3;
+  }
+  h2 {
+    color: #599551;
+  } /* this one's a little darker because it's not a suitable text color */
+}
+
+.category-controls.category-4 {
+  button {
+    background: $hColor4;
+  }
+  .progress-bar-juice {
+    background: $hColor4;
+  }
+  h2 {
+    color: #d08542;
+  } /* this one's a little darker because it's not a suitable text color */
+}
+
+.category-controls.category-5 {
+  button {
+    background: $hColor5;
+  }
+  .progress-bar-juice {
+    background: $hColor5;
+  }
+  h2 {
+    color: $hColor5;
+  }
 }

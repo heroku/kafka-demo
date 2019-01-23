@@ -1,6 +1,7 @@
 @import '../node_modules/normalize.css/normalize.css';
 
 @import './components/chart-colors.css';
+@import './components/typography.css';
 @import './components/main.css';
 
 @import './components/audience.css';

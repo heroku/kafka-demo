@@ -9,14 +9,14 @@ const basicAuth = require('express-basic-auth')
 const webpack = require('webpack')
 const history = require('connect-history-api-fallback')
 const webpackDev = require('webpack-dev-middleware')
-const argv = require('optimist').argv;
-const NODB = !!argv.nodb;
-const NOKAFKA = !!argv.nokafka;
+const argv = require('optimist').argv
+const NODB = !!argv.nodb
+const NOKAFKA = !!argv.nokafka
 if (NODB) {
-  console.log('DATABASE DISABLED');
+  console.log('DATABASE DISABLED')
 }
 if (NODB) {
-  console.log('KAFKA DISABLED');
+  console.log('KAFKA DISABLED')
 }
 
 const webpackConfig = require('./webpack.config')
@@ -25,8 +25,7 @@ const app = express()
 const constants = require('./consumer/constants')
 let dataGeneratorProcess = null
 
-
-let Postgres, db, query;
+let Postgres, db, query
 if (!NODB) {
   Postgres = require('pg-promise')({
     capSQL: true
@@ -48,8 +47,6 @@ if (!NODB) {
 
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const PORT = process.env.PORT || 3000
-
-
 
 /*
  * Configure web app and webpack pieces

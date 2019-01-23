@@ -100,19 +100,19 @@ module.exports = {
       filename: 'audience/index.html',
       title: 'Audience',
       template: path.join(__dirname, 'views', 'audience.pug'),
-      bodyClass: THEME
+      bodyClass: `${THEME} audience`
     }),
     htmlPlugin({
       filename: 'presentation/index.html',
       title: 'Presentation',
       template: path.join(__dirname, 'views', 'presentation.pug'),
-      bodyClass: THEME
+      bodyClass: `${THEME} presentation`
     }),
     htmlPlugin({
       filename: 'booth/index.html',
       title: 'Booth',
       template: path.join(__dirname, 'views', 'booth.pug'),
-      bodyClass: THEME
+      bodyClass: `${THEME} booth`
     }),
     new CleanPlugin(['dist'], { root: __dirname, verbose: false }),
     new webpack.DefinePlugin({

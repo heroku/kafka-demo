@@ -3,8 +3,14 @@ extends layout
 block nav
   include nav-home
 
+block architecture
+  .architecture
+    iframe.architecture-iframe(width='100%', height='500px', scrolling='no', seamless)
+
 block content
-  h1 Wishlist additions by product category
+  .chart-container.chart-stream
+    h1 Wishlist Additions By Product Category
+    .chart.loading
 
   h1 Title about affecting the data
   p Nam consectetur sollicitudin augue at condimentum. Phasellus cursus et enim maximus iaculis. Nulla commodo ultrices lorem a gravida. Pellentesque et leo id magna malesuada suscipit. Nam eu finibus est. Morbi libero arcu, laoreet vitae luctus porttitor, elementum placerat sapien.

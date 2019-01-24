@@ -1,8 +1,13 @@
 extends layout
 
 block nav
-  include nav-home
+  ul.nav-items
+    li.nav-link.has-dropdown Learn More
+      ul.dropdown.nav-learn
+        li: a(href='https://github.com/heroku-examples/analytics-with-kafka-redshift-metabase') Fork on GitHub
+        li: a(href='https://heroku.com/kafka') Apache Kafka on Heroku
 
 block content
-  p presentation
-  
+  .chart-container.chart-stream
+    span.title Wishlist Additions By Product Category
+    .chart.loading

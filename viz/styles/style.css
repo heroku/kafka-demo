@@ -3,5 +3,7 @@
 @import './components/chart-colors.css';
 @import './components/typography.css';
 @import './components/main.css';
+@import './components/nav.css';
 
 @import './components/audience.css';
+@import './components/booth.css';

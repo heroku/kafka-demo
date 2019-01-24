@@ -82,28 +82,28 @@
 
 .category-controls {
   progress {
-      border: 0;
-      height: 8px;
-      border-radius: 50px;
-      width: 100%;
+    border: 0;
+    height: 8px;
+    border-radius: 50px;
+    width: 100%;
   }
   progress::-webkit-progress-bar {
-      border: 0;
-      height: 8px;
-      border-radius: 50px;
-      background: #dedede;
+    border: 0;
+    height: 8px;
+    border-radius: 50px;
+    background: #dedede;
   }
   progress::-webkit-progress-value {
-      border: 0;
-      height: 8px;
-      border-radius: 50px;
-      background: $hColor1;
+    border: 0;
+    height: 8px;
+    border-radius: 50px;
+    background: $hColor1;
   }
   progress::-moz-progress-bar {
-      border: 0;
-      height: 8px;
-      border-radius: 50px;
-      background: #dedede;
+    border: 0;
+    height: 8px;
+    border-radius: 50px;
+    background: #dedede;
   }
 }
 

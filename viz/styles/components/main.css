@@ -1,0 +1,223 @@
+$button-color: #79599f;
+
+* {
+  box-sizing: border-box;
+}
+
+$headerHeight: 50px;
+$hHeader: linear-gradient(to right, #3d3f74, #6757a0);
+$hHeaderText: #fff;
+$hText: #73629e;
+$hBorder: #d8dde6;
+$hLinkBorder: rgba(0, 0, 0, 0.15);
+
+$sfHeader: #dae0e4;
+$sfHeaderText: #29347c;
+$sfText: #054d61;
+$sfBorder: #d8dde6;
+$sfHeaderHeight: 77px;
+
+$diagramHeight: 500px;
+
+body,
+html {
+  position: relative;
+  font-family: 'BentonSans', 'Helvetica Neue', sans-serif;
+  /*overflow: hidden;*/
+}
+
+.architecture {
+  width: 100%;
+  height: $diagramHeight;
+  padding: 0 5px;
+  position: absolute;
+  top: $headerHeight;
+  z-index: 0;
+  background: white;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+  }
+
+  iframe {
+    border: none;
+  }
+
+  body.salesforce & {
+    top: $sfHeaderHeight;
+  }
+}
+
+main {
+  height: calc(100vh - $headerHeight);
+  padding: 7vh 5vw 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(to bottom, #f2f2f4, #fff);
+  transition: transform 0.5s;
+
+  &.open {
+    transform: translate(0px, $diagramHeight);
+  }
+
+  body.salesforce & {
+    height: calc(100vh - $sfHeaderHeight);
+  }
+}
+
+/* --- Chart containers --*/
+.chart-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 120px;
+
+  svg,
+  svg > g {
+    overflow: visible;
+  }
+
+  .x-axis {
+    text {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .tick line,
+    > path {
+      display: none;
+    }
+  }
+
+  text {
+    cursor: default;
+  }
+
+  .title {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 0 25px 0;
+    font-size: 0.8em;
+    line-height: 1.3;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 16px;
+
+    body.heroku & {
+      color: $hText;
+    }
+
+    body.salesforce & {
+      color: $sfText;
+    }
+  }
+
+  .chart {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    height: 100%;
+    background: #ffffff;
+    position: relative;
+
+    body.heroku & {
+      border-color: $hBorder;
+    }
+
+    body.salesforce & {
+      border-color: $sfBorder;
+    }
+  }
+
+  .chart.loading:after {
+    position: absolute;
+    top: calc(50% - 9px);
+    left: calc(50% - 30px);
+    color: #ccc;
+    height: 18px;
+    width: 60px;
+    text-align: center;
+    content: '...';
+  }
+}
+
+.footer-legend {
+  margin-bottom: 40px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    background: white;
+
+    li {
+      position: relative;
+      display: inline-block;
+      margin-right: 25px;
+      padding: 11px 0;
+      padding-left: 25px;
+      font-size: 14px;
+      line-height: 18px;
+      color: $hChartText;
+      text-transform: capitalize;
+      margin-left: 8px;
+      font-weight: bold;
+
+      &:before {
+        width: 25px;
+        height: 25px;
+        border-radius: 3px;
+        content: '';
+        display: block;
+        position: absolute;
+        left: -8px;
+        top: 8px;
+      }
+
+      body.heroku & {
+        &.color-1:before {
+          background: $hColor1;
+        }
+        &.color-2:before {
+          background: $hColor2;
+        }
+        &.color-3:before {
+          background: $hColor3;
+        }
+        &.color-4:before {
+          background: $hColor4;
+        }
+        &.color-5:before {
+          background: $hColor5;
+        }
+        &.color-6:before {
+          background: $hColor6;
+        }
+      }
+
+      body.salesforce & {
+        &.color-1:before {
+          background: $sfColor1;
+        }
+        &.color-2:before {
+          background: $sfColor2;
+        }
+        &.color-3:before {
+          background: $sfColor3;
+        }
+        &.color-4:before {
+          background: $sfColor4;
+        }
+        &.color-5:before {
+          background: $sfColor5;
+        }
+        &.color-6:before {
+          background: $sfColor6;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.booth {
+  text-align: center;
+}
+
+.big-button {
+  background: $button-color;
+  border: none;
+  padding: 20px 30px;
+  border-radius: 3px;
+  color: white;
+  font-size: 27px;
+  margin: 0 auto;
+  display: block;
+}

@@ -1,0 +1,56 @@
+extends layout
+
+block nav
+  ul.nav-items
+    li.nav-link
+      a(href='#')
+        object(type='image/svg+xml' data='/public/images/metrics-28.svg')
+          img(src='/public/images/metrics-28.svg')
+    li.nav-link
+      a(href='#')
+        object(type='image/svg+xml' data='/public/images/metrics-28.svg')
+          img(src='/public/images/metrics-28.svg')
+
+block content
+  h1 Wishlist additions by product category
+  p Brief instructions: uisque mattis nisi velit, et faucibus dolor volutpat quis.
+
+  //- Category Name
+  section.category-controls.category-1
+    button.minus -
+    button.plus +
+    div.progress-bar
+      h2 Category Name
+      progress(max='100' value='20')
+          
+  //- Category Name
+  section.category-controls.category-2
+    button.minus -
+    button.plus +
+    div.progress-bar
+      h2 Category Name
+      progress(max='100' value='50')
+          
+  //- Category Name
+  section.category-controls.category-3
+    button.minus -
+    button.plus +
+    div.progress-bar
+      h2 Category Name
+      progress(max='100' value='30')
+          
+  //- Category Name
+  section.category-controls.category-4
+    button.minus -
+    button.plus +
+    div.progress-bar
+      h2 Category Name
+      progress(max='100' value='70')
+          
+  //- Category Name
+  section.category-controls.category-5
+    button.minus -
+    button.plus +
+    div.progress-bar
+      h2 Category Name
+      progress(max='100' value='60')

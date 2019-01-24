@@ -1,0 +1,22 @@
+body {
+  color: #656565;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  line-height: 120%;
+}
+
+p {
+  line-height: 150%;
+}
+
+h1 {
+  font-size: 27px;
+  color: #79599f;
+  text-align: center;
+  font-weight: normal;
+}

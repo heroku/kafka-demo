@@ -10,6 +10,10 @@ header {
     z-index: 10;
   }
 
+  object {
+    pointer-events: none; /* make objects clickable when they're linked */
+  }
+
   nav {
     height: 100%;
     padding: 0 0 0 15px;
@@ -69,11 +73,16 @@ header {
   .title {
     font-weight: 400;
 
-    @media screen and (max-width: 500px) {
+    body.heroku &,
+    body.salesforce & {
+      color: white;
+    }
+
+    @media screen and (max-width: 600px) {
       display: none;
     }
 
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 601px) {
       position: absolute;
       left: 50%;
       width: 200px;

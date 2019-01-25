@@ -93,17 +93,17 @@
     border-radius: 50px;
     background: #dedede;
   }
-  progress::-webkit-progress-value {
-    border: 0;
-    height: 8px;
-    border-radius: 50px;
-    background: $hColor1;
-  }
   progress::-moz-progress-bar {
     border: 0;
     height: 8px;
     border-radius: 50px;
     background: #dedede;
+  }
+  progress::-webkit-progress-value {
+    border: 0;
+    height: 8px;
+    border-radius: 50px;
+    background: $hColor1;
   }
 }
 

@@ -6,6 +6,7 @@ module.exports = class Nav {
     this.architectureFrame = document.querySelector('.architecture-iframe')
 
     this.architecture()
+    this.toggleView()
   }
 
   formatData(data) {
@@ -25,6 +26,29 @@ module.exports = class Nav {
         )
         this.main.classList.add('open')
       }
+    })
+  }
+
+  toggleView() {
+    const toggleLinks = document.querySelectorAll('.toggle')
+    toggleLinks.forEach((toggleLink) => {
+      toggleLink.addEventListener('click', (event) => {
+        const currentLink = event.currentTarget.getAttribute('name') // toggle button
+        const currentToggleable = document.querySelector(
+          `.toggleable[name="${currentLink}"]`
+        ) // element to toggle
+        const isShown = currentToggleable.classList.contains('show')
+        const isOpen = this.main.classList.contains('open') // if this is true, then the architecture diagram is open and we need to close it
+        if (isShown) {
+          currentToggleable.classList.remove('show')
+        } else {
+          currentToggleable.classList.add('show')
+          if (isOpen) {
+            this.architectureFrame.removeAttribute('src')
+            this.main.classList.remove('open')
+          }
+        }
+      })
     })
   }
 

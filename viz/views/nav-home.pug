@@ -1,11 +1,15 @@
 ul.nav-items
-  li.nav-link.architecture-link Architecture
-  li.nav-link.has-dropdown Learn More
+  li.nav-link.architecture-link
+    a(href="#")
+      object(type='image/svg+xml' data='/public/images/metrics-28.svg')
+        img(src='/public/images/metrics-28.svg')
+  li.nav-link.has-dropdown
+    object(type='image/svg+xml' data='/public/images/layout-list-28.svg')
+      img(src='/public/images/layout-list-28.svg')
     ul.dropdown.nav-learn
       li: a(href='https://github.com/heroku-examples/analytics-with-kafka-redshift-metabase') Fork on GitHub
       li: a(href='https://heroku.com/kafka') Apache Kafka on Heroku
-  li.nav-link.has-dropdown Demo Admin
-    ul.dropdown.nav-learn
+      hr
       li: a(href='/admin/reload', target='_blank') Truncate and Reload Fixture Data
       li: a(href='/admin/start', target='_blank') Start Data Generator
       li: a(href='/admin/kill', target='_blank') Stop Data Generator

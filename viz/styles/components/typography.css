@@ -38,4 +38,8 @@ h1 {
   body.salesforce & {
     color: $sfText;
   }
+
+  &.has-text {
+    margin-bottom: 0;
+  }
 }

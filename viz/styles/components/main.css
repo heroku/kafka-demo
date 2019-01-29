@@ -26,6 +26,11 @@ html {
   /*overflow: hidden;*/
 }
 
+section.content-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
 .architecture {
   width: 100%;
   height: $diagramHeight;

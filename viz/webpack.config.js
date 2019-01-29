@@ -105,6 +105,7 @@ module.exports = {
     htmlPlugin({
       filename: 'presentation/index.html',
       title: 'Presentation',
+      header: 'Kafka AWS',
       template: path.join(__dirname, 'views', 'presentation.pug'),
       bodyClass: `${THEME} presentation`
     }),

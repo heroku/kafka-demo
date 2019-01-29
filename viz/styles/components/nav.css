@@ -28,6 +28,11 @@ header {
     }
   }
 
+  .nav-items {
+    display: flex;
+    align-items: center;
+  }
+
   .nav-items > li {
     margin-left: 15px;
     padding: 17px 0 15px;
@@ -56,9 +61,9 @@ header {
 
     &.has-dropdown {
       position: relative;
-      padding-right: 30px;
+/*       padding-right: 30px;
 
-      &:after {
+     &:after {
         content: '\02c6';
         font-size: 150%;
         display: inline-block;
@@ -66,7 +71,7 @@ header {
         top: 7px;
         right: 15px;
         transform: rotate(180deg);
-      }
+      }*/
     }
   }
 

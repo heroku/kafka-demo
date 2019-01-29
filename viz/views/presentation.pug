@@ -2,12 +2,16 @@ extends layout
 
 block nav
   ul.nav-items
-    li.nav-link.has-dropdown Learn More
-      ul.dropdown.nav-learn
-        li: a(href='https://github.com/heroku-examples/analytics-with-kafka-redshift-metabase') Fork on GitHub
-        li: a(href='https://heroku.com/kafka') Apache Kafka on Heroku
+    li.nav-link.architecture-link
+      a(href="#")
+        object(type='image/svg+xml' data='/public/images/metrics-28.svg')
+          img(src='/public/images/metrics-28.svg')
+
+block architecture
+  .architecture
+    iframe.architecture-iframe(width='100%', height='500px', scrolling='no', seamless)
 
 block content
   .chart-container.chart-stream
-    span.title Wishlist Additions By Product Category
+    h1.title Wishlist Additions By Product Category
     .chart.loading

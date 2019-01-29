@@ -1,14 +1,19 @@
 .booth {
   text-align: center;
+
+  .chart-container {
+  	min-height: 500px;
+  	padding-bottom: 30px;
+  }
 }
 
 .big-button {
   background: $button-color;
   border: none;
-  padding: 20px 30px;
   border-radius: 3px;
   color: white;
   font-size: 27px;
-  margin: 0 auto;
-  display: block;
+  padding: 20px 30px;
+  margin: 15px auto;
+  flex-shrink: 0;
 }

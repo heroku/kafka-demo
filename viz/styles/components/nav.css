@@ -61,7 +61,7 @@ header {
 
     &.has-dropdown {
       position: relative;
-/*       padding-right: 30px;
+      /*       padding-right: 30px;
 
      &:after {
         content: '\02c6';
